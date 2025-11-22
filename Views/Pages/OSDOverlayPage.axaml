@@ -1,0 +1,98 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="using:Windows11Settings.Converters"
+             xmlns:helpers="using:Windows11Settings.Helpers"
+             x:Class="Windows11Settings.Views.Pages.OSDOverlayPage">
+
+    <UserControl.Resources>
+        <converters:InvertBooleanConverter x:Key="InvertBooleanConverter"/>
+    </UserControl.Resources>
+    
+    <StackPanel Margin="40,16">
+        
+        <TextBlock Text="{Binding $parent[Window].DataContext.Localization[OSDOverlaySettings]}" 
+                   Classes="settings-title"/>
+
+        <!-- OSD Overlay Controls -->
+        <Border Classes="settings-card"
+                DataContext="{Binding $parent[Window].DataContext}">
+            <StackPanel Spacing="16">
+                
+                <!-- Enable OSD Overlay -->
+                <Grid ColumnDefinitions="*,Auto">
+                    <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding Localization[EnableOSDOverlay]}" 
+                                   FontWeight="Medium"
+                                   FontSize="14"/>
+                        <TextBlock Text="{Binding Localization[EnableOSDOverlayDescription]}" 
+                                   FontSize="12"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"/>
+                    </StackPanel>
+                    <ToggleSwitch Grid.Column="1"
+                                  IsChecked="{Binding OSDOverlayPageViewModel.EnableOSDOverlay, Mode=TwoWay}"
+                                  IsEnabled="{Binding $parent[Window].DataContext.OSDOverlayPageViewModel.IsReadOnlyEnableOSDOverlay, Converter={StaticResource InvertBooleanConverter}}"
+                                  VerticalAlignment="Center"
+                                  HorizontalAlignment="Right"
+                                  OnContent=""
+                                  OffContent=""/>
+                </Grid>
+                
+                <Separator Background="{DynamicResource BorderBrush}"
+                           IsVisible="{Binding OSDOverlayPageViewModel.EnableOSDOverlay}"/>
+                
+                <!-- OSD Type ComboBox -->
+                <Grid ColumnDefinitions="Auto,*"
+                      IsVisible="{Binding OSDOverlayPageViewModel.EnableOSDOverlay}">
+                    <StackPanel Grid.Column="0" Spacing="2" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding Localization[OSDType]}" 
+                                   FontSize="14" 
+                                   FontWeight="Medium"/>
+                        <TextBlock Text="{Binding Localization[OSDTypeDescription]}" 
+                                   FontSize="12" 
+                                   Foreground="{DynamicResource SecondaryTextBrush}"/>
+                    </StackPanel>
+                    <ComboBox Grid.Column="1"
+                              ItemsSource="{Binding OSDOverlayPageViewModel.OSDTypeItems}"
+                              SelectedItem="{Binding OSDOverlayPageViewModel.OSDTypeSelectedItem, Mode=TwoWay}"
+                              IsEnabled="{Binding $parent[Window].DataContext.OSDOverlayPageViewModel.IsReadOnlyOSDTypeSelectedItem, Converter={StaticResource InvertBooleanConverter}}"
+                              HorizontalAlignment="Right"
+                              MinWidth="200"
+                              VerticalAlignment="Center"
+                              Margin="16,0,0,0">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding DisplayName}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </Grid>
+                
+            </StackPanel>
+        </Border>
+        
+        <!-- Download RTSS Section -->
+        <Border Classes="settings-card"
+                DataContext="{Binding $parent[Window].DataContext}">
+            <StackPanel Spacing="16">
+                <Grid ColumnDefinitions="*,Auto">
+                    <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding Localization[DownloadRTSSDescription]}"  
+                                   FontSize="12"
+                                   TextWrapping="Wrap"
+                                   VerticalAlignment="Center"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"/>
+                    </StackPanel>
+                    <Button Grid.Column="1"
+                            Content="{Binding Localization[Download]}"
+                            Command="{Binding OSDOverlayPageViewModel.DownloadRTSS}"
+                            IsEnabled="{Binding $parent[Window].DataContext.OSDOverlayPageViewModel.IsReadOnlyEnableDownloadRTSS, Converter={StaticResource InvertBooleanConverter}}"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            Margin="16,0,0,0"
+                            Padding="16,8"/>
+                </Grid>
+            </StackPanel>
+        </Border>
+        
+    </StackPanel>
+</UserControl>

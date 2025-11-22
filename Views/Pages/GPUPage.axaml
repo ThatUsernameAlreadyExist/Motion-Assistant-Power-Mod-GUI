@@ -1,0 +1,213 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="using:Windows11Settings.Converters"
+             xmlns:helpers="using:Windows11Settings.Helpers"
+             x:Class="Windows11Settings.Views.Pages.GPUPage">
+
+    <UserControl.Resources>
+        <converters:InvertBooleanConverter x:Key="InvertBooleanConverter"/>
+    </UserControl.Resources>
+    
+    <StackPanel Margin="40,16">
+        
+        <DockPanel>
+            <TextBlock Text="{Binding $parent[Window].DataContext.Localization[GPUPerformanceSettings]}" 
+                       Classes="settings-title"
+                       DockPanel.Dock="Left"/>
+            <TextBlock Text="{Binding $parent[Window].DataContext.GPUPageViewModel.GPUModel}" 
+                       FontSize="12"
+                       Foreground="{DynamicResource SecondaryTextBrush}"
+                       HorizontalAlignment="Right"
+                       VerticalAlignment="Top"
+                       DockPanel.Dock="Right"/>
+        </DockPanel>
+
+        <!-- GPU Optimization Controls -->
+        <Border Classes="settings-card"
+                DataContext="{Binding $parent[Window].DataContext}">
+            <StackPanel Spacing="16">
+                
+                <!-- Optimize GPU Clocks Toggle -->
+                <Grid ColumnDefinitions="*,Auto">
+                    <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding Localization[OptimizeGpuClocks]}" 
+                                   FontWeight="Medium"
+                                   FontSize="14"/>
+                        <TextBlock Text="{Binding Localization[OptimizeGpuClocksDescription]}" 
+                                   FontSize="12"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"/>
+                    </StackPanel>
+                    <ToggleSwitch Grid.Column="1"
+                                  IsChecked="{Binding GPUPageViewModel.OptimizeGpuClocksEnabled}"
+                                  IsEnabled="{Binding $parent[Window].DataContext.GPUPageViewModel.IsReadOnlyOptimizeGpuClocksEnabled, Converter={StaticResource InvertBooleanConverter}}"
+                                  VerticalAlignment="Center"
+                                  HorizontalAlignment="Right"
+                                  OnContent=""
+                                  OffContent=""/>
+                </Grid>
+                
+                <!-- Additional controls (visible only when Optimize GPU is enabled) -->
+                <StackPanel Spacing="16" IsVisible="{Binding GPUPageViewModel.OptimizeGpuClocksEnabled}">
+                    
+                    <Separator Background="{DynamicResource BorderBrush}"/>
+                    
+                    <!-- Optimization Mode ComboBox -->
+                    <Grid ColumnDefinitions="Auto,*">
+                        <StackPanel Grid.Column="0" Spacing="2" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding Localization[OptimizationMode]}" 
+                                       FontSize="14" 
+                                       FontWeight="Medium"/>
+                        </StackPanel>
+                        <ComboBox Grid.Column="1"
+                                  ItemsSource="{Binding GPUPageViewModel.OptimizationModeItems}"
+                                  SelectedItem="{Binding GPUPageViewModel.OptimizationModeSelectedItem}"
+                                  IsEnabled="{Binding $parent[Window].DataContext.GPUPageViewModel.IsReadOnlyOptimizationModeSelectedItem, Converter={StaticResource InvertBooleanConverter}}"
+                                  HorizontalAlignment="Right"
+                                  Width="220"
+                                  VerticalAlignment="Center"
+                                  Margin="16,0,0,0">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding DisplayName}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </Grid>
+                    
+                    <Separator Background="{DynamicResource BorderBrush}"
+                     IsVisible="{Binding GPUPageViewModel.IsCustomGpuClockRangeEnableVisible}"/>
+                    
+                    <!-- Custom GPU Clocks Range Toggle -->
+                    <Grid ColumnDefinitions="*,Auto"
+                        IsVisible="{Binding GPUPageViewModel.IsCustomGpuClockRangeEnableVisible}">
+                        <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding Localization[CustomGpuClocksRange]}" 
+                                       FontWeight="Medium"
+                                       FontSize="14"/>
+                            <TextBlock Text="{Binding Localization[CustomGpuClocksRangeDescription]}" 
+                                       FontSize="12"
+                                       Foreground="{DynamicResource SecondaryTextBrush}"/>
+                        </StackPanel>
+                        <ToggleSwitch Grid.Column="1"
+                                      IsChecked="{Binding GPUPageViewModel.CustomGpuClocksRangeEnabled}"
+                                      IsEnabled="{Binding $parent[Window].DataContext.GPUPageViewModel.IsReadOnlyCustomGpuClocksRangeEnabled, Converter={StaticResource InvertBooleanConverter}}"
+                                      VerticalAlignment="Center"
+                                      HorizontalAlignment="Right"
+                                      OnContent=""
+                                      OffContent=""/>
+                    </Grid>
+                    
+                </StackPanel>
+                
+            </StackPanel>
+        </Border>
+        
+        <!-- Custom GPU Clock Range Controls -->
+        <Border Classes="settings-card"
+                IsVisible="{Binding GPUPageViewModel.IsCustomGpuClockRangeVisible}"
+                DataContext="{Binding $parent[Window].DataContext}">
+            <StackPanel Spacing="16">
+                
+                <!-- Min GPU Clock Slider -->
+                <StackPanel Spacing="8">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <StackPanel Grid.Column="0" Spacing="2">
+                            <TextBlock Text="{Binding Localization[MinGpuClock]}" 
+                                       FontSize="14"
+                                       FontWeight="Medium"/>
+                            <TextBlock Text="{Binding Localization[MinGpuClockDescription]}" 
+                                       FontSize="12"
+                                       Foreground="{DynamicResource SecondaryTextBrush}"/>
+                        </StackPanel>
+                        <TextBlock Grid.Column="1" 
+                                   Text="{Binding GPUPageViewModel.MinGpuClockValue, StringFormat='{}{0:0}'}" 
+                                   FontSize="14" 
+                                   FontWeight="SemiBold"
+                                   VerticalAlignment="Center"/>
+                    </Grid>
+                    
+                    <Slider Minimum="{Binding GPUPageViewModel.GpuClockMinValue}" 
+                            Maximum="{Binding GPUPageViewModel.GpuClockMaxValue}" 
+                            Value="{Binding GPUPageViewModel.MinGpuClockValue, Mode=TwoWay}"
+                            IsEnabled="{Binding $parent[Window].DataContext.GPUPageViewModel.IsReadOnlyMinGpuClockValue, Converter={StaticResource InvertBooleanConverter}}"
+                            TickFrequency="10" 
+                            IsSnapToTickEnabled="True"
+                            PointerCaptureLost="MinGpuClockSlider_DragCompleted"/>
+                </StackPanel>
+                
+                <!-- Max GPU Clock Slider -->
+                <StackPanel Spacing="8">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <StackPanel Grid.Column="0" Spacing="2">
+                            <TextBlock Text="{Binding Localization[MaxGpuClock]}" 
+                                       FontSize="14"
+                                       FontWeight="Medium"/>
+                            <TextBlock Text="{Binding Localization[MaxGpuClockDescription]}" 
+                                       FontSize="12"
+                                       Foreground="{DynamicResource SecondaryTextBrush}"/>
+                        </StackPanel>
+                        <TextBlock Grid.Column="1" 
+                                   Text="{Binding GPUPageViewModel.MaxGpuClockValue, StringFormat='{}{0:0}'}" 
+                                   FontSize="14" 
+                                   FontWeight="SemiBold"
+                                   VerticalAlignment="Center"/>
+                    </Grid>
+                    
+                    <Slider Minimum="{Binding GPUPageViewModel.GpuClockMinValue}" 
+                            Maximum="{Binding GPUPageViewModel.GpuClockMaxValue}" 
+                            Value="{Binding GPUPageViewModel.MaxGpuClockValue, Mode=TwoWay}"
+                            IsEnabled="{Binding $parent[Window].DataContext.GPUPageViewModel.IsReadOnlyMaxGpuClockValue, Converter={StaticResource InvertBooleanConverter}}"
+                            TickFrequency="10" 
+                            IsSnapToTickEnabled="True"
+                            PointerCaptureLost="MaxGpuClockSlider_DragCompleted"/>
+                    
+                    <!-- Apply Button -->
+                    <Grid ColumnDefinitions="*,Auto">
+                        <StackPanel Grid.Column="1">
+                            <Button Content="{Binding Localization[Apply]}" 
+                                    Command="{Binding GPUPageViewModel.ApplyGpuRangeCommand}"
+                                    IsEnabled="{Binding $parent[Window].DataContext.GPUPageViewModel.IsReadOnlyApplyGpuRange, Converter={StaticResource InvertBooleanConverter}}"
+                                    Classes="primary-button"
+                                    HorizontalAlignment="Center"
+                                    MinWidth="80"/>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+                
+            </StackPanel>
+        </Border>
+        
+        <!-- Reset GPU Controls -->
+        <Border Classes="settings-card"
+                DataContext="{Binding $parent[Window].DataContext}">
+            <Grid ColumnDefinitions="*,Auto">
+                <StackPanel Grid.Column="0" Spacing="2" VerticalAlignment="Center">
+                    <TextBlock Text="{Binding Localization[ResetGpuDescription]}" 
+                               FontSize="12"
+                               Foreground="{DynamicResource SecondaryTextBrush}"
+                               TextWrapping="Wrap"/>
+                </StackPanel>
+                <Button Grid.Column="1"
+                        Content="{Binding Localization[ResetGpu]}" 
+                        Command="{Binding GPUPageViewModel.ResetGpuCommand}"
+                        IsEnabled="{Binding $parent[Window].DataContext.GPUPageViewModel.IsReadOnlyOptimizeGpuClocksEnabled, Converter={StaticResource InvertBooleanConverter}}"
+                        Classes="danger-button"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Margin="16,0,0,0"/>
+            </Grid>
+        </Border>
+
+        <!-- Tip -->
+        <Border Classes="settings-card"
+                DataContext="{Binding $parent[Window].DataContext}">
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock Text="{Binding Localization[ResetGpuTip]}" 
+                               FontSize="12"
+                               Foreground="{DynamicResource SecondaryTextBrush}"
+                               TextWrapping="Wrap"/>
+                </StackPanel>
+        </Border>
+        
+    </StackPanel>
+</UserControl>

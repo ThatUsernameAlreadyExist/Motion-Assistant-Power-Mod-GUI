@@ -1,0 +1,235 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:helpers="using:Windows11Settings.Helpers"
+             xmlns:system="using:System"
+             x:Class="Windows11Settings.Views.Pages.ProcessProfilesPage">
+    
+    <StackPanel Margin="40,16">
+        
+        <TextBlock Text="{Binding $parent[Window].DataContext.Localization[ProcessProfilesSettings]}" 
+                   Classes="settings-title"/>
+
+        <!-- Active Profiles Information -->
+        <Border Classes="settings-card"
+                DataContext="{Binding $parent[Window].DataContext}"
+                Margin="0,0,0,16">
+            <StackPanel Spacing="8">
+                <!-- Active Profile Line -->
+                <Grid ColumnDefinitions="*,Auto">
+                    <TextBlock Grid.Column="0"
+                               Text="{Binding Localization[ActiveProfile]}"
+                               FontSize="14" 
+                               FontWeight="Medium"/>
+                    <TextBlock Grid.Column="1"
+                               Text="{Binding ProcessProfilesPageViewModel.CurrentActiveProfile}"
+                               FontSize="14" 
+                               FontWeight="Bold"
+                               Foreground="Green"
+                               HorizontalAlignment="Right"/>
+                </Grid>
+
+                 <Separator Background="{DynamicResource BorderBrush}"/>
+                
+                <!-- Current Editing Profile Line -->
+                <Grid ColumnDefinitions="*,Auto">
+                    <TextBlock Grid.Column="0"
+                               Text="{Binding Localization[CurrentEditingProfile]}"
+                               FontSize="14" 
+                               FontWeight="Medium"/>
+                    <TextBlock Grid.Column="1"
+                               Text="{Binding ProcessProfilesPageViewModel.CurrentEditingProfile}"
+                               FontSize="14" 
+                               Foreground="Red"
+                               HorizontalAlignment="Right"/>
+                </Grid>
+            </StackPanel>
+        </Border>
+
+        <!-- Profile Management -->
+        <Border Classes="settings-card"
+                DataContext="{Binding $parent[Window].DataContext}">
+            <StackPanel Spacing="16">
+                
+                <!-- Profiles List ComboBox -->
+                <StackPanel Spacing="8">
+                    <TextBlock Text="{Binding Localization[ProfilesList]}" 
+                               FontSize="14" 
+                               FontWeight="Medium"/>
+                    <ComboBox ItemsSource="{Binding ProcessProfilesPageViewModel.ProfilesListItems}"
+                              SelectedItem="{Binding ProcessProfilesPageViewModel.ProfilesListSelectedItem, Mode=TwoWay}"
+                              IsEnabled="{Binding $parent[Window].DataContext.ProcessProfilesPageViewModel.IsReadOnlyProfilesListSelectedItem, Converter={StaticResource InvertBooleanConverter}}"
+                              HorizontalAlignment="Stretch">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding DisplayName}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    
+                    <!-- Profile Buttons -->
+                    <Grid ColumnDefinitions="*,Auto">
+                        <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8" HorizontalAlignment="Right">
+                            <Button Content="{Binding Localization[Remove]}" 
+                                    Command="{Binding ProcessProfilesPageViewModel.RemoveProfileCommand}"
+                                    IsEnabled="{Binding $parent[Window].DataContext.ProcessProfilesPageViewModel.IsReadOnlyRemoveProfileCommand, Converter={StaticResource InvertBooleanConverter}}"
+                                    Classes="small-button"
+                                    MinWidth="70"
+                                    HorizontalContentAlignment="Center"
+                                    VerticalContentAlignment="Center"/>
+                            <Button Content="{Binding Localization[Reset]}" 
+                                    Command="{Binding ProcessProfilesPageViewModel.ResetProfileCommand}"
+                                    IsEnabled="{Binding $parent[Window].DataContext.ProcessProfilesPageViewModel.IsReadOnlyResetProfileCommand, Converter={StaticResource InvertBooleanConverter}}"
+                                    Classes="small-button"
+                                    MinWidth="70"
+                                    HorizontalContentAlignment="Center"
+                                    VerticalContentAlignment="Center"/>
+                            <Button Content="{Binding Localization[Add]}" 
+                                    Command="{Binding ProcessProfilesPageViewModel.AddProfileCommand}"
+                                    IsEnabled="{Binding $parent[Window].DataContext.ProcessProfilesPageViewModel.IsReadOnlyAddProfileCommand, Converter={StaticResource InvertBooleanConverter}}"
+                                    Classes="small-button"
+                                    MinWidth="70"
+                                    HorizontalContentAlignment="Center"
+                                    VerticalContentAlignment="Center"/>
+                            <Button Content="{Binding Localization[Apply]}" 
+                                    Command="{Binding ProcessProfilesPageViewModel.ApplyProfileCommand}"
+                                    IsEnabled="{Binding $parent[Window].DataContext.ProcessProfilesPageViewModel.IsReadOnlyApplyProfileCommand, Converter={StaticResource InvertBooleanConverter}}"
+                                    Classes="primary-button"
+                                    MinWidth="70"
+                                    HorizontalContentAlignment="Center"
+                                    VerticalContentAlignment="Center"/>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+                
+                <Separator Background="{DynamicResource BorderBrush}"/>
+                
+                <!-- Process List ComboBox -->
+                <StackPanel Spacing="8">
+                    <TextBlock Text="{Binding Localization[ProcessList]}" 
+                               FontSize="14" 
+                               FontWeight="Medium"/>
+                    <ComboBox ItemsSource="{Binding ProcessProfilesPageViewModel.ProcessListItems}"
+                              SelectedItem="{Binding ProcessProfilesPageViewModel.ProcessListSelectedItem, Mode=TwoWay}"
+                              IsEnabled="{Binding $parent[Window].DataContext.ProcessProfilesPageViewModel.IsReadOnlyProcessListSelectedItem, Converter={StaticResource InvertBooleanConverter}}"
+                              HorizontalAlignment="Stretch">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding DisplayName}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    
+                    <!-- Process Buttons -->
+                    <Grid ColumnDefinitions="*,Auto">
+                        <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8" HorizontalAlignment="Right">
+                            <Button Content="{Binding Localization[Add]}" 
+                                    Command="{Binding ProcessProfilesPageViewModel.AddProcessCommand}"
+                                    IsEnabled="{Binding $parent[Window].DataContext.ProcessProfilesPageViewModel.IsReadOnlyAddProcessCommand, Converter={StaticResource InvertBooleanConverter}}"
+                                    Classes="small-button"
+                                    MinWidth="70"
+                                    HorizontalContentAlignment="Center"
+                                    VerticalContentAlignment="Center"/>
+                            <Button Content="{Binding Localization[Remove]}" 
+                                    Command="{Binding ProcessProfilesPageViewModel.RemoveProcessCommand}"
+                                    IsEnabled="{Binding $parent[Window].DataContext.ProcessProfilesPageViewModel.IsReadOnlyRemoveProcessCommand, Converter={StaticResource InvertBooleanConverter}}"
+                                    Classes="small-button"
+                                    MinWidth="70"
+                                    HorizontalContentAlignment="Center"
+                                    VerticalContentAlignment="Center"/>
+                            <Button Content="{Binding Localization[Edit]}" 
+                                    Command="{Binding ProcessProfilesPageViewModel.ApplyProcessCommand}"
+                                    IsEnabled="{Binding $parent[Window].DataContext.ProcessProfilesPageViewModel.IsReadOnlyApplyProcessCommand, Converter={StaticResource InvertBooleanConverter}}"
+                                    Classes="primary-button"
+                                    MinWidth="70"
+                                    HorizontalContentAlignment="Center"
+                                    VerticalContentAlignment="Center"/>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+                
+            </StackPanel>
+        </Border>
+
+
+        <!-- Keep Last Process Profile -->
+        <Border Classes="settings-card"
+                DataContext="{Binding $parent[Window].DataContext}">
+            <Grid ColumnDefinitions="*,Auto">
+                <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                    <TextBlock Text="{Binding Localization[KeepLastProcessProfile]}"
+                               FontWeight="Medium"
+                               FontSize="14"/>
+                    <TextBlock Text="{Binding Localization[KeepLastProcessProfileDescription]}"
+                               FontSize="12"
+                               Foreground="{DynamicResource SecondaryTextBrush}"/>
+                </StackPanel>
+                <ToggleSwitch Grid.Column="1"
+                              IsChecked="{Binding ProcessProfilesPageViewModel.KeepLastProcessProfile, Mode=TwoWay}"
+                              IsEnabled="{Binding $parent[Window].DataContext.ProcessProfilesPageViewModel.IsReadOnlyKeepLastProcessProfile, Converter={StaticResource InvertBooleanConverter}}"
+                              VerticalAlignment="Center"
+                              HorizontalAlignment="Right"
+                              OnContent=""
+                              OffContent=""/>
+            </Grid>
+        </Border>
+
+        <!-- Tip -->
+        <Border Classes="settings-card"
+                DataContext="{Binding $parent[Window].DataContext}">
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock Text="{Binding Localization[TdpLimitsAtStartNote]}" 
+                               FontSize="12"
+                               Foreground="{DynamicResource SecondaryTextBrush}"
+                               TextWrapping="Wrap"/>
+                </StackPanel>
+        </Border>
+
+        <!-- Help Section -->
+        <Border Classes="settings-card"
+                DataContext="{Binding $parent[Window].DataContext}"
+                Margin="0,16,0,0">
+            <Expander IsExpanded="False"
+                      HorizontalAlignment="Stretch"
+                      ExpandDirection="Down">
+                <Expander.Header>
+                    <TextBlock Text="{Binding Localization[Help]}"
+                               FontSize="14"
+                               FontWeight="Medium"/>
+                </Expander.Header>
+                <Expander.Content>
+                    <StackPanel Margin="0,12,0,8" Spacing="8">
+                        <TextBlock Text="{Binding Localization[ProcessProfilesHelp1]}"
+                                   FontSize="12"
+                                   TextWrapping="Wrap"
+                                   Foreground="{DynamicResource SystemBaseMediumColor}"/>
+                        <TextBlock Text="{Binding Localization[ProcessProfilesHelp2]}"
+                                   FontSize="12"
+                                   TextWrapping="Wrap"
+                                   Foreground="{DynamicResource SystemBaseMediumColor}"/>
+                        <TextBlock Text="{Binding Localization[ProcessProfilesHelp3]}"
+                                   FontSize="12"
+                                   TextWrapping="Wrap"
+                                   Foreground="{DynamicResource SystemBaseMediumColor}"/>
+                        <TextBlock Text="{Binding Localization[ProcessProfilesHelp4]}"
+                                   FontSize="12"
+                                   TextWrapping="Wrap"
+                                   Foreground="{DynamicResource SystemBaseMediumColor}"/>
+                        <TextBlock Text="{Binding Localization[ProcessProfilesHelp5]}"
+                                   FontSize="12"
+                                   TextWrapping="Wrap"
+                                   Foreground="{DynamicResource SystemBaseMediumColor}"/>
+                        <TextBlock Text="{Binding Localization[ProcessProfilesHelp6]}"
+                                   FontSize="12"
+                                   TextWrapping="Wrap"
+                                   Foreground="{DynamicResource SystemBaseMediumColor}"/>
+                        <TextBlock Text="{Binding Localization[ProcessProfilesHelp7]}"
+                                   FontSize="12"
+                                   TextWrapping="Wrap"
+                                   Foreground="{DynamicResource SystemBaseMediumColor}"/>
+                    </StackPanel>
+                </Expander.Content>
+            </Expander>
+        </Border>
+        
+    </StackPanel>
+</UserControl>

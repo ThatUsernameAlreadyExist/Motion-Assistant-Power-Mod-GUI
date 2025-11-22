@@ -1,0 +1,65 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net48</TargetFramework>
+    <Nullable>disable</Nullable>
+    <Platforms>AnyCPU;x64</Platforms>
+    <StartupObject>Windows11Settings.Program</StartupObject>
+    <ApplicationIcon>Resources\icon.ico</ApplicationIcon>
+    <Authors>https://github.com/ThatUsernameAlreadyExist/</Authors>
+    <Description>PowerMod GUI for Motion Assistant</Description>
+  </PropertyGroup>
+
+    <PropertyGroup>
+  <!-- Embed unmanaged DLLs (like libSkiaSharp.dll) -->
+  <CosturaIncludeNativeLibraries>true</CosturaIncludeNativeLibraries>
+  
+  <!-- Extract to temp folder at runtime (required for native libs) -->
+  <CosturaCreateTemporaryAssemblies>true</CosturaCreateTemporaryAssemblies>
+  
+  <Version>2.0.0</Version>
+  <PackageId></PackageId>
+  <Title></Title>
+  <Product>PowerMod GUI</Product>
+  <Copyright>https://github.com/ThatUsernameAlreadyExist/</Copyright>
+  <AssemblyVersion>2.0.0</AssemblyVersion>
+  <FileVersion>2.0.0</FileVersion>
+</PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="11.3.8" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.3.8" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.8" />
+    <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.8" />
+    <PackageReference Include="Avalonia.ReactiveUI" Version="11.3.8" />
+    <PackageReference Include="Costura.Fody" Version="6.0.0">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Fody" Version="6.9.3">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <AvaloniaResource Include="Resources\icon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\icon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Settings.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+</Project>

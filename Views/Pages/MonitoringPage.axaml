@@ -1,0 +1,354 @@
+<!-- Views/Pages/MonitoringPage.axaml -->
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="Windows11Settings.Views.Pages.MonitoringPage"
+             x:Name="MonitoringPageRoot">
+    
+    <StackPanel Margin="40,16">
+        
+        <TextBlock Text="{Binding $parent[Window].DataContext.Localization[MonitoringTitle]}" 
+                   Classes="settings-title"/>
+
+        <!-- Analog Gauges Section -->
+        <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="*,*,*">
+            
+            <!-- Package Power Gauge -->
+            <Border Grid.Row="0" Grid.Column="0" Padding="12">
+                <StackPanel HorizontalAlignment="Center" Spacing="0">
+                    <!-- Gauge -->
+                    <Canvas Width="140" Height="140">
+                        <!-- Background Arc -->
+                        <Path Stroke="{DynamicResource BorderBrush}" 
+                              StrokeThickness="12"
+                              Data="M 20,70 A 50,50 0 1 1 120,70"
+                              StrokeLineCap="Round"/>
+                        
+                        <!-- Dynamic Value Arc -->
+                        <Path Stroke="{Binding #MonitoringPageRoot.ViewModel.PackagePowerColor, Converter={StaticResource ColorToBrushConverter}}"
+                              StrokeThickness="12"
+                              Data="{Binding #MonitoringPageRoot.ViewModel.PackagePowerArc}"
+                              StrokeLineCap="Round"/>
+                        
+                        <!-- Center Value -->
+                        <Grid Width="140" Height="140">
+                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <TextBlock Text="{Binding #MonitoringPageRoot.ViewModel.PackagePowerFormatted}"
+                                           FontSize="26"
+                                           FontWeight="Bold"
+                                           HorizontalAlignment="Center"/>
+                                <TextBlock Text="{Binding $parent[Window].DataContext.Localization[Watt]}"
+                                           FontSize="14"
+                                           Foreground="{DynamicResource SecondaryTextBrush}"
+                                           HorizontalAlignment="Center"
+                                           Margin="0,8,0,0"/>
+                            </StackPanel>
+                        </Grid>
+                        
+                        <!-- Min/Max Labels -->
+                        <TextBlock Canvas.Left="12" Canvas.Top="75"
+                                   Text="0"
+                                   FontSize="11"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"/>
+                        <TextBlock Canvas.Right="5" Canvas.Top="75"
+                                   Text="{Binding #MonitoringPageRoot.ViewModel.PackagePowerMax, StringFormat={}{0:F0}}"
+                                   FontSize="11"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"/>
+                    </Canvas>
+                    
+                    <!-- Label -->
+                    <TextBlock Text="{Binding $parent[Window].DataContext.Localization[PackagePower]}"
+                               FontSize="14"
+                               FontWeight="Medium"
+                               TextAlignment="Center"
+                               Margin="0,-30,0,0"/>
+                </StackPanel>
+            </Border>
+            
+            <!-- CPU Temperature Gauge -->
+            <Border Grid.Row="0" Grid.Column="1" Padding="12">
+                <StackPanel HorizontalAlignment="Center" Spacing="0">
+                    <Canvas Width="140" Height="140">
+                        <Path Stroke="{DynamicResource BorderBrush}" 
+                              StrokeThickness="12"
+                              Data="M 20,70 A 50,50 0 1 1 120,70"
+                              StrokeLineCap="Round"/>
+                        
+                        <!-- Dynamic Value Arc -->
+                        <Path Stroke="{Binding #MonitoringPageRoot.ViewModel.CpuTemperatureColor, Converter={StaticResource ColorToBrushConverter}}"
+                              StrokeThickness="12"
+                              Data="{Binding #MonitoringPageRoot.ViewModel.CpuTemperatureArc}"
+                              StrokeLineCap="Round"/>
+                        
+                        <Grid Width="140" Height="140">
+                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <TextBlock Text="{Binding #MonitoringPageRoot.ViewModel.CpuTemperature, StringFormat={}{0:F0}}"
+                                           FontSize="26"
+                                           FontWeight="Bold"
+                                           HorizontalAlignment="Center"/>
+                                <TextBlock Text="°C"
+                                           FontSize="14"
+                                           Foreground="{DynamicResource SecondaryTextBrush}"
+                                           HorizontalAlignment="Center"
+                                           Margin="0,8,0,0"/>
+                            </StackPanel>
+                        </Grid>
+                        
+                        <TextBlock Canvas.Left="12" Canvas.Top="75"
+                                   Text="0"
+                                   FontSize="11"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"/>
+                        <TextBlock Canvas.Right="0" Canvas.Top="75"
+                                   Text="{Binding #MonitoringPageRoot.ViewModel.CpuTemperatureMax, StringFormat={}{0:F0}}"
+                                   FontSize="11"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"/>
+                    </Canvas>
+                    
+                    <TextBlock Text="{Binding $parent[Window].DataContext.Localization[CPUTemperature]}"
+                               FontSize="14"
+                               FontWeight="Medium"
+                               TextAlignment="Center"
+                               Margin="0,-30,0,0"/>
+                </StackPanel>
+            </Border>
+            
+            <!-- CPU Usage Gauge -->
+            <Border Grid.Row="0" Grid.Column="2" Padding="12">
+                <StackPanel HorizontalAlignment="Center" Spacing="0">
+                    <Canvas Width="140" Height="140">
+                        <Path Stroke="{DynamicResource BorderBrush}" 
+                              StrokeThickness="12"
+                              Data="M 20,70 A 50,50 0 1 1 120,70"
+                              StrokeLineCap="Round"/>
+                        
+                        <!-- Dynamic Value Arc -->
+                        <Path Stroke="{Binding #MonitoringPageRoot.ViewModel.CpuUsageColor, Converter={StaticResource ColorToBrushConverter}}"
+                              StrokeThickness="12"
+                              Data="{Binding #MonitoringPageRoot.ViewModel.CpuUsageArc}"
+                              StrokeLineCap="Round"/>
+                        
+                        <Grid Width="140" Height="140">
+                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <TextBlock Text="{Binding #MonitoringPageRoot.ViewModel.CpuUsage, StringFormat={}{0:F0}}"
+                                           FontSize="26"
+                                           FontWeight="Bold"
+                                           HorizontalAlignment="Center"/>
+                                <TextBlock Text="%"
+                                           FontSize="14"
+                                           Foreground="{DynamicResource SecondaryTextBrush}"
+                                           HorizontalAlignment="Center"
+                                           Margin="0,8,0,0"/>
+                            </StackPanel>
+                        </Grid>
+                        
+                        <TextBlock Canvas.Left="12" Canvas.Top="75"
+                                   Text="0"
+                                   FontSize="11"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"/>
+                        <TextBlock Canvas.Right="0" Canvas.Top="75"
+                                   Text="100"
+                                   FontSize="11"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"/>
+                    </Canvas>
+                    
+                    <TextBlock Text="{Binding $parent[Window].DataContext.Localization[CPUUsage]}"
+                               FontSize="14"
+                               FontWeight="Medium"
+                               TextAlignment="Center"
+                               Margin="0,-30,0,0"/>
+                </StackPanel>
+            </Border>
+            
+            <!-- GPU Usage Gauge -->
+            <Border Grid.Row="1" Grid.Column="0" Padding="12">
+                <StackPanel HorizontalAlignment="Center" Spacing="0">
+                    <Canvas Width="140" Height="140">
+                        <Path Stroke="{DynamicResource BorderBrush}" 
+                              StrokeThickness="12"
+                              Data="M 20,70 A 50,50 0 1 1 120,70"
+                              StrokeLineCap="Round"/>
+                        
+                        <!-- Dynamic Value Arc -->
+                        <Path Stroke="{Binding #MonitoringPageRoot.ViewModel.GpuUsageColor, Converter={StaticResource ColorToBrushConverter}}" 
+                              StrokeThickness="12"
+                              Data="{Binding #MonitoringPageRoot.ViewModel.GpuUsageArc}"
+                              StrokeLineCap="Round"/>
+                        
+                        <Grid Width="140" Height="140">
+                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <TextBlock Text="{Binding #MonitoringPageRoot.ViewModel.GpuUsage, StringFormat={}{0:F0}}"
+                                           FontSize="26"
+                                           FontWeight="Bold"
+                                           HorizontalAlignment="Center"/>
+                                <TextBlock Text="%"
+                                           FontSize="14"
+                                           Foreground="{DynamicResource SecondaryTextBrush}"
+                                           HorizontalAlignment="Center"
+                                           Margin="0,8,0,0"/>
+                            </StackPanel>
+                        </Grid>
+                        
+                        <TextBlock Canvas.Left="12" Canvas.Top="75"
+                                   Text="0"
+                                   FontSize="11"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"/>
+                        <TextBlock Canvas.Right="0" Canvas.Top="75"
+                                   Text="100"
+                                   FontSize="11"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"/>
+                    </Canvas>
+                    
+                    <TextBlock Text="{Binding $parent[Window].DataContext.Localization[GPUUsage]}"
+                               FontSize="14"
+                               FontWeight="Medium"
+                               TextAlignment="Center"
+                               Margin="0,-30,0,0"/>
+                </StackPanel>
+            </Border>
+            
+            <!-- Fan Speed Gauge -->
+            <Border Grid.Row="1" Grid.Column="1" Padding="12">
+                <StackPanel HorizontalAlignment="Center" Spacing="0">
+                    <Canvas Width="140" Height="140">
+                        <Path Stroke="{DynamicResource BorderBrush}" 
+                              StrokeThickness="12"
+                              Data="M 20,70 A 50,50 0 1 1 120,70"
+                              StrokeLineCap="Round"/>
+                        
+                        <!-- Dynamic Value Arc -->
+                        <Path Stroke="{Binding #MonitoringPageRoot.ViewModel.FanSpeedColor, Converter={StaticResource ColorToBrushConverter}}"
+                              StrokeThickness="12"
+                              Data="{Binding #MonitoringPageRoot.ViewModel.FanSpeedArc}"
+                              StrokeLineCap="Round"/>
+                        
+                        <Grid Width="140" Height="140">
+                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <TextBlock Text="{Binding #MonitoringPageRoot.ViewModel.FanSpeed, StringFormat={}{0:F0}}"
+                                           FontSize="26"
+                                           FontWeight="Bold"
+                                           HorizontalAlignment="Center"/>
+                                <TextBlock Text="RPM"
+                                           FontSize="12"
+                                           Foreground="{DynamicResource SecondaryTextBrush}"
+                                           HorizontalAlignment="Center"
+                                           Margin="0,8,0,0"/>
+                            </StackPanel>
+                        </Grid>
+                        
+                        <TextBlock Canvas.Left="12" Canvas.Top="75"
+                                   Text="0"
+                                   FontSize="11"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"/>
+                        <TextBlock Canvas.Right="-10" Canvas.Top="75"
+                                   Text="{Binding #MonitoringPageRoot.ViewModel.FanSpeedMax, StringFormat={}{0:F0}}"
+                                   FontSize="11"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"/>
+                    </Canvas>
+                    
+                    <TextBlock Text="{Binding $parent[Window].DataContext.Localization[FanSpeed]}"
+                               FontSize="14"
+                               FontWeight="Medium"
+                               TextAlignment="Center"
+                               Margin="0,-30,0,0"/>
+                </StackPanel>
+            </Border>
+            
+            <!-- Battery Charge Gauge -->
+            <Border Grid.Row="1" Grid.Column="2" Padding="12">
+                <StackPanel HorizontalAlignment="Center" Spacing="0">
+                    <Canvas Width="140" Height="140">
+                        <Path Stroke="{DynamicResource BorderBrush}" 
+                              StrokeThickness="12"
+                              Data="M 20,70 A 50,50 0 1 1 120,70"
+                              StrokeLineCap="Round"/>
+                        
+                        <!-- Dynamic Value Arc -->
+                        <Path Stroke="{Binding #MonitoringPageRoot.ViewModel.BatteryPowerColor, Converter={StaticResource ColorToBrushConverter}}"
+                              StrokeThickness="12"
+                              Data="{Binding #MonitoringPageRoot.ViewModel.BatteryPowerArc}"
+                              StrokeLineCap="Round"/>
+                        
+                        <Grid Width="140" Height="140">
+                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <TextBlock Text="{Binding #MonitoringPageRoot.ViewModel.BatteryPowerFormatted}"
+                                           FontSize="26"
+                                           FontWeight="Bold"
+                                           HorizontalAlignment="Center"/>
+                                <TextBlock Text="{Binding $parent[Window].DataContext.Localization[Watt]}"
+                                           FontSize="14"
+                                           Foreground="{DynamicResource SecondaryTextBrush}"
+                                           HorizontalAlignment="Center"
+                                           Margin="0,8,0,0"/>
+                            </StackPanel>
+                        </Grid>
+                        
+                        <TextBlock Canvas.Left="12" Canvas.Top="75"
+                                   Text="0"
+                                   FontSize="11"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"/>
+                        <TextBlock Canvas.Right="5" Canvas.Top="75"
+                                   Text="{Binding #MonitoringPageRoot.ViewModel.BatteryPowerMax, StringFormat={}{0:F0}}"
+                                   FontSize="11"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"/>
+                    </Canvas>
+                    
+                    <TextBlock Text="{Binding $parent[Window].DataContext.Localization[BatteryChargeRate]}"
+                               FontSize="14"
+                               FontWeight="Medium"
+                               TextAlignment="Center"
+                               Margin="0,-30,0,0"/>
+                </StackPanel>
+            </Border>
+            
+        </Grid>
+
+        <!-- Read-only Information Section -->
+        <Border Classes="settings-card" Margin="0,24,0,0">
+            <Grid RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="Auto,*">
+                            
+                <!-- CPU Boost -->
+                <TextBlock Grid.Row="0" Grid.Column="0"
+                           Text="{Binding $parent[Window].DataContext.Localization[CPUBoost]}"
+                           FontSize="12"
+                           VerticalAlignment="Center"
+                           Margin="0,4"/>
+                <TextBlock Grid.Row="0" Grid.Column="1"
+                           Text="{Binding #MonitoringPageRoot.ViewModel.CPUBoostTranslated}"
+                           FontSize="12"
+                           Foreground="{Binding #MonitoringPageRoot.ViewModel.CPUBoostColor, Converter={StaticResource ColorToBrushConverter}}"
+                           FontWeight="SemiBold"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Center"
+                           Margin="0,4"/>
+                <!-- TDP Limit -->
+                <TextBlock Grid.Row="1" Grid.Column="0"
+                           Text="{Binding $parent[Window].DataContext.Localization[TDPLimit]}"
+                           FontSize="12"
+                           VerticalAlignment="Center"
+                           Margin="0,4"/>
+                <TextBlock Grid.Row="1" Grid.Column="1"
+                           Text="{Binding #MonitoringPageRoot.ViewModel.TDPLimit}"
+                           FontSize="12"
+                           Foreground="{DynamicResource SecondaryTextBrush}"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Center"
+                           Margin="0,4"/>
+                
+                <!-- GPU Lock -->
+                <TextBlock Grid.Row="2" Grid.Column="0"
+                           Text="{Binding $parent[Window].DataContext.Localization[GPULock]}"
+                           FontSize="12"
+                           VerticalAlignment="Center"
+                           Margin="0,4"/>
+                <TextBlock Grid.Row="2" Grid.Column="1"
+                           Text="{Binding #MonitoringPageRoot.ViewModel.GPULockClock}"
+                           FontSize="12"
+                           Foreground="{DynamicResource SecondaryTextBrush}"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Center"
+                           Margin="0,4"/>
+
+            </Grid>
+        </Border>
+
+    </StackPanel>
+</UserControl>

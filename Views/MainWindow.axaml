@@ -1,0 +1,165 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:Windows11Settings.ViewModels"
+        xmlns:views="using:Windows11Settings.Views.Pages"
+        x:Class="Windows11Settings.Views.MainWindow"
+        Icon="/Resources/icon.ico"
+        Width="1100"
+        Height="600"
+        MinWidth="800"
+        MinHeight="550"
+        WindowStartupLocation="CenterScreen">
+
+    <Grid ColumnDefinitions="Auto,*">
+        
+        <!-- Left Navigation Panel -->
+        <Border Grid.Column="0" 
+                Width="{Binding MenuWidth}"
+                Classes="sidebar"
+                BorderThickness="0,0,1,0"
+                ClipToBounds="True">
+            <Border.Transitions>
+                <Transitions>
+                    <DoubleTransition Property="Width" Duration="0:0:0.45" Easing="CubicEaseInOut"/>
+                </Transitions>
+            </Border.Transitions>
+            
+            <Grid RowDefinitions="Auto,*">
+                
+                <!-- Header -->
+                <StackPanel Grid.Row="0" Margin="12,16,12,16">
+                    
+                    <!-- Top Bar with Hamburger and Title -->
+                    <Grid ColumnDefinitions="Auto,*" Margin="0,0,0,12">
+                        <!-- Hamburger Button -->
+                        <Button Grid.Column="0"
+                                Classes="hamburger-button"
+                                Command="{Binding ToggleMenuCommand}"
+                                ToolTip.Tip="{Binding Localization[ToggleNavigation]}"
+                                VerticalAlignment="Center">
+                            <Panel Width="16" Height="16">
+                                <Path Classes="hamburger-icon"
+                                      Data="M 0,2 L 16,2 M 0,8 L 16,8 M 0,14 L 16,14" 
+                                      StrokeThickness="2"/>
+                            </Panel>
+                        </Button>
+                        
+                        <!-- PowerMod Title -->
+                        <TextBlock Grid.Column="1"
+                                   Text="{Binding Localization[Settings]}" 
+                                   FontSize="24" 
+                                   FontWeight="SemiBold"
+                                   Margin="12,0,0,0"
+                                   VerticalAlignment="Center"
+                                   IsVisible="{Binding IsMenuExpanded}"/>
+                    </Grid>
+                </StackPanel>
+
+                <!-- Navigation Menu -->
+                <ScrollViewer Grid.Row="1" Margin="8,0,8,16">
+                    <ItemsControl ItemsSource="{Binding MenuItems}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Panel>
+                                    <!-- Expanded Menu Item -->
+                                    <Button Classes="nav-button"
+                                            Classes.selected="{Binding IsSelected}"
+                                            Command="{Binding $parent[Window].DataContext.SelectPageCommand}"
+                                            CommandParameter="{Binding PageKey}"
+                                            IsVisible="{Binding $parent[Window].DataContext.IsMenuExpanded}"
+                                            ToolTip.Tip="{Binding Title}">
+                                        <StackPanel Orientation="Horizontal" Spacing="8">
+                                            <TextBlock Classes="nav-icon" 
+                                                       Text="{Binding Icon}" 
+                                                       FontSize="16"
+                                                       VerticalAlignment="Center"/>
+                                            <TextBlock Text="{Binding Title}" 
+                                                       VerticalAlignment="Center"
+                                                       TextTrimming="CharacterEllipsis"/>
+                                            <Border Background="Red" 
+                                                    CornerRadius="10" 
+                                                    MinWidth="18" 
+                                                    Height="18" 
+                                                    IsVisible="{Binding HasUnsavedChanges}"
+                                                    VerticalAlignment="Center">
+                                                <TextBlock Text="!" 
+                                                           FontSize="14" 
+                                                           FontWeight="Bold" 
+                                                           Foreground="White"
+                                                           HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center"/>
+                                            </Border>
+                                        </StackPanel>
+                                    </Button>
+                                    
+                                    <!-- Collapsed Menu Item (Icon Only) -->
+                                    <Button Classes="nav-button nav-button-collapsed"
+                                            Classes.selected="{Binding IsSelected}"
+                                            Command="{Binding $parent[Window].DataContext.SelectPageCommand}"
+                                            CommandParameter="{Binding PageKey}"
+                                            IsVisible="{Binding !$parent[Window].DataContext.IsMenuExpanded}"
+                                            ToolTip.Tip="{Binding Title}"
+                                            HorizontalAlignment="Center">
+                                        <Grid>
+                                            <TextBlock Classes="nav-icon"
+                                                       Text="{Binding Icon}" 
+                                                       FontSize="20"
+                                                       HorizontalAlignment="Center"
+                                                       VerticalAlignment="Center"/>
+                                            <Border Background="Red" 
+                                                    CornerRadius="10" 
+                                                    MinWidth="14" 
+                                                    Height="14" 
+                                                    IsVisible="{Binding HasUnsavedChanges}"
+                                                    HorizontalAlignment="Right"
+                                                    VerticalAlignment="Top"
+                                                    Margin="0,-2,-2,0">
+                                                <TextBlock Text="!" 
+                                                           FontSize="10" 
+                                                           FontWeight="Bold" 
+                                                           Foreground="White"
+                                                           HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center"/>
+                                            </Border>
+                                        </Grid>
+                                    </Button>
+                                </Panel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+
+            </Grid>
+        </Border>
+
+        <!-- Main Content Area -->
+        <ScrollViewer Grid.Column="1">
+            <Panel>
+                <!-- Monitoring Page -->
+                <views:MonitoringPage IsVisible="{Binding SelectedPage, Converter={StaticResource EqualsConverter}, ConverterParameter=Monitoring}"/>
+                
+                <!-- CPU Page -->
+                <views:CPUPage IsVisible="{Binding SelectedPage, Converter={StaticResource EqualsConverter}, ConverterParameter=CPU}"/>
+                
+                <!-- GPU Page -->
+                <views:GPUPage IsVisible="{Binding SelectedPage, Converter={StaticResource EqualsConverter}, ConverterParameter=GPU}"/>
+                
+                <!-- Fan Page -->
+                <views:FanPage IsVisible="{Binding SelectedPage, Converter={StaticResource EqualsConverter}, ConverterParameter=Fan}"/>
+                
+                <!-- Gyroscope Page -->
+                <views:GyroscopePage IsVisible="{Binding SelectedPage, Converter={StaticResource EqualsConverter}, ConverterParameter=Gyroscope}"/>
+                
+                <!-- OSD Overlay Page -->
+                <views:OSDOverlayPage IsVisible="{Binding SelectedPage, Converter={StaticResource EqualsConverter}, ConverterParameter=OSDOverlay}"/>
+                
+                <!-- Process Profiles Page -->
+                <views:ProcessProfilesPage IsVisible="{Binding SelectedPage, Converter={StaticResource EqualsConverter}, ConverterParameter=ProcessProfiles}"/>
+                
+                <!-- Advanced Page -->
+                <views:AdvancedPage IsVisible="{Binding SelectedPage, Converter={StaticResource EqualsConverter}, ConverterParameter=Advanced}"/>
+            </Panel>
+        </ScrollViewer>
+
+    </Grid>
+</Window>

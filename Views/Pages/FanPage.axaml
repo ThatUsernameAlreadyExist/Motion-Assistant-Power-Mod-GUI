@@ -1,0 +1,324 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="using:Windows11Settings.Converters"
+             xmlns:helpers="using:Windows11Settings.Helpers"
+             x:Class="Windows11Settings.Views.Pages.FanPage"
+             x:Name="FanPageControl">
+
+    <UserControl.Resources>
+        <converters:InvertBooleanConverter x:Key="InvertBooleanConverter"/>
+    </UserControl.Resources>
+    
+    <StackPanel Margin="40,16">
+        
+        <DockPanel>
+            <TextBlock Text="{Binding $parent[Window].DataContext.Localization[FanControl]}" 
+                       Classes="settings-title"
+                       DockPanel.Dock="Left"/>
+        </DockPanel>
+
+        <!-- Enable Fan Speed Control Toggle -->
+        <Border Classes="settings-card"
+                DataContext="{Binding $parent[Window].DataContext}">
+            <StackPanel Spacing="16">
+                
+                <!-- Enable Fan Speed Control Toggle -->
+                <Grid ColumnDefinitions="*,Auto">
+                    <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding Localization[EnableFanSpeedControl]}" 
+                                   FontWeight="Medium"
+                                   FontSize="14"/>
+                        <TextBlock Text="{Binding Localization[EnableFanSpeedControlDescription]}" 
+                                   FontSize="12"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"/>
+                    </StackPanel>
+                    <ToggleSwitch Grid.Column="1"
+                                  IsChecked="{Binding FanPageViewModel.EnableFanSpeedControlEnabled}"
+                                  IsEnabled="{Binding $parent[Window].DataContext.FanPageViewModel.IsReadOnlyEnableFanSpeedControlEnabled, Converter={StaticResource InvertBooleanConverter}}"
+                                  VerticalAlignment="Center"
+                                  HorizontalAlignment="Right"
+                                  OnContent=""
+                                  OffContent=""/>
+                </Grid>
+                
+            </StackPanel>
+        </Border>
+
+        <!-- Fan Speed Control Panel -->
+        <Border Classes="settings-card"
+                IsVisible="{Binding FanPageViewModel.EnableFanSpeedControlEnabled}"
+                DataContext="{Binding $parent[Window].DataContext}">
+            <StackPanel Spacing="16">
+                
+                <!-- Fan Speed Preset ComboBox -->
+                <Grid ColumnDefinitions="Auto,*">
+                    <StackPanel Grid.Column="0" Spacing="2" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding Localization[FanSpeedPreset]}" 
+                                   FontSize="14" 
+                                   FontWeight="Medium"/>
+                        <TextBlock Text="{Binding Localization[FanSpeedPresetDescription]}" 
+                                   FontSize="12" 
+                                   Foreground="{DynamicResource SecondaryTextBrush}"/>
+                    </StackPanel>
+                    <ComboBox Grid.Column="1"
+                              ItemsSource="{Binding FanPageViewModel.FanSpeedPresetItems}"
+                              SelectedItem="{Binding FanPageViewModel.FanSpeedPresetSelectedItem}"
+                              IsEnabled="{Binding $parent[Window].DataContext.FanPageViewModel.IsReadOnlyFanSpeedPresetSelectedItem, Converter={StaticResource InvertBooleanConverter}}"
+                              HorizontalAlignment="Right"
+                              Width="210"
+                              VerticalAlignment="Center"
+                              Margin="16,0,0,0">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding DisplayName}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </Grid>
+                
+                <Separator Background="{DynamicResource BorderBrush}"/>
+                
+                <!-- Fan Speed Control Type ComboBox -->
+                <Grid ColumnDefinitions="Auto,*">
+                    <StackPanel Grid.Column="0" Spacing="2" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding Localization[FanSpeedControlType]}" 
+                                   FontSize="14" 
+                                   FontWeight="Medium"/>
+                        <TextBlock Text="{Binding Localization[FanSpeedControlTypeDescription]}" 
+                                   FontSize="12" 
+                                   Foreground="{DynamicResource SecondaryTextBrush}"/>
+                    </StackPanel>
+                    <ComboBox Grid.Column="1"
+                              ItemsSource="{Binding FanPageViewModel.FanSpeedControlTypeItems}"
+                              SelectedItem="{Binding FanPageViewModel.FanSpeedControlTypeSelectedItem}"
+                              IsEnabled="{Binding $parent[Window].DataContext.FanPageViewModel.IsReadOnlyFanSpeedControlTypeSelectedItem, Converter={StaticResource InvertBooleanConverter}}"
+                              HorizontalAlignment="Right"
+                              Width="210"
+                              VerticalAlignment="Center"
+                              Margin="16,0,0,0">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding DisplayName}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </Grid>
+                
+            </StackPanel>
+        </Border>
+
+        <!-- Mode-specific controls (only visible when fan control is enabled) -->
+        <StackPanel IsVisible="{Binding FanPageViewModel.EnableFanSpeedControlEnabled}"
+                    DataContext="{Binding $parent[Window].DataContext}">
+
+        <!-- Fixed Speed Mode -->
+        <Border Classes="settings-card"
+                IsVisible="{Binding FanPageViewModel.IsFixedSpeedMode}">
+            <StackPanel Spacing="16">
+                
+                <!-- Fan Speed Slider -->
+                <StackPanel Spacing="8">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <StackPanel Grid.Column="0" Spacing="2">
+                            <TextBlock Text="{Binding Localization[FanSpeed]}" 
+                                       FontSize="14"
+                                       FontWeight="Medium"/>
+                            <TextBlock Text="{Binding Localization[FanSpeedDescription]}" 
+                                       FontSize="12"
+                                       Foreground="{DynamicResource SecondaryTextBrush}"/>
+                        </StackPanel>
+                        <TextBlock Grid.Column="1" 
+                                   Text="{Binding FanPageViewModel.FanSpeedValue, StringFormat='{}{0:0}%'}" 
+                                   FontSize="14" 
+                                   FontWeight="SemiBold"
+                                   VerticalAlignment="Center"/>
+                    </Grid>
+                    
+                    <Slider Minimum="{Binding FanPageViewModel.FanSpeedMinValue}" 
+                            Maximum="{Binding FanPageViewModel.FanSpeedMaxValue}" 
+                            Value="{Binding FanPageViewModel.FanSpeedValue, Mode=TwoWay}"
+                            IsEnabled="{Binding $parent[Window].DataContext.FanPageViewModel.IsReadOnlyFanSpeedValue, Converter={StaticResource InvertBooleanConverter}}"
+                            TickFrequency="1" 
+                            IsSnapToTickEnabled="True"
+                            PointerCaptureLost="OnFanSpeedDragCompleted"/>
+                </StackPanel>
+                
+            </StackPanel>
+        </Border>
+
+        <!-- Speed Curve Mode -->
+        <Border Classes="settings-card"
+                IsVisible="{Binding FanPageViewModel.IsSpeedCurveMode}"
+                DataContext="{Binding $parent[Window].DataContext}">
+            <StackPanel Spacing="16">
+                
+                <!-- Speed Curve Editor -->
+                <StackPanel Spacing="12">
+                    <TextBlock Text="{Binding Localization[SpeedCurveEditor]}" 
+                               FontSize="14"
+                               FontWeight="Medium"/>
+                    <TextBlock Text="{Binding Localization[SpeedCurveEditorDescription]}" 
+                               FontSize="12"
+                               Foreground="{DynamicResource SecondaryTextBrush}"
+                               Margin="0,0,0,8"/>
+                    
+                    <!-- Curve Visualization with Vertical Sliders -->
+                    <Grid ColumnDefinitions="*" RowDefinitions="*,40" Height="220">
+                        
+                        <!-- Chart area with vertical sliders and curve -->
+                        <Grid Grid.Row="0" Grid.Column="0" x:Name="ChartArea"
+                              PropertyChanged="OnChartAreaSizeChanged">
+                            
+                            <!-- Background Canvas for curve line -->
+                            <Canvas x:Name="CurveCanvas" Background="Transparent"/>
+                            
+                            <!-- Grid for vertical sliders -->
+                            <Grid ColumnDefinitions="*,*,*,*" Margin="20,10,20,10">
+                                
+                                <!-- Slider for 45°C -->
+                                <Slider Grid.Column="0"
+                                        Orientation="Vertical"
+                                        Minimum="{Binding FanPageViewModel.FanSpeedMinValue}" Maximum="{Binding FanPageViewModel.FanSpeedMaxValue}"
+                                        Value="{Binding FanPageViewModel.Temperature45Speed, Mode=TwoWay}"
+                                        IsEnabled="{Binding $parent[Window].DataContext.FanPageViewModel.IsReadOnlyTemperature45Speed, Converter={StaticResource InvertBooleanConverter}}"
+                                        VerticalAlignment="Stretch"
+                                        HorizontalAlignment="Center"
+                                        Foreground="#0078D4"
+                                        PropertyChanged="OnSliderValueChanged"
+                                        PointerCaptureLost="OnTemperature45DragCompleted"/>
+                                
+                                <!-- Slider for 60°C -->
+                                <Slider Grid.Column="1"
+                                        Orientation="Vertical"
+                                        Minimum="{Binding FanPageViewModel.FanSpeedMinValue}" Maximum="{Binding FanPageViewModel.FanSpeedMaxValue}"
+                                        Value="{Binding FanPageViewModel.Temperature60Speed, Mode=TwoWay}"
+                                        IsEnabled="{Binding $parent[Window].DataContext.FanPageViewModel.IsReadOnlyTemperature60Speed, Converter={StaticResource InvertBooleanConverter}}"
+                                        VerticalAlignment="Stretch"
+                                        HorizontalAlignment="Center"
+                                        Foreground="#0078D4"
+                                        PropertyChanged="OnSliderValueChanged"
+                                        PointerCaptureLost="OnTemperature60DragCompleted"/>
+                                
+                                <!-- Slider for 70°C -->
+                                <Slider Grid.Column="2"
+                                        Orientation="Vertical"
+                                        Minimum="{Binding FanPageViewModel.FanSpeedMinValue}" Maximum="{Binding FanPageViewModel.FanSpeedMaxValue}"
+                                        Value="{Binding FanPageViewModel.Temperature70Speed, Mode=TwoWay}"
+                                        IsEnabled="{Binding $parent[Window].DataContext.FanPageViewModel.IsReadOnlyTemperature70Speed, Converter={StaticResource InvertBooleanConverter}}"
+                                        VerticalAlignment="Stretch"
+                                        HorizontalAlignment="Center"
+                                        Foreground="#0078D4"
+                                        PropertyChanged="OnSliderValueChanged"
+                                        PointerCaptureLost="OnTemperature70DragCompleted"/>
+                                
+                                <!-- Slider for 80°C -->
+                                <Slider Grid.Column="3"
+                                        Orientation="Vertical"
+                                        Minimum="{Binding FanPageViewModel.FanSpeedMinValue}" Maximum="{Binding FanPageViewModel.FanSpeedMaxValue}"
+                                        Value="{Binding FanPageViewModel.Temperature80Speed, Mode=TwoWay}"
+                                        IsEnabled="{Binding $parent[Window].DataContext.FanPageViewModel.IsReadOnlyTemperature80Speed, Converter={StaticResource InvertBooleanConverter}}"
+                                        VerticalAlignment="Stretch"
+                                        HorizontalAlignment="Center"
+                                        Foreground="#0078D4"
+                                        PropertyChanged="OnSliderValueChanged"
+                                        PointerCaptureLost="OnTemperature80DragCompleted"/>
+                                
+                            </Grid>
+                        </Grid>
+                        
+                        <!-- X-axis labels (Temperature) -->
+                        <Grid Grid.Row="1" Grid.Column="0" ColumnDefinitions="*,*,*,*" Margin="20,0">
+                            <TextBlock Grid.Column="0" 
+                                       Text="{Binding Localization[Temperature45]}"
+                                       FontSize="11"
+                                       FontWeight="Medium"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+                            <TextBlock Grid.Column="1" 
+                                       Text="{Binding Localization[Temperature60]}"
+                                       FontSize="11"
+                                       FontWeight="Medium"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+                            <TextBlock Grid.Column="2" 
+                                       Text="{Binding Localization[Temperature70]}"
+                                       FontSize="11"
+                                       FontWeight="Medium"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+                            <TextBlock Grid.Column="3" 
+                                       Text="{Binding Localization[Temperature80]}"
+                                       FontSize="11"
+                                       FontWeight="Medium"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+                        </Grid>
+                        
+                    </Grid>
+                    
+                    <!-- Value indicators -->
+                    <Grid ColumnDefinitions="*,*,*,*" Margin="20,0,20,0">
+                        <TextBlock Grid.Column="0"
+                                   Text="{Binding FanPageViewModel.Temperature45Speed, StringFormat='{}{0:0}%'}"
+                                   FontSize="12"
+                                   FontWeight="SemiBold"
+                                   HorizontalAlignment="Center"
+                                   Foreground="#0078D4"/>
+                        <TextBlock Grid.Column="1"
+                                   Text="{Binding FanPageViewModel.Temperature60Speed, StringFormat='{}{0:0}%'}"
+                                   FontSize="12"
+                                   FontWeight="SemiBold"
+                                   HorizontalAlignment="Center"
+                                   Foreground="#0078D4"/>
+                        <TextBlock Grid.Column="2"
+                                   Text="{Binding FanPageViewModel.Temperature70Speed, StringFormat='{}{0:0}%'}"
+                                   FontSize="12"
+                                   FontWeight="SemiBold"
+                                   HorizontalAlignment="Center"
+                                   Foreground="#0078D4"/>
+                        <TextBlock Grid.Column="3"
+                                   Text="{Binding FanPageViewModel.Temperature80Speed, StringFormat='{}{0:0}%'}"
+                                   FontSize="12"
+                                   FontWeight="SemiBold"
+                                   HorizontalAlignment="Center"
+                                   Foreground="#0078D4"/>
+                    </Grid>
+                    
+                </StackPanel>
+                
+                <Separator Background="{DynamicResource BorderBrush}"/>
+                
+                <!-- Delay Timeout Slider -->
+                <StackPanel Spacing="8">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <StackPanel Grid.Column="0" Spacing="2">
+                            <TextBlock Text="{Binding Localization[DelayTimeout]}" 
+                                       FontSize="14"
+                                       FontWeight="Medium"/>
+                            <TextBlock Text="{Binding Localization[DelayTimeoutDescription]}" 
+                                       FontSize="12"
+                                       Foreground="{DynamicResource SecondaryTextBrush}"/>
+                        </StackPanel>
+                        <TextBlock Grid.Column="1" 
+                                   Text="{Binding FanPageViewModel.DelayTimeoutValue, StringFormat='{}{0:0}'}" 
+                                   FontSize="14" 
+                                   FontWeight="SemiBold"
+                                   VerticalAlignment="Center"/>
+                    </Grid>
+                    
+                    <Slider Minimum="1" Maximum="30" 
+                            Value="{Binding FanPageViewModel.DelayTimeoutValue, Mode=TwoWay}"
+                            IsEnabled="{Binding $parent[Window].DataContext.FanPageViewModel.IsReadOnlyDelayTimeoutValue, Converter={StaticResource InvertBooleanConverter}}"
+                            TickFrequency="1" 
+                            IsSnapToTickEnabled="True"
+                            PointerCaptureLost="OnDelayTimeoutDragCompleted"/>
+                </StackPanel>
+                
+                <Separator Background="{DynamicResource BorderBrush}"/>                
+            </StackPanel>
+        </Border>
+        
+        </StackPanel><!-- End of mode-specific controls wrapper -->
+        
+    </StackPanel>
+</UserControl>

@@ -1,0 +1,114 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:helpers="using:Windows11Settings.Helpers"
+             x:Class="Windows11Settings.Views.Pages.GyroscopePage">
+    
+    <StackPanel Margin="40,16">
+        
+        <TextBlock Text="{Binding $parent[Window].DataContext.Localization[GyroscopeSettings]}" 
+                   Classes="settings-title"/>
+
+        <!-- Gyroscope Controls -->
+        <Border Classes="settings-card"
+                DataContext="{Binding $parent[Window].DataContext}">
+            <StackPanel Spacing="16">
+                
+                <!-- Enable Gyroscope -->
+                <Grid ColumnDefinitions="*,Auto">
+                    <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding Localization[EnableGyroscope]}" 
+                                   FontWeight="Medium"
+                                   FontSize="14"/>
+                        <TextBlock Text="{Binding Localization[EnableGyroscopeDescription]}" 
+                                   FontSize="12"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"/>
+                    </StackPanel>
+                    <ToggleSwitch Grid.Column="1"
+                                  IsChecked="{Binding GyroscopePageViewModel.EnableGyroscope, Mode=TwoWay}"
+                                  IsEnabled="{Binding $parent[Window].DataContext.GyroscopePageViewModel.IsReadOnlyEnableGyroscope, Converter={StaticResource InvertBooleanConverter}}"
+                                  VerticalAlignment="Center"
+                                  HorizontalAlignment="Right"
+                                  OnContent=""
+                                  OffContent=""/>
+                </Grid>
+                
+        <!-- Gyroscope Activation Button -->
+                <Separator Background="{DynamicResource BorderBrush}"
+                           IsVisible="{Binding GyroscopePageViewModel.IsGyroscopeActivationButtonVisible}"/>
+                
+                <Grid ColumnDefinitions="*,Auto"
+                      IsVisible="{Binding GyroscopePageViewModel.IsGyroscopeActivationButtonVisible}">
+                    <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding Localization[GyroscopeActivationButton]}" 
+                                   FontWeight="Medium"
+                                   FontSize="14"/>
+                        <TextBlock Text="{Binding Localization[GyroscopeActivationButtonTip]}" 
+                                   FontSize="12"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"/>
+                    </StackPanel>
+                    <ComboBox Grid.Column="1"
+                              ItemsSource="{Binding GyroscopePageViewModel.GyroscopeActivationButtonItems}"
+                              SelectedItem="{Binding GyroscopePageViewModel.GyroscopeActivationButtonSelectedItem, Mode=TwoWay}"
+                              IsEnabled="{Binding $parent[Window].DataContext.GyroscopePageViewModel.IsReadOnlyGyroscopeActivationButton, Converter={StaticResource InvertBooleanConverter}}"
+                              HorizontalAlignment="Right"
+                              Width="240"
+                              VerticalAlignment="Center">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding DisplayName}" />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </Grid>
+
+                <Separator Background="{DynamicResource BorderBrush}"
+                    IsVisible="{Binding GyroscopePageViewModel.IsGyroscopeActivationButtonVisible}"/>
+                
+                <!-- High Precision Gyroscope -->
+                <Grid ColumnDefinitions="*,Auto"
+                    IsVisible="{Binding GyroscopePageViewModel.IsGyroscopeActivationButtonVisible}">
+                    <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding Localization[HighPrecisionGyroscope]}" 
+                                   FontWeight="Medium"
+                                   FontSize="14"/>
+                        <TextBlock Text="{Binding Localization[HighPrecisionGyroscopeDescription]}" 
+                                   FontSize="12"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"/>
+                    </StackPanel>
+                    <ToggleSwitch Grid.Column="1"
+                                  IsChecked="{Binding GyroscopePageViewModel.HighPrecisionGyroscope, Mode=TwoWay}"
+                                  IsEnabled="{Binding $parent[Window].DataContext.GyroscopePageViewModel.IsReadOnlyHighPrecisionGyroscope, Converter={StaticResource InvertBooleanConverter}}"
+                                  VerticalAlignment="Center"
+                                  HorizontalAlignment="Right"
+                                  OnContent=""
+                                  OffContent=""/>
+                </Grid>
+                
+                <Separator Background="{DynamicResource BorderBrush}"/>
+                
+                <!-- Disable Bosch Accelerometer -->
+                <Grid ColumnDefinitions="*,Auto">
+                    <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding Localization[DisableBoschAccelerometer]}" 
+                                   FontWeight="Medium"
+                                   FontSize="14"/>
+                        <TextBlock Text="{Binding Localization[DisableBoschAccelerometerDescription]}" 
+                                   FontSize="12"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"/>
+                    </StackPanel>
+                    <ToggleSwitch Grid.Column="1"
+                                  IsChecked="{Binding GyroscopePageViewModel.DisableBoschAccelerometer, Mode=TwoWay}"
+                                  IsEnabled="{Binding $parent[Window].DataContext.GyroscopePageViewModel.IsReadOnlyDisableBoschAccelerometer, Converter={StaticResource InvertBooleanConverter}}"
+                                  VerticalAlignment="Center"
+                                  HorizontalAlignment="Right"
+                                  OnContent=""
+                                  OffContent=""/>
+                </Grid>
+                
+
+                
+            </StackPanel>
+        </Border>
+        
+    </StackPanel>
+</UserControl>

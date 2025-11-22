@@ -1,0 +1,568 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="using:Windows11Settings.Converters"
+             xmlns:helpers="using:Windows11Settings.Helpers"
+             x:Class="Windows11Settings.Views.Pages.CPUPage">
+
+    <UserControl.Resources>
+        <converters:InvertBooleanConverter x:Key="InvertBooleanConverter"/>
+    </UserControl.Resources>
+
+    <StackPanel Margin="40,16">
+        
+    <DockPanel>
+        <TextBlock Text="{Binding $parent[Window].DataContext.Localization[CPUPerformanceSettings]}" 
+                   Classes="settings-title"
+                   DockPanel.Dock="Left"/>
+        <TextBlock Text="{Binding $parent[Window].DataContext.CPUPageViewModel.CPUModel}" 
+                   FontSize="12"
+                   Foreground="{DynamicResource SecondaryTextBrush}"
+                   HorizontalAlignment="Right"
+                   VerticalAlignment="Top"
+                   DockPanel.Dock="Right"/>
+    </DockPanel>
+        
+
+        
+        <!-- From Power Line Group -->
+        <Border Classes="settings-card">
+            <Expander IsExpanded="{Binding $parent[Window].DataContext.CPUPageViewModel.IsPowerLineExpanded}"
+                      HorizontalAlignment="Stretch"
+                      Background="Transparent">
+            <Expander.Header>
+                <Grid ColumnDefinitions="*,Auto,Auto">
+                    <TextBlock Grid.Column="0" 
+                            Text="{Binding $parent[Window].DataContext.Localization[FromPowerLine]}" 
+                            FontSize="16" 
+                            FontWeight="SemiBold"/>
+                    
+                    <!-- TDP Badge -->
+                    <Border Grid.Column="1" 
+                            Background="#D32F2F"
+                            CornerRadius="3"
+                            Padding="8,2"
+                            IsVisible="{Binding $parent[Window].DataContext.CPUPageViewModel.IsPowerLineActive}"
+                            Margin="8,0,0,0">
+                        <TextBlock Text="{Binding $parent[Window].DataContext.CPUPageViewModel.ActualTdpValue, StringFormat='{}{0:0}'}" 
+                                FontSize="11"
+                                Foreground="White"
+                                FontWeight="SemiBold"/>
+                    </Border>
+                    
+                    <!-- Active Badge -->
+                    <Border Grid.Column="2" 
+                            Background="{DynamicResource AccentButtonBackground}"
+                            CornerRadius="3"
+                            Padding="8,2"
+                            IsVisible="{Binding $parent[Window].DataContext.CPUPageViewModel.IsPowerLineActive}"
+                            Margin="4,0,0,0">
+                        <TextBlock Text="{Binding $parent[Window].DataContext.Localization[Active]}" 
+                                FontSize="11"
+                                Foreground="White"/>
+                    </Border>
+                </Grid>
+            </Expander.Header>
+                
+                <StackPanel Spacing="16" Margin="0,12,0,0"
+                            DataContext="{Binding $parent[Window].DataContext}">
+                    
+                    <!-- TDP Slider -->
+                    <StackPanel Spacing="8">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <StackPanel Grid.Column="0" Spacing="2">
+                                <TextBlock Text="{Binding Localization[TDP]}" 
+                                           FontSize="14"
+                                           FontWeight="Medium"/>
+                                <TextBlock Text="{Binding Localization[TDPDescription]}" 
+                                           FontSize="12"
+                                           Foreground="{DynamicResource SecondaryTextBrush}"/>
+                            </StackPanel>
+                            <TextBlock Grid.Column="1" 
+                                       Text="{Binding CPUPageViewModel.PowerLineTdpValue, StringFormat='{}{0:0}'}" 
+                                       FontSize="14" 
+                                       FontWeight="SemiBold"
+                                       VerticalAlignment="Center"/>
+                        </Grid>
+                        
+                        <Slider Minimum="{Binding CPUPageViewModel.TdpMinValue}"
+                                Maximum="{Binding CPUPageViewModel.TdpMaxValue}"
+                                Value="{Binding CPUPageViewModel.PowerLineTdpValue, Mode=TwoWay}"
+                                TickFrequency="1"
+                                IsSnapToTickEnabled="True"
+                                PointerCaptureLost="OnPowerlineTdpDragCompleted"
+                                IsEnabled="{Binding $parent[Window].DataContext.CPUPageViewModel.IsReadOnlyPowerLineTdpValue, Converter={StaticResource InvertBooleanConverter}}"/>
+                        
+                        <!-- Preset buttons -->
+                        <Grid ColumnDefinitions="*,*,*,*,*,*">
+                            <Button Grid.Column="0" 
+                                    Content="{Binding CPUPageViewModel.TdpPreset1, StringFormat='{}{0:0}'}" 
+                                    Command="{Binding CPUPageViewModel.SetPowerLineTdpPresetCommand}" 
+                                    CommandParameter="{Binding CPUPageViewModel.TdpPreset1}"
+                                    Classes="small-button"
+                                    HorizontalAlignment="Stretch"
+                                    HorizontalContentAlignment="Center"
+                                    Margin="0,0,2,0"
+                                    IsEnabled="{Binding $parent[Window].DataContext.CPUPageViewModel.IsReadOnlyPowerLineTdpValue, Converter={StaticResource InvertBooleanConverter}}"/>
+                            <Button Grid.Column="1" 
+                                    Content="{Binding CPUPageViewModel.TdpPreset2, StringFormat='{}{0:0}'}" 
+                                    Command="{Binding CPUPageViewModel.SetPowerLineTdpPresetCommand}" 
+                                    CommandParameter="{Binding CPUPageViewModel.TdpPreset2}"
+                                    Classes="small-button"
+                                    HorizontalAlignment="Stretch"
+                                    HorizontalContentAlignment="Center"
+                                    Margin="1,0"
+                                    IsEnabled="{Binding $parent[Window].DataContext.CPUPageViewModel.IsReadOnlyPowerLineTdpValue, Converter={StaticResource InvertBooleanConverter}}"/>
+                            <Button Grid.Column="2" 
+                                    Content="{Binding CPUPageViewModel.TdpPreset3, StringFormat='{}{0:0}'}" 
+                                    Command="{Binding CPUPageViewModel.SetPowerLineTdpPresetCommand}" 
+                                    CommandParameter="{Binding CPUPageViewModel.TdpPreset3}"
+                                    Classes="small-button"
+                                    HorizontalAlignment="Stretch"
+                                    HorizontalContentAlignment="Center"
+                                    Margin="1,0"
+                                    IsEnabled="{Binding $parent[Window].DataContext.CPUPageViewModel.IsReadOnlyPowerLineTdpValue, Converter={StaticResource InvertBooleanConverter}}"/>
+                            <Button Grid.Column="3" 
+                                    Content="{Binding CPUPageViewModel.TdpPreset4, StringFormat='{}{0:0}'}" 
+                                    Command="{Binding CPUPageViewModel.SetPowerLineTdpPresetCommand}" 
+                                    CommandParameter="{Binding CPUPageViewModel.TdpPreset4}"
+                                    Classes="small-button"
+                                    HorizontalAlignment="Stretch"
+                                    HorizontalContentAlignment="Center"
+                                    Margin="1,0"
+                                    IsEnabled="{Binding $parent[Window].DataContext.CPUPageViewModel.IsReadOnlyPowerLineTdpValue, Converter={StaticResource InvertBooleanConverter}}"/>
+                            <Button Grid.Column="4" 
+                                    Content="{Binding CPUPageViewModel.TdpPreset5, StringFormat='{}{0:0}'}" 
+                                    Command="{Binding CPUPageViewModel.SetPowerLineTdpPresetCommand}" 
+                                    CommandParameter="{Binding CPUPageViewModel.TdpPreset5}"
+                                    Classes="small-button"
+                                    HorizontalAlignment="Stretch"
+                                    HorizontalContentAlignment="Center"
+                                    Margin="1,0"
+                                    IsEnabled="{Binding $parent[Window].DataContext.CPUPageViewModel.IsReadOnlyPowerLineTdpValue, Converter={StaticResource InvertBooleanConverter}}"/>
+                            <Button Grid.Column="5" 
+                                    Content="{Binding CPUPageViewModel.TdpPreset6, StringFormat='{}{0:0}'}" 
+                                    Command="{Binding CPUPageViewModel.SetPowerLineTdpPresetCommand}" 
+                                    CommandParameter="{Binding CPUPageViewModel.TdpPreset6}"
+                                    Classes="small-button"
+                                    HorizontalAlignment="Stretch"
+                                    HorizontalContentAlignment="Center"
+                                    Margin="2,0,0,0"
+                                    IsEnabled="{Binding $parent[Window].DataContext.CPUPageViewModel.IsReadOnlyPowerLineTdpValue, Converter={StaticResource InvertBooleanConverter}}"/>
+                        </Grid>
+                    </StackPanel>
+                    
+                    <Separator Background="{DynamicResource BorderBrush}"/>
+                    
+                    <!-- CPU Frequency Limit -->
+                    <Grid ColumnDefinitions="Auto,*">
+                        <StackPanel Grid.Column="0" Spacing="2" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding Localization[CpuFrequencyLimit]}" 
+                                       FontSize="14" 
+                                       FontWeight="Medium"/>
+                            <TextBlock Text="{Binding Localization[CpuFrequencyLimitDescription]}" 
+                                       FontSize="12" 
+                                       Foreground="{DynamicResource SecondaryTextBrush}"/>
+                        </StackPanel>
+                        <ComboBox Grid.Column="1"
+                                  ItemsSource="{Binding CPUPageViewModel.PowerLineFrequencyItems}"
+                                  SelectedItem="{Binding CPUPageViewModel.PowerLineFrequencySelectedItem}"
+                                  HorizontalAlignment="Right"
+                                  Width="220"
+                                  VerticalAlignment="Center"
+                                  Margin="16,0,0,0"
+                                  IsEnabled="{Binding $parent[Window].DataContext.CPUPageViewModel.IsReadOnlyPowerLineFrequencySelectedItem, Converter={StaticResource InvertBooleanConverter}}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding DisplayName}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </Grid>
+                    
+                    <Separator Background="{DynamicResource BorderBrush}"/>
+                    
+                    <!-- FPS Limit -->
+                    <Grid ColumnDefinitions="Auto,*">
+                        <StackPanel Grid.Column="0" Spacing="2" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding Localization[FpsLimit]}" 
+                                       FontSize="14" 
+                                       FontWeight="Medium"/>
+                            <TextBlock Text="{Binding Localization[FpsLimitDescription]}" 
+                                       FontSize="12" 
+                                       Foreground="{DynamicResource SecondaryTextBrush}"/>
+                        </StackPanel>
+                        <ComboBox Grid.Column="1"
+                                  ItemsSource="{Binding CPUPageViewModel.PowerLineFpsItems}"
+                                  SelectedItem="{Binding CPUPageViewModel.PowerLineFpsSelectedItem}"
+                                  HorizontalAlignment="Right"
+                                  Width="220"
+                                  VerticalAlignment="Center"
+                                  Margin="16,0,0,0"
+                                  IsEnabled="{Binding $parent[Window].DataContext.CPUPageViewModel.IsReadOnlyPowerLineFpsSelectedItem, Converter={StaticResource InvertBooleanConverter}}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding DisplayName}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </Grid>
+                    
+                    <Separator Background="{DynamicResource BorderBrush}"/>
+                    
+                    <!-- CPU Cores Limit -->
+                    <Grid ColumnDefinitions="Auto,*">
+                        <StackPanel Grid.Column="0" Spacing="2" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding Localization[CpuCoresLimit]}" 
+                                       FontSize="14" 
+                                       FontWeight="Medium"/>
+                            <TextBlock Text="{Binding Localization[CpuCoresLimitDescription]}" 
+                                       FontSize="12" 
+                                       Foreground="{DynamicResource SecondaryTextBrush}"/>
+                        </StackPanel>
+                        <ComboBox Grid.Column="1"
+                                  ItemsSource="{Binding CPUPageViewModel.PowerLineCpuCoresItems}"
+                                  SelectedItem="{Binding CPUPageViewModel.PowerLineCpuCoresSelectedItem}"
+                                  HorizontalAlignment="Right"
+                                  Width="220"
+                                  VerticalAlignment="Center"
+                                  Margin="16,0,0,0"
+                                  IsEnabled="{Binding $parent[Window].DataContext.CPUPageViewModel.IsReadOnlyPowerLineCpuCoresSelectedItem, Converter={StaticResource InvertBooleanConverter}}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding DisplayName}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </Grid>
+                    
+                </StackPanel>
+            </Expander>
+        </Border>
+        
+        <!-- From Battery Group -->
+        <Border Classes="settings-card">
+            <Expander IsExpanded="{Binding $parent[Window].DataContext.CPUPageViewModel.IsBatteryExpanded}"
+                      HorizontalAlignment="Stretch"
+                      Background="Transparent">
+        <Expander.Header>
+            <Grid ColumnDefinitions="*,Auto,Auto">
+                <TextBlock Grid.Column="0" 
+                        Text="{Binding $parent[Window].DataContext.Localization[FromBattery]}" 
+                        FontSize="16" 
+                        FontWeight="SemiBold"/>
+        
+        <!-- TDP Badge -->
+        <Border Grid.Column="1" 
+                Background="#D32F2F"
+                CornerRadius="3"
+                Padding="8,2"
+                IsVisible="{Binding $parent[Window].DataContext.CPUPageViewModel.IsBatteryActive}"
+                Margin="8,0,0,0">
+            <TextBlock Text="{Binding $parent[Window].DataContext.CPUPageViewModel.ActualTdpValue, StringFormat='{}{0:0}'}" 
+                       FontSize="11"
+                       Foreground="White"
+                       FontWeight="SemiBold"/>
+        </Border>
+        
+        <!-- Active Badge -->
+        <Border Grid.Column="2" 
+                Background="{DynamicResource AccentButtonBackground}"
+                CornerRadius="3"
+                Padding="8,2"
+                IsVisible="{Binding $parent[Window].DataContext.CPUPageViewModel.IsBatteryActive}"
+                Margin="4,0,0,0">
+            <TextBlock Text="{Binding $parent[Window].DataContext.Localization[Active]}" 
+                       FontSize="11"
+                       Foreground="White"/>
+        </Border>
+    </Grid>
+</Expander.Header>
+                
+                <StackPanel Spacing="16" Margin="0,12,0,0"
+                            DataContext="{Binding $parent[Window].DataContext}">
+                    
+                    <!-- TDP Slider -->
+                    <StackPanel Spacing="8">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <StackPanel Grid.Column="0" Spacing="2">
+                                <TextBlock Text="{Binding Localization[TDP]}" 
+                                           FontSize="14"
+                                           FontWeight="Medium"/>
+                                <TextBlock Text="{Binding Localization[TDPDescription]}" 
+                                           FontSize="12"
+                                           Foreground="{DynamicResource SecondaryTextBrush}"/>
+                            </StackPanel>
+                            <TextBlock Grid.Column="1" 
+                                       Text="{Binding CPUPageViewModel.BatteryTdpValue, StringFormat='{}{0:0}'}" 
+                                       FontSize="14" 
+                                       FontWeight="SemiBold"
+                                       VerticalAlignment="Center"/>
+                        </Grid>
+                        
+                        <Slider Minimum="{Binding CPUPageViewModel.TdpMinValue}"
+                                Maximum="{Binding CPUPageViewModel.TdpMaxValue}"
+                                Value="{Binding CPUPageViewModel.BatteryTdpValue, Mode=TwoWay}"
+                                TickFrequency="1"
+                                IsSnapToTickEnabled="True"
+                                PointerCaptureLost="OnBatteryTdpDragCompleted"
+                                IsEnabled="{Binding $parent[Window].DataContext.CPUPageViewModel.IsReadOnlyBatteryTdpValue, Converter={StaticResource InvertBooleanConverter}}"/>
+                        
+                        <!-- Preset buttons -->
+                        <Grid ColumnDefinitions="*,*,*,*,*,*">
+                            <Button Grid.Column="0" 
+                                    Content="{Binding CPUPageViewModel.TdpPreset1, StringFormat='{}{0:0}'}" 
+                                    Command="{Binding CPUPageViewModel.SetBatteryTdpPresetCommand}" 
+                                    CommandParameter="{Binding CPUPageViewModel.TdpPreset1}"
+                                    Classes="small-button"
+                                    HorizontalAlignment="Stretch"
+                                    HorizontalContentAlignment="Center"
+                                    Margin="0,0,2,0"
+                                    IsEnabled="{Binding $parent[Window].DataContext.CPUPageViewModel.IsReadOnlyBatteryTdpValue, Converter={StaticResource InvertBooleanConverter}}"/>
+                            <Button Grid.Column="1" 
+                                    Content="{Binding CPUPageViewModel.TdpPreset2, StringFormat='{}{0:0}'}" 
+                                    Command="{Binding CPUPageViewModel.SetBatteryTdpPresetCommand}" 
+                                    CommandParameter="{Binding CPUPageViewModel.TdpPreset2}"
+                                    Classes="small-button"
+                                    HorizontalAlignment="Stretch"
+                                    HorizontalContentAlignment="Center"
+                                    Margin="1,0"
+                                    IsEnabled="{Binding $parent[Window].DataContext.CPUPageViewModel.IsReadOnlyBatteryTdpValue, Converter={StaticResource InvertBooleanConverter}}"/>
+                            <Button Grid.Column="2" 
+                                    Content="{Binding CPUPageViewModel.TdpPreset3, StringFormat='{}{0:0}'}" 
+                                    Command="{Binding CPUPageViewModel.SetBatteryTdpPresetCommand}" 
+                                    CommandParameter="{Binding CPUPageViewModel.TdpPreset3}"
+                                    Classes="small-button"
+                                    HorizontalAlignment="Stretch"
+                                    HorizontalContentAlignment="Center"
+                                    Margin="1,0"
+                                    IsEnabled="{Binding $parent[Window].DataContext.CPUPageViewModel.IsReadOnlyBatteryTdpValue, Converter={StaticResource InvertBooleanConverter}}"/>
+                            <Button Grid.Column="3" 
+                                    Content="{Binding CPUPageViewModel.TdpPreset4, StringFormat='{}{0:0}'}" 
+                                    Command="{Binding CPUPageViewModel.SetBatteryTdpPresetCommand}" 
+                                    CommandParameter="{Binding CPUPageViewModel.TdpPreset4}"
+                                    Classes="small-button"
+                                    HorizontalAlignment="Stretch"
+                                    HorizontalContentAlignment="Center"
+                                    Margin="1,0"
+                                    IsEnabled="{Binding $parent[Window].DataContext.CPUPageViewModel.IsReadOnlyBatteryTdpValue, Converter={StaticResource InvertBooleanConverter}}"/>
+                            <Button Grid.Column="4" 
+                                    Content="{Binding CPUPageViewModel.TdpPreset5, StringFormat='{}{0:0}'}" 
+                                    Command="{Binding CPUPageViewModel.SetBatteryTdpPresetCommand}" 
+                                    CommandParameter="{Binding CPUPageViewModel.TdpPreset5}"
+                                    Classes="small-button"
+                                    HorizontalAlignment="Stretch"
+                                    HorizontalContentAlignment="Center"
+                                    Margin="1,0"
+                                    IsEnabled="{Binding $parent[Window].DataContext.CPUPageViewModel.IsReadOnlyBatteryTdpValue, Converter={StaticResource InvertBooleanConverter}}"/>
+                            <Button Grid.Column="5" 
+                                    Content="{Binding CPUPageViewModel.TdpPreset6, StringFormat='{}{0:0}'}" 
+                                    Command="{Binding CPUPageViewModel.SetBatteryTdpPresetCommand}" 
+                                    CommandParameter="{Binding CPUPageViewModel.TdpPreset6}"
+                                    Classes="small-button"
+                                    HorizontalAlignment="Stretch"
+                                    HorizontalContentAlignment="Center"
+                                    Margin="2,0,0,0"
+                                    IsEnabled="{Binding $parent[Window].DataContext.CPUPageViewModel.IsReadOnlyBatteryTdpValue, Converter={StaticResource InvertBooleanConverter}}"/>
+                        </Grid>
+                    </StackPanel>
+                    
+                    <Separator Background="{DynamicResource BorderBrush}"/>
+                    
+                    <!-- CPU Frequency Limit -->
+                    <Grid ColumnDefinitions="Auto,*">
+                        <StackPanel Grid.Column="0" Spacing="2" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding Localization[CpuFrequencyLimit]}" 
+                                       FontSize="14" 
+                                       FontWeight="Medium"/>
+                            <TextBlock Text="{Binding Localization[CpuFrequencyLimitDescription]}" 
+                                       FontSize="12" 
+                                       Foreground="{DynamicResource SecondaryTextBrush}"/>
+                        </StackPanel>
+                        <ComboBox Grid.Column="1"
+                                  ItemsSource="{Binding CPUPageViewModel.BatteryFrequencyItems}"
+                                  SelectedItem="{Binding CPUPageViewModel.BatteryFrequencySelectedItem}"
+                                  HorizontalAlignment="Right"
+                                  Width="220"
+                                  VerticalAlignment="Center"
+                                  Margin="16,0,0,0"
+                                  IsEnabled="{Binding $parent[Window].DataContext.CPUPageViewModel.IsReadOnlyBatteryFrequencySelectedItem, Converter={StaticResource InvertBooleanConverter}}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding DisplayName}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </Grid>
+                    
+                    <Separator Background="{DynamicResource BorderBrush}"/>
+                    
+                    <!-- FPS Limit -->
+                    <Grid ColumnDefinitions="Auto,*">
+                        <StackPanel Grid.Column="0" Spacing="2" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding Localization[FpsLimit]}" 
+                                       FontSize="14" 
+                                       FontWeight="Medium"/>
+                            <TextBlock Text="{Binding Localization[FpsLimitDescription]}" 
+                                       FontSize="12" 
+                                       Foreground="{DynamicResource SecondaryTextBrush}"/>
+                        </StackPanel>
+                        <ComboBox Grid.Column="1"
+                                  ItemsSource="{Binding CPUPageViewModel.BatteryFpsItems}"
+                                  SelectedItem="{Binding CPUPageViewModel.BatteryFpsSelectedItem}"
+                                  HorizontalAlignment="Right"
+                                  Width="220"
+                                  VerticalAlignment="Center"
+                                  Margin="16,0,0,0"
+                                  IsEnabled="{Binding $parent[Window].DataContext.CPUPageViewModel.IsReadOnlyBatteryFpsSelectedItem, Converter={StaticResource InvertBooleanConverter}}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding DisplayName}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </Grid>
+                    
+                    <Separator Background="{DynamicResource BorderBrush}"/>
+                    
+                    <!-- CPU Cores Limit -->
+                    <Grid ColumnDefinitions="Auto,*">
+                        <StackPanel Grid.Column="0" Spacing="2" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding Localization[CpuCoresLimit]}" 
+                                       FontSize="14" 
+                                       FontWeight="Medium"/>
+                            <TextBlock Text="{Binding Localization[CpuCoresLimitDescription]}" 
+                                       FontSize="12" 
+                                       Foreground="{DynamicResource SecondaryTextBrush}"/>
+                        </StackPanel>
+                        <ComboBox Grid.Column="1"
+                                  ItemsSource="{Binding CPUPageViewModel.BatteryCpuCoresItems}"
+                                  SelectedItem="{Binding CPUPageViewModel.BatteryCpuCoresSelectedItem}"
+                                  HorizontalAlignment="Right"
+                                  Width="220"
+                                  VerticalAlignment="Center"
+                                  Margin="16,0,0,0"
+                                  IsEnabled="{Binding $parent[Window].DataContext.CPUPageViewModel.IsReadOnlyBatteryCpuCoresSelectedItem, Converter={StaticResource InvertBooleanConverter}}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding DisplayName}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </Grid>
+                    
+                </StackPanel>
+            </Expander>
+        </Border>
+        
+        <!-- Toggle Switches -->
+        <Border Classes="settings-card"
+                DataContext="{Binding $parent[Window].DataContext}">
+            <StackPanel Spacing="16">
+                
+                <!-- CPU Boost -->
+                <Grid ColumnDefinitions="*,Auto">
+                    <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding Localization[CPUBoost]}" 
+                                   FontWeight="Medium"
+                                   FontSize="14"/>
+                        <TextBlock Text="{Binding Localization[CPUBoostDescription]}" 
+                                   FontSize="12"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"/>
+                    </StackPanel>
+                    <ToggleSwitch Grid.Column="1"
+                                  IsChecked="{Binding CPUPageViewModel.CPUBoostEnabled}"
+                                  VerticalAlignment="Center"
+                                  HorizontalAlignment="Right"
+                                  OnContent=""
+                                  OffContent=""
+                                  IsEnabled="{Binding $parent[Window].DataContext.CPUPageViewModel.IsReadOnlyCPUBoostEnabled, Converter={StaticResource InvertBooleanConverter}}"/>
+                </Grid>
+                <Separator Background="{DynamicResource BorderBrush}"/>
+
+                <!-- Load Preset at Start -->
+                <Grid ColumnDefinitions="*,Auto">
+                    <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding Localization[LoadPresetAtStart]}"
+                                   FontWeight="Medium"
+                                   FontSize="14"/>
+                        <TextBlock Text="{Binding Localization[LoadPresetAtStartDescription]}"
+                                   FontSize="12"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"/>
+                    </StackPanel>
+                    <ToggleSwitch Grid.Column="1"
+                                  IsChecked="{Binding CPUPageViewModel.LoadPresetAtStartEnabled}"
+                                  VerticalAlignment="Center"
+                                  HorizontalAlignment="Right"
+                                  OnContent=""
+                                  OffContent=""
+                                  IsEnabled="{Binding $parent[Window].DataContext.CPUPageViewModel.IsReadOnlyLoadPresetAtStartEnabled, Converter={StaticResource InvertBooleanConverter}}"/>
+                </Grid>
+                
+                <Separator Background="{DynamicResource BorderBrush}"/>
+                
+                <!-- Auto Optimize CPU Frequency -->
+                <Grid ColumnDefinitions="*,Auto">
+                    <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding Localization[AutoOptimizeCPUFrequency]}" 
+                                   FontWeight="Medium"
+                                   FontSize="14"/>
+                        <TextBlock Text="{Binding Localization[AutoOptimizeCPUFrequencyDescription]}" 
+                                   FontSize="12"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"/>
+                    </StackPanel>
+                    <ToggleSwitch Grid.Column="1"
+                                  IsChecked="{Binding CPUPageViewModel.AutoOptimizeCpuFrequencyEnabled}"
+                                  VerticalAlignment="Center"
+                                  HorizontalAlignment="Right"
+                                  OnContent=""
+                                  OffContent=""
+                                  IsEnabled="{Binding $parent[Window].DataContext.CPUPageViewModel.IsReadOnlyAutoOptimizeCpuFrequencyEnabled, Converter={StaticResource InvertBooleanConverter}}"/>
+                </Grid>
+                
+                <Separator Background="{DynamicResource BorderBrush}"/>
+                
+                <!-- Unite Battery and Powerline CPU Presets -->
+                <Grid ColumnDefinitions="*,Auto">
+                    <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding Localization[UniteBatteryAndPowerlineCPUPresets]}" 
+                                   FontWeight="Medium"
+                                   FontSize="14"/>
+                        <TextBlock Text="{Binding Localization[UniteBatteryAndPowerlineCPUPresetsDescription]}" 
+                                   FontSize="12"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"/>
+                    </StackPanel>
+                    <ToggleSwitch Grid.Column="1"
+                                  IsChecked="{Binding CPUPageViewModel.UniteBatteryAndPowerlineCPUPresetsEnabled}"
+                                  VerticalAlignment="Center"
+                                  HorizontalAlignment="Right"
+                                  OnContent=""
+                                  OffContent=""
+                                  IsEnabled="{Binding $parent[Window].DataContext.CPUPageViewModel.IsReadOnlyUniteBatteryAndPowerlineCPUPresetsEnabled, Converter={StaticResource InvertBooleanConverter}}"/>
+                </Grid>
+                
+                <Separator Background="{DynamicResource BorderBrush}"/>
+                
+                <!-- Unite Battery and Powerline FPS Limit -->
+                <Grid ColumnDefinitions="*,Auto">
+                    <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding Localization[UniteBatteryAndPowerlineFPSLimit]}" 
+                                   FontWeight="Medium"
+                                   FontSize="14"/>
+                        <TextBlock Text="{Binding Localization[UniteBatteryAndPowerlineFPSLimitDescription]}" 
+                                   FontSize="12"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"/>
+                    </StackPanel>
+                    <ToggleSwitch Grid.Column="1"
+                                  IsChecked="{Binding CPUPageViewModel.UniteBatteryAndPowerlineFPSLimitEnabled}"
+                                  VerticalAlignment="Center"
+                                  HorizontalAlignment="Right"
+                                  OnContent=""
+                                  OffContent=""
+                                  IsEnabled="{Binding $parent[Window].DataContext.CPUPageViewModel.IsReadOnlyUniteBatteryAndPowerlineFPSLimitEnabled, Converter={StaticResource InvertBooleanConverter}}"/>
+                </Grid>
+                
+            </StackPanel>
+        </Border>
+        
+    </StackPanel>
+</UserControl>

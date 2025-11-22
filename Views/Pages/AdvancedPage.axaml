@@ -1,0 +1,251 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="using:Windows11Settings.Converters"
+             x:Class="Windows11Settings.Views.Pages.AdvancedPage"
+             x:Name="AdvancedPageControl">
+
+    <UserControl.Resources>
+        <converters:InvertBooleanConverter x:Key="InvertBooleanConverter"/>
+    </UserControl.Resources>
+    
+    <StackPanel Margin="40,16">
+        
+        <TextBlock Text="{Binding $parent[Window].DataContext.Localization[AdvancedSettings]}" 
+                   Classes="settings-title"/>
+
+        <!-- System Settings -->
+        <Border Classes="settings-card" Margin="0,0,0,12">
+            <StackPanel Spacing="16">
+                
+                <!-- Add to system autorun -->
+                <Grid ColumnDefinitions="*,Auto">
+                    <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding $parent[Window].DataContext.Localization[AddToSystemAutorun]}" 
+                                   FontWeight="Medium"
+                                   FontSize="14"/>
+                    <TextBlock Text="{Binding $parent[Window].DataContext.Localization[AddToSystemAutorunHint]}" 
+                        FontSize="12"
+                        Foreground="{DynamicResource SecondaryTextBrush}"/>
+                    </StackPanel>
+                    <ToggleSwitch Grid.Column="1"
+                                  IsChecked="{Binding $parent[Window].DataContext.AdvancedPageViewModel.AddToSystemAutorun, Mode=TwoWay}"
+                                  IsEnabled="{Binding $parent[Window].DataContext.AdvancedPageViewModel.IsReadOnlyAddToSystemAutorun, Converter={StaticResource InvertBooleanConverter}}"
+                                  VerticalAlignment="Center"
+                                  HorizontalAlignment="Right"
+                                  Width="50"
+                                  Height="34"
+                                  Classes="toggle-switch"/>
+                </Grid>
+                
+                <Separator Background="{DynamicResource BorderBrush}"/>
+                
+                <!-- Disable system monitoring 
+                <Grid ColumnDefinitions="*,Auto">
+                    <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding $parent[Window].DataContext.Localization[DisableSystemMonitoring]}" 
+                                   FontWeight="Medium"
+                                   FontSize="14"/>
+                    <TextBlock Text="{Binding $parent[Window].DataContext.Localization[DisableSystemMonitoringHint]}" 
+                        FontSize="12"
+                        Foreground="{DynamicResource SecondaryTextBrush}"/>
+                    </StackPanel>
+                    <ToggleSwitch Grid.Column="1"
+                                  IsChecked="{Binding $parent[Window].DataContext.AdvancedPageViewModel.DisableSystemMonitoring, Mode=TwoWay}"
+                                  IsEnabled="{Binding $parent[Window].DataContext.AdvancedPageViewModel.IsReadOnlyDisableSystemMonitoring, Converter={StaticResource InvertBooleanConverter}}"
+                                  VerticalAlignment="Center"
+                                  HorizontalAlignment="Right"
+                                  Width="50"
+                                  Height="34"
+                                  Classes="toggle-switch"/>
+                </Grid>
+
+                
+                <Separator Background="{DynamicResource BorderBrush}"/>
+                                -->
+                
+                <!-- Disable Bluetooth in sleep mode -->
+                <Grid ColumnDefinitions="*,Auto">
+                    <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding $parent[Window].DataContext.Localization[DisableBluetoothInSleepMode]}" 
+                                   FontWeight="Medium"
+                                   FontSize="14"/>
+                        <TextBlock Text="{Binding $parent[Window].DataContext.Localization[DisableBluetoothDescription]}" 
+                                   FontSize="12"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"/>
+                    </StackPanel>
+                    <ToggleSwitch Grid.Column="1"
+                                  IsChecked="{Binding $parent[Window].DataContext.AdvancedPageViewModel.DisableBluetoothInSleepMode, Mode=TwoWay}"
+                                  IsEnabled="{Binding $parent[Window].DataContext.AdvancedPageViewModel.IsReadOnlyDisableBluetoothInSleepMode, Converter={StaticResource InvertBooleanConverter}}"
+                                  VerticalAlignment="Center"
+                                  HorizontalAlignment="Right"
+                                  Width="50"
+                                  Height="34"
+                                  Classes="toggle-switch"/>
+                </Grid>
+                
+            </StackPanel>
+        </Border>
+
+        <!-- Appearance Settings -->
+        <Border Classes="settings-card" Margin="0,0,0,12">
+            <Expander IsExpanded="False"
+                      HorizontalAlignment="Stretch"
+                      Background="Transparent">
+                <Expander.Header>
+                    <TextBlock Text="{Binding $parent[Window].DataContext.Localization[AppearanceSettings]}"
+                               FontSize="16"
+                               FontWeight="SemiBold"/>
+                </Expander.Header>
+                
+                <StackPanel Spacing="16" Margin="0,12,0,0">
+                    
+                    <!-- Use new interface -->
+                    <Grid ColumnDefinitions="*,Auto">
+                        <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding $parent[Window].DataContext.Localization[UseNewInterface]}" 
+                                       FontWeight="Medium"
+                                       FontSize="14"/>
+                            <TextBlock Text="{Binding $parent[Window].DataContext.Localization[UseNewInterfaceHint]}" 
+                                       FontSize="12"
+                                       Foreground="{DynamicResource SecondaryTextBrush}"/>
+                        </StackPanel>
+                        <ToggleSwitch Grid.Column="1"
+                                      IsChecked="{Binding $parent[Window].DataContext.AdvancedPageViewModel.UseNewInterface, Mode=TwoWay}"
+                                      IsEnabled="{Binding $parent[Window].DataContext.AdvancedPageViewModel.IsReadOnlyUseNewInterface, Converter={StaticResource InvertBooleanConverter}}"
+                                      VerticalAlignment="Center"
+                                      HorizontalAlignment="Right"
+                                      Width="50"
+                                      Height="34"
+                                      Classes="toggle-switch"/>
+                    </Grid>
+                    
+                    <Separator Background="{DynamicResource BorderBrush}"/>
+                    
+                    <!-- Dark Mode -->
+                    <Grid ColumnDefinitions="*,Auto">
+                        <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding $parent[Window].DataContext.Localization[Theme]}" 
+                                       FontWeight="Medium"
+                                       FontSize="14"/>
+                        </StackPanel>
+                        <ToggleSwitch Grid.Column="1"
+                                      IsChecked="{Binding $parent[Window].DataContext.IsDarkTheme}"
+                                      IsEnabled="{Binding $parent[Window].DataContext.IsReadOnlyIsDarkTheme, Converter={StaticResource InvertBooleanConverter}}"
+                                      VerticalAlignment="Center"
+                                      HorizontalAlignment="Right"
+                                      Width="50"
+                                      Height="34"
+                                      Classes="toggle-switch"/>
+                    </Grid>
+                    
+                    <Separator Background="{DynamicResource BorderBrush}"/>
+                    
+                    <!-- Minimize to system tray -->
+                    <Grid ColumnDefinitions="*,Auto">
+                        <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding $parent[Window].DataContext.Localization[MinimizeToSystemTray]}" 
+                                       FontWeight="Medium"
+                                       FontSize="14"/>
+                        </StackPanel>
+                        <ToggleSwitch Grid.Column="1"
+                                      IsChecked="{Binding $parent[Window].DataContext.AdvancedPageViewModel.MinimizeToSystemTray, Mode=TwoWay}"
+                                      IsEnabled="{Binding $parent[Window].DataContext.AdvancedPageViewModel.IsReadOnlyMinimizeToSystemTray, Converter={StaticResource InvertBooleanConverter}}"
+                                      VerticalAlignment="Center"
+                                      HorizontalAlignment="Right"
+                                      Width="50"
+                                      Height="34"
+                                      Classes="toggle-switch"/>
+                    </Grid>
+                    
+                    <Separator Background="{DynamicResource BorderBrush}"/>
+                    
+                    <!-- Window size at startup -->
+                    <Grid ColumnDefinitions="Auto,*">
+                        <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding $parent[Window].DataContext.Localization[WindowSizeAtStartup]}" 
+                                       FontWeight="Medium"
+                                       FontSize="14"/>
+                        </StackPanel>
+                        <ComboBox Grid.Column="1"
+                                  ItemsSource="{Binding $parent[Window].DataContext.AdvancedPageViewModel.WindowSizeItems}"
+                                  SelectedItem="{Binding $parent[Window].DataContext.AdvancedPageViewModel.WindowSizeSelectedItem, Mode=TwoWay}"
+                                  IsEnabled="{Binding $parent[Window].DataContext.AdvancedPageViewModel.IsReadOnlyWindowSizeSelectedItem, Converter={StaticResource InvertBooleanConverter}}"
+                                  HorizontalAlignment="Right"
+                                  Width="220"
+                                  VerticalAlignment="Center"
+                                  Margin="16,0,0,0">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding DisplayName}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </Grid>
+                    
+                    <Separator Background="{DynamicResource BorderBrush}"/>
+                    
+                    <!-- Language -->
+                    <Grid ColumnDefinitions="Auto,*">
+                        <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding $parent[Window].DataContext.Localization[Language]}" 
+                                       FontWeight="Medium"
+                                       FontSize="14"/>
+                        </StackPanel>
+                        <ComboBox Grid.Column="1"
+                                  SelectedIndex="{Binding $parent[Window].DataContext.SelectedLanguageIndex}"
+                                  IsEnabled="{Binding $parent[Window].DataContext.IsReadOnlyLanguage, Converter={StaticResource InvertBooleanConverter}}"
+                                  HorizontalAlignment="Right"
+                                  Width="220"
+                                  VerticalAlignment="Center"
+                                  Margin="16,0,0,0">
+                            <ComboBoxItem Content="{Binding $parent[Window].DataContext.Localization[English]}"/>
+                            <ComboBoxItem Content="{Binding $parent[Window].DataContext.Localization[Russian]}"/>
+                        </ComboBox>
+                    </Grid>
+                </StackPanel>
+            </Expander>
+        </Border>
+
+        <!-- Check for Updates -->
+        <Border Classes="settings-card" Margin="0,0,0,12">
+            <Grid ColumnDefinitions="*,Auto">
+                <TextBlock Grid.Column="0"
+                           Text="{Binding $parent[Window].DataContext.Localization[CheckForUpdatesDescription]}" 
+                           FontSize="12"
+                           TextWrapping="Wrap"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource SecondaryTextBrush}"/>
+                <Button Grid.Column="1"
+                        Content="{Binding $parent[Window].DataContext.Localization[CheckForUpdates]}"
+                        Command="{Binding $parent[Window].DataContext.AdvancedPageViewModel.CheckForUpdatesCommand}"
+                        IsEnabled="{Binding $parent[Window].DataContext.AdvancedPageViewModel.IsReadOnlyCheckForUpdatesCommand, Converter={StaticResource InvertBooleanConverter}}"
+                        VerticalAlignment="Center"
+                        Margin="16,0,0,0"
+                        Padding="16,8"/>
+            </Grid>
+        </Border>
+
+        <!-- About -->
+        <Border Classes="settings-card">
+            <StackPanel Spacing="8">
+                <TextBlock Text="{Binding $parent[Window].DataContext.Localization[About]}" 
+                           FontSize="16"
+                           FontWeight="SemiBold"
+                           Margin="0,0,0,8"/>
+                <TextBlock Text="{Binding $parent[Window].DataContext.AdvancedPageViewModel.MAVersion}"
+                           FontSize="14"
+                           FontWeight="Medium"/>
+                <TextBlock Text="GPD system tuning utility" 
+                           FontSize="12"
+                           Foreground="{DynamicResource SecondaryTextBrush}"/>
+                <TextBlock Text="{Binding $parent[Window].DataContext.AdvancedPageViewModel.ModVersion}"
+                           FontSize="12"
+                           Foreground="{DynamicResource SecondaryTextBrush}"/>
+                <TextBlock Text="2025" 
+                           FontSize="12"
+                           Foreground="{DynamicResource SecondaryTextBrush}"/>
+            </StackPanel>
+        </Border>
+
+    </StackPanel>
+</UserControl>

@@ -1,0 +1,8 @@
+﻿<Weavers xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="FodyWeavers.xsd">
+  <Costura UseRuntimeReferencePaths="true">
+    <Unmanaged64Assemblies>
+      libSkiaSharp
+      libHarfBuzzSharp
+    </Unmanaged64Assemblies>
+  </Costura>
+</Weavers>
