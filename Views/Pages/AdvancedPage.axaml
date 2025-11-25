@@ -192,14 +192,18 @@
                                        FontSize="14"/>
                         </StackPanel>
                         <ComboBox Grid.Column="1"
-                                  SelectedIndex="{Binding $parent[Window].DataContext.SelectedLanguageIndex}"
+                                  ItemsSource="{Binding $parent[Window].DataContext.AdvancedPageViewModel.LanguageItems}"
+                                  SelectedItem="{Binding $parent[Window].DataContext.AdvancedPageViewModel.SelectedLanguage, Mode=TwoWay}"
                                   IsEnabled="{Binding $parent[Window].DataContext.IsReadOnlyLanguage, Converter={StaticResource InvertBooleanConverter}}"
                                   HorizontalAlignment="Right"
                                   Width="220"
                                   VerticalAlignment="Center"
                                   Margin="16,0,0,0">
-                            <ComboBoxItem Content="{Binding $parent[Window].DataContext.Localization[English]}"/>
-                            <ComboBoxItem Content="{Binding $parent[Window].DataContext.Localization[Russian]}"/>
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding DisplayName}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
                         </ComboBox>
                     </Grid>
                 </StackPanel>

@@ -27,11 +27,9 @@ namespace Windows11Settings.ViewModels
         private const double IconSpacing = 12;
         private const double ButtonPadding = 24;
         private const double ExtraMargin = 32;
-        private int _selectedLanguageIndex = 0;
 
         // Read-only state properties for controls
         private bool _isReadOnlyIsDarkTheme = false;
-        private bool _isReadOnlySelectedLanguageIndex = false;
 
         public CPUPageViewModel CPUPageViewModel { get; } = new CPUPageViewModel();
         public GPUPageViewModel GPUPageViewModel { get; } = new GPUPageViewModel();
@@ -40,25 +38,6 @@ namespace Windows11Settings.ViewModels
         public OSDOverlayPageViewModel OSDOverlayPageViewModel { get; } = new OSDOverlayPageViewModel();
         public ProcessProfilesPageViewModel ProcessProfilesPageViewModel { get; } = new ProcessProfilesPageViewModel();
         public AdvancedPageViewModel AdvancedPageViewModel { get; } = new AdvancedPageViewModel();
-
-        public int SelectedLanguageIndex
-        {
-            get => _selectedLanguageIndex;
-            set
-            {
-                if (_selectedLanguageIndex != value)
-                {
-                    _selectedLanguageIndex = value;
-                    OnPropertyChanged();
-                    
-                    var newLanguage = value == 0 ? "en" : "ru";
-                    _localization.CurrentLanguage = newLanguage;
-                    
-                    // Save language change to GlobalSettings
-                    GlobalSettings.Instance.CurrentLanguage = newLanguage;
-                }
-            }
-        }
 
         public MainWindowViewModel()
         {
@@ -80,9 +59,6 @@ namespace Windows11Settings.ViewModels
                 OnPropertyChanged(nameof(Localization));
                 OnPropertyChanged(nameof(MenuWidth));
                 OnPropertyChanged(nameof(CalculatedWidth));
-
-                _selectedLanguageIndex = _localization.CurrentLanguage == "en" ? 0 : 1;
-                OnPropertyChanged(nameof(SelectedLanguageIndex));
             };
 
             MenuItems = new ObservableCollection<SettingsMenuItem>
@@ -167,15 +143,6 @@ namespace Windows11Settings.ViewModels
             get => _isReadOnlyIsDarkTheme;
             set => SetProperty(ref _isReadOnlyIsDarkTheme, value);
         }
-
-        public bool IsReadOnlySelectedLanguageIndex
-        {
-            get => _isReadOnlySelectedLanguageIndex;
-            set => SetProperty(ref _isReadOnlySelectedLanguageIndex, value);
-        }
-
-        // Additional read-only properties for AdvancedPage
-        public bool IsReadOnlyLanguage => _isReadOnlySelectedLanguageIndex;
 
         #endregion
 
@@ -360,11 +327,8 @@ namespace Windows11Settings.ViewModels
             }
             
             // Apply language
-            var expectedLanguageIndex = settings.CurrentLanguage == "en" ? 0 : 1;
-            if (_selectedLanguageIndex != expectedLanguageIndex)
+            if (_localization.CurrentLanguage != settings.CurrentLanguage)
             {
-                _selectedLanguageIndex = expectedLanguageIndex;
-                OnPropertyChanged(nameof(SelectedLanguageIndex));
                 _localization.CurrentLanguage = settings.CurrentLanguage;
             }
         }

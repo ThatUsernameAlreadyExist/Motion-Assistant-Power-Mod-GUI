@@ -23,6 +23,7 @@ namespace Windows11Settings.ViewModels.Pages
         private ComboBoxItemModel _windowSizeSelectedItem;
         private string _maVersion = "Motion Assistant";
         private string _modVersion = "Power Mod";
+        private ComboBoxItemModel _selectedLanguage;
 
         // Read-only state properties for controls
         private bool _isReadOnlyAddToSystemAutorun = false;
@@ -39,12 +40,35 @@ namespace Windows11Settings.ViewModels.Pages
             _localization.PropertyChanged += (s, e) => RefreshTranslations();
 
             InitializeWindowSizeItems();
+            InitializeLanguageItems();
             CheckForUpdatesCommand = new RelayCommand(_ => CheckForUpdates());
 
             GlobalAppManager.Instance.RegisterPageViewModel(this);
         }
 
         public LocalizationManager Localization => _localization;
+
+        public ObservableCollection<ComboBoxItemModel> LanguageItems { get; } = new ObservableCollection<ComboBoxItemModel>();
+
+        public ComboBoxItemModel SelectedLanguage
+        {
+            get => _selectedLanguage;
+            set
+            {
+                if (_selectedLanguage != value)
+                {
+                    var oldValue = _selectedLanguage;
+                    SetProperty(ref _selectedLanguage, value);
+                    
+                    if (oldValue != value && !string.IsNullOrEmpty(value.Id))
+                    {
+                        // Update the localization manager's current language
+                        _localization.CurrentLanguage = value.Id;
+                        GlobalSettings.Instance.CurrentLanguage = value.Id;
+                    }
+                }
+            }
+        }
 
         public bool AddToSystemAutorun
         {
@@ -276,18 +300,50 @@ namespace Windows11Settings.ViewModels.Pages
             }
         }
 
-        private void RefreshTranslations()
+        private void InitializeLanguageItems()
         {
-            var currentItem = WindowSizeSelectedItem;
-            InitializeWindowSizeItems();
-            if (currentItem != null)
+            LanguageItems.Clear();
+            
+            // Load available languages from the localization manager
+            foreach (var kvp in _localization.AvailableLanguages)
             {
-                var newItem = WindowSizeItems.FirstOrDefault(item => item.Id == currentItem.Id);
-                if (newItem != null)
+                LanguageItems.Add(new ComboBoxItemModel 
+                { 
+                    DisplayName = kvp.Value, 
+                    Id = kvp.Key 
+                });
+            }
+
+            // Set the current language
+            if (SelectedLanguage == null)
+            {
+                var newSelectedLanguage = LanguageItems.FirstOrDefault(item => item.Id == _localization.CurrentLanguage);
+                if (newSelectedLanguage != null)
                 {
-                    WindowSizeSelectedItem = newItem;
+                    SelectedLanguage = newSelectedLanguage;
                 }
             }
+
+            OnPropertyChanged(nameof(SelectedLanguage));
+        }
+
+        private void RefreshTranslations()
+        {
+            var currentWindowItem = WindowSizeSelectedItem;
+            var currentLanguageItem = SelectedLanguage;
+            
+            InitializeWindowSizeItems();
+            
+            // Restore window size selection
+            if (currentWindowItem != null)
+            {
+                var newWindowItem = WindowSizeItems.FirstOrDefault(item => item.Id == currentWindowItem.Id);
+                if (newWindowItem != null)
+                {
+                    WindowSizeSelectedItem = newWindowItem;
+                }
+            }
+
         }
 
         private void CheckForUpdates()
