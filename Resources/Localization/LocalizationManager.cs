@@ -28,7 +28,8 @@ namespace Windows11Settings.Resources.Localization
             // Ensure the Localization folder exists
             if (!Directory.Exists(_localizationFolderPath))
             {
-                string relativePath = Path.Combine(baseDirectory, "..", "..", "..", "Resources", "Localization");
+                // For debug.
+                string relativePath = Path.Combine(baseDirectory, "..", "..", "..", "..", "Resources", "Localization");
                 _localizationFolderPath = Path.GetFullPath(relativePath);
             }
             

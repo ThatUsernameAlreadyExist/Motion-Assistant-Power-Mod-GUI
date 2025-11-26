@@ -135,7 +135,7 @@ namespace Windows11Settings.ViewModels.Pages
             {
                 Process.Start(new ProcessStartInfo
                 {
-                    FileName = "https://www.guru3d.com/download/rtss-rivatuner-statistics-server-download/",
+                    FileName = _localization["RTSSUrl"],
                     UseShellExecute = true
                 });
             }

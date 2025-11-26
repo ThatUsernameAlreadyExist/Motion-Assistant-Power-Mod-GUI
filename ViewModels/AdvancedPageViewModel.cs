@@ -60,7 +60,7 @@ namespace Windows11Settings.ViewModels.Pages
                     var oldValue = _selectedLanguage;
                     SetProperty(ref _selectedLanguage, value);
                     
-                    if (oldValue != value && !string.IsNullOrEmpty(value.Id))
+                    if (oldValue != value)
                     {
                         // Update the localization manager's current language
                         _localization.CurrentLanguage = value.Id;
@@ -109,6 +109,7 @@ namespace Windows11Settings.ViewModels.Pages
 
                 if (oldValue != value)
                 {
+                    // Not used now.
                     //GlobalAppManager.Instance.SendCmdDisableSystemMonitoring(value);
                 }
             }
@@ -320,7 +321,7 @@ namespace Windows11Settings.ViewModels.Pages
                 var newSelectedLanguage = LanguageItems.FirstOrDefault(item => item.Id == _localization.CurrentLanguage);
                 if (newSelectedLanguage != null)
                 {
-                    SelectedLanguage = newSelectedLanguage;
+                    _selectedLanguage = newSelectedLanguage;
                 }
             }
 
@@ -330,7 +331,6 @@ namespace Windows11Settings.ViewModels.Pages
         private void RefreshTranslations()
         {
             var currentWindowItem = WindowSizeSelectedItem;
-            var currentLanguageItem = SelectedLanguage;
             
             InitializeWindowSizeItems();
             
@@ -353,7 +353,7 @@ namespace Windows11Settings.ViewModels.Pages
                 // Open GitHub releases page
                 var psi = new ProcessStartInfo
                 {
-                    FileName = "https://github.com/ThatUsernameAlreadyExist/Motion-Assistant-Power-Mod/releases",
+                    FileName = _localization["UpdateUrl"],
                     UseShellExecute = true
                 };
                 Process.Start(psi);
