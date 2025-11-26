@@ -1,5 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Media;
 using Avalonia.Threading;
 using Microsoft.Win32;
 using System;
@@ -40,7 +41,9 @@ namespace Windows11Settings.Views
                     if (screen == null) return;
 
                     var scaling = screen.Scaling;
-                    
+
+                    ApplyHighDpiUiScale(scaling);
+
                     // Desired window size in logical pixels
                     var desiredWidth = 1100;
                     var desiredHeight = 600;
@@ -109,6 +112,25 @@ namespace Windows11Settings.Views
             this.Closing += OnWindowClosing;
 
             // Handle window state changes (minimize button) - override OnPropertyChanged for WindowState
+        }
+
+        private void ApplyHighDpiUiScale(double scaling)
+        {
+            if (UiScaleRoot == null)
+                return;
+
+            // Limit UI scaling to 175%
+            if (scaling > 1.75)
+            {
+                double targetVisualScale = 1.75;
+                UiScaleRoot.Scale = targetVisualScale / scaling;
+
+                this.Classes.Add("HighDpiMode");
+            }
+            else
+            {
+                UiScaleRoot.Scale = 1.0;
+            }
         }
 
         private void ApplyWindowsScrollBarSetting()

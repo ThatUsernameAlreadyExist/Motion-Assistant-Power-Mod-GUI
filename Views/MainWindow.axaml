@@ -3,12 +3,15 @@
         xmlns:vm="using:Windows11Settings.ViewModels"
         xmlns:views="using:Windows11Settings.Views.Pages"
         x:Class="Windows11Settings.Views.MainWindow"
+        xmlns:local="clr-namespace:Windows11Settings.Controls"
         Icon="/Resources/icon.ico"
         Width="1100"
         Height="600"
-        MinWidth="800"
-        MinHeight="550"
+        MinWidth="750"
+        MinHeight="350"
         WindowStartupLocation="CenterScreen">
+
+    <local:DpiScaleDecorator x:Name="UiScaleRoot">
 
     <Grid ColumnDefinitions="Auto,*">
         
@@ -30,7 +33,7 @@
                 <StackPanel Grid.Row="0" Margin="12,16,12,16">
                     
                     <!-- Top Bar with Hamburger and Title -->
-                    <Grid ColumnDefinitions="Auto,*" Margin="0,0,0,12">
+                    <Grid ColumnDefinitions="Auto,*" Margin="0,0,0,0">
                         <!-- Hamburger Button -->
                         <Button Grid.Column="0"
                                 Classes="hamburger-button"
@@ -56,7 +59,7 @@
                 </StackPanel>
 
                 <!-- Navigation Menu -->
-                <ScrollViewer Grid.Row="1" Margin="8,0,8,16">
+                <ScrollViewer Grid.Row="1" Margin="8,0,8,8">
                     <ItemsControl ItemsSource="{Binding MenuItems}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
@@ -162,4 +165,5 @@
         </ScrollViewer>
 
     </Grid>
+    </local:DpiScaleDecorator>
 </Window>
