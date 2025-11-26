@@ -178,6 +178,10 @@
         <Style Selector="Button.nav-button-collapsed.selected TextBlock">
             <Setter Property="FontWeight" Value="Normal" />
         </Style>
+
+        <Style Selector=".AlwaysShowScrollbars ScrollBar">
+            <Setter Property="AllowAutoHide" Value="False" />
+        </Style>
         
     </Application.Styles>
 </Application>

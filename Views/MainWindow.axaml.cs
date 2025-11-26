@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Threading;
+using Microsoft.Win32;
 using System;
 using System.Linq;
 using System.Threading;
@@ -17,6 +18,8 @@ namespace Windows11Settings.Views
         public MainWindow()
         {
             InitializeComponent();
+            ApplyWindowsScrollBarSetting();
+
             DataContext = new MainWindowViewModel();
 
             // Register this MainWindow and its ViewModel with GlobalAppManager
@@ -106,6 +109,55 @@ namespace Windows11Settings.Views
             this.Closing += OnWindowClosing;
 
             // Handle window state changes (minimize button) - override OnPropertyChanged for WindowState
+        }
+
+        private void ApplyWindowsScrollBarSetting()
+        {
+            if (ShouldAlwaysShowScrollbars())
+            {
+                // System: "Always show scrollbars" -> disable auto-hide in Avalonia
+                this.Classes.Add("AlwaysShowScrollbars");
+            }
+            else
+            {
+                // System: allow scrollbars to auto-hide -> use default behavior
+                this.Classes.Remove("AlwaysShowScrollbars");
+            }
+        }
+
+        public static bool ShouldAlwaysShowScrollbars()
+        {
+            try
+            {
+                // Windows 10/11 dynamic scrollbars setting:
+                // HKCU\Control Panel\Accessibility\DynamicScrollbars
+                //
+                // Typically:
+                //   1 = dynamic (auto-hide)
+                //   0 = always show
+                var key = Registry.CurrentUser.OpenSubKey(@"Control Panel\Accessibility");
+                if (key == null)
+                    return false; // default: auto-hide
+
+                var value = key.GetValue("DynamicScrollbars");
+
+                if (value is int intVal)
+                {
+                    return intVal == 0;
+                }
+
+                if (value is string s && int.TryParse(s, out int parsed))
+                {
+                    return parsed == 0;
+                }
+
+                return false;
+            }
+            catch
+            {
+                // If anything goes wrong, fall back to normal auto-hide behavior.
+                return false;
+            }
         }
 
 
