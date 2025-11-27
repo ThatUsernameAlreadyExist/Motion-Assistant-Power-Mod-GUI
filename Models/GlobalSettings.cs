@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using Windows11Settings.Managers;
 
@@ -19,6 +21,10 @@ namespace Windows11Settings.Models
         private bool _isMenuExpanded = true;
         private bool _isDarkTheme = false;
         private string _currentLanguage = "en";
+        
+        // Page visibility settings - stores pages that should be hidden
+        // All pages are visible by default, only hidden pages are stored in this list
+        private HashSet<string> _hiddenPages = new HashSet<string>();
 
         public static GlobalSettings Instance => _instance ?? (_instance = new GlobalSettings());
 
@@ -75,6 +81,48 @@ namespace Windows11Settings.Models
             }
         }
 
+        #region Page Visibility Methods
+
+        /// <summary>
+        /// Check if a page is visible
+        /// </summary>
+        /// <param name="pageName">The name of the page</param>
+        /// <returns>True if the page should be visible, false if hidden</returns>
+        public bool IsPageVisible(string pageName)
+        {
+            // Page is visible if it's not in the hidden pages list
+            return !_hiddenPages.Contains(pageName);
+        }
+
+        /// <summary>
+        /// Set the visibility of a page
+        /// </summary>
+        /// <param name="pageName">The name of the page</param>
+        /// <param name="isVisible">True to show the page, false to hide it</param>
+        public void SetPageVisibility(string pageName, bool isVisible)
+        {
+            bool wasVisible = IsPageVisible(pageName);
+            
+            if (isVisible)
+            {
+                // Remove from hidden pages if it exists
+                _hiddenPages.Remove(pageName);
+            }
+            else
+            {
+                // Add to hidden pages
+                _hiddenPages.Add(pageName);
+            }
+
+            // Only save and notify if the visibility actually changed
+            if (wasVisible != isVisible)
+            {
+                SaveSettings();
+            }
+        }
+
+        #endregion
+
         #endregion
 
         #region Settings Loading and Saving
@@ -130,6 +178,23 @@ namespace Windows11Settings.Models
                 _isDarkTheme = _iniFile.GetValue("UI", "IsDarkTheme", systemIsDarkTheme);
                 _currentLanguage = _iniFile.GetValue("UI", "CurrentLanguage", systemLanguage);
 
+                // Load page visibility settings - stored as comma-separated list of hidden pages
+                string hiddenPagesString = _iniFile.GetValue("UI", "HiddenPages", "");
+                _hiddenPages.Clear();
+
+                if (!string.IsNullOrEmpty(hiddenPagesString))
+                {
+                    var hiddenPages = hiddenPagesString.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                        .Select(p => p.Trim())
+                        .Where(p => !string.IsNullOrEmpty(p))
+                        .ToList();
+                    
+                    foreach (var page in hiddenPages)
+                    {
+                        _hiddenPages.Add(page);
+                    }
+                }
+
                 OnPropertyChanged(nameof(IsMenuExpanded));
                 OnPropertyChanged(nameof(IsDarkTheme));
                 OnPropertyChanged(nameof(CurrentLanguage));
@@ -154,6 +219,10 @@ namespace Windows11Settings.Models
                 _iniFile.SetValue("UI", "IsMenuExpanded", _isMenuExpanded.ToString());
                 _iniFile.SetValue("UI", "IsDarkTheme", _isDarkTheme.ToString());
                 _iniFile.SetValue("UI", "CurrentLanguage", _currentLanguage);
+
+                // Save page visibility settings as comma-separated list of hidden pages
+                string hiddenPagesString = string.Join(",", _hiddenPages);
+                _iniFile.SetValue("UI", "HiddenPages", hiddenPagesString);
             }
             catch (Exception ex)
             {
@@ -180,23 +249,6 @@ namespace Windows11Settings.Models
             {
                 System.Diagnostics.Debug.WriteLine($"Error applying settings to ViewModels: {ex.Message}");
             }
-        }
-
-        /// <summary>
-        /// Reset all settings to defaults
-        /// </summary>
-        public void ResetToDefaults()
-        {
-            _isMenuExpanded = true;
-            _isDarkTheme = false;
-            _currentLanguage = "en";
-
-            OnPropertyChanged(nameof(IsMenuExpanded));
-            OnPropertyChanged(nameof(IsDarkTheme));
-            OnPropertyChanged(nameof(CurrentLanguage));
-
-            SaveSettings();
-            ApplySettingsToViewModels();
         }
 
         #endregion

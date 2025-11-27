@@ -206,6 +206,53 @@
                             </ComboBox.ItemTemplate>
                         </ComboBox>
                     </Grid>
+                    
+                    <Separator Background="{DynamicResource BorderBrush}"/>
+                    
+                    <!-- Enabled Tab Pages Expander -->
+                    <Expander IsExpanded="False"
+                              HorizontalAlignment="Stretch"
+                              Background="Transparent">
+                        <Expander.Header>
+                            <TextBlock Text="{Binding $parent[Window].DataContext.Localization[EnabledTabPages]}"
+                                       FontSize="14"
+                                       FontWeight="SemiBold"/>
+                        </Expander.Header>
+                        
+                        <StackPanel Spacing="12" Margin="0,12,0,0">
+                            
+                            <!-- Description -->
+                            <TextBlock Text="{Binding $parent[Window].DataContext.Localization[EnabledTabPagesHint]}" 
+                                       FontSize="12"
+                                       Foreground="{DynamicResource SecondaryTextBrush}"
+                                       TextWrapping="Wrap"/>
+                            
+                            <!-- Dynamic Page Toggles -->
+                            <ItemsControl ItemsSource="{Binding $parent[Window].DataContext.AdvancedPageViewModel.PageVisibilitySettings}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel>
+                                            <Grid ColumnDefinitions="*,Auto">
+                                                <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                                    <TextBlock Text="{Binding DisplayName}" 
+                                                               FontWeight="Medium"
+                                                               FontSize="14"/>
+                                                </StackPanel>
+                                                <ToggleSwitch Grid.Column="1"
+                                                              IsChecked="{Binding IsVisible, Mode=TwoWay}"
+                                                              VerticalAlignment="Center"
+                                                              HorizontalAlignment="Right"
+                                                              Width="50"
+                                                              Height="34"
+                                                              Classes="toggle-switch"/>
+                                            </Grid>
+                                            <Separator Background="{DynamicResource BorderBrush}" Margin="0,8,0,8"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </Expander>
                 </StackPanel>
             </Expander>
         </Border>

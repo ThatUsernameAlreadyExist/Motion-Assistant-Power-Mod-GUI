@@ -1,16 +1,16 @@
+using Avalonia;
+using Avalonia.Media;
+using Avalonia.Styling;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using Windows11Settings.Managers;
 using Windows11Settings.Models;
 using Windows11Settings.Resources.Localization;
 using Windows11Settings.ViewModels.Pages;
-using Avalonia;
-using Avalonia.Media;
-using Avalonia.Styling;
-using Windows11Settings.Managers;
 
 namespace Windows11Settings.ViewModels
 {
@@ -63,14 +63,14 @@ namespace Windows11Settings.ViewModels
 
             MenuItems = new ObservableCollection<SettingsMenuItem>
             {
-                new SettingsMenuItem { Icon = "📈", TitleKey = "Monitoring", PageKey = "Monitoring", IsSelected = true },
-                new SettingsMenuItem { Icon = "🖥️", TitleKey = "CPU", PageKey = "CPU" },
-                new SettingsMenuItem { Icon = "🕹️", TitleKey = "GPU", PageKey = "GPU" },
-                new SettingsMenuItem { Icon = "❄️", TitleKey = "Fan", PageKey = "Fan" },
-                new SettingsMenuItem { Icon = "🔄", TitleKey = "Gyroscope", PageKey = "Gyroscope" },
-                new SettingsMenuItem { Icon = "🎞️", TitleKey = "OSDOverlay", PageKey = "OSDOverlay" },
-                new SettingsMenuItem { Icon = "📋", TitleKey = "ProcessProfiles", PageKey = "ProcessProfiles" },
-                new SettingsMenuItem { Icon = "⚙️", TitleKey = "Advanced", PageKey = "Advanced" }
+                new SettingsMenuItem { Icon = "📈", PageKey = "Monitoring", IsSelected = true },
+                new SettingsMenuItem { Icon = "🖥️", PageKey = "CPU" },
+                new SettingsMenuItem { Icon = "🕹️", PageKey = "GPU" },
+                new SettingsMenuItem { Icon = "❄️", PageKey = "Fan" },
+                new SettingsMenuItem { Icon = "🔄", PageKey = "Gyroscope" },
+                new SettingsMenuItem { Icon = "🎞️", PageKey = "OSDOverlay" },
+                new SettingsMenuItem { Icon = "📋", PageKey = "ProcessProfiles" },
+                new SettingsMenuItem { Icon = "⚙️", PageKey = "Advanced" }
             };
 
             // Subscribe to profile changes to update badge
@@ -81,12 +81,17 @@ namespace Windows11Settings.ViewModels
             
             // Load settings from GlobalSettings
             ApplyGlobalSettings();
-            
+
+            SelectVisiblePage();
+
             UpdateThemeColors();
-            
+                       
             // Register with GlobalAppManager for cross-page communication
             GlobalAppManager.Instance.MainViewModel = this;
             GlobalAppManager.Instance.RegisterPageViewModel(AdvancedPageViewModel);
+            
+            // Refresh page visibility settings now that MainViewModel is available
+            AdvancedPageViewModel.RefreshPageVisibilitySettings();
         }
 
         public LocalizationManager Localization => _localization;
@@ -331,6 +336,44 @@ namespace Windows11Settings.ViewModels
             {
                 _localization.CurrentLanguage = settings.CurrentLanguage;
             }
+            
+            // Apply page visibility settings
+            UpdatePageVisibility();
+        }
+
+        private void SelectVisiblePage()
+        {
+            if (!GlobalSettings.Instance.IsPageVisible(SelectedPage))
+            {
+                foreach (var item in MenuItems)
+                {
+                    if (GlobalSettings.Instance.IsPageVisible(item.PageKey))
+                    {
+                        SelectPage(item.PageKey);
+                        break;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Update menu item visibility based on GlobalSettings
+        /// </summary>
+        public void UpdatePageVisibility()
+        {
+            var settings = GlobalSettings.Instance;
+            
+            foreach (var item in MenuItems)
+            {
+                // Use the flexible page visibility method
+                item.IsVisible = settings.IsPageVisible(item.PageKey);
+            }
+            
+            // Recalculate menu width since visibility may have changed
+            OnPropertyChanged(nameof(MenuWidth));
+            
+            // Notify that MenuItems collection may have changed (for visibility bindings)
+            OnPropertyChanged(nameof(MenuItems));
         }
 
         /// <summary>

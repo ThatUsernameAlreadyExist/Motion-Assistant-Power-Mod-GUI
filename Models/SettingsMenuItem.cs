@@ -8,6 +8,7 @@ namespace Windows11Settings.Models
     {
         private bool _isSelected;
         private bool _hasUnsavedChanges;
+        private bool _isVisible = true;
         private readonly LocalizationManager _localization;
 
         public SettingsMenuItem()
@@ -17,10 +18,9 @@ namespace Windows11Settings.Models
         }
 
         public string Icon { get; set; } = string.Empty;
-        public string TitleKey { get; set; } = string.Empty;
         public string PageKey { get; set; } = string.Empty;
 
-        public string Title => _localization[TitleKey];
+        public string Title => _localization[PageKey];
 
         public bool IsSelected
         {
@@ -43,6 +43,19 @@ namespace Windows11Settings.Models
                 if (_hasUnsavedChanges != value)
                 {
                     _hasUnsavedChanges = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public bool IsVisible
+        {
+            get => _isVisible;
+            set
+            {
+                if (_isVisible != value)
+                {
+                    _isVisible = value;
                     OnPropertyChanged();
                 }
             }

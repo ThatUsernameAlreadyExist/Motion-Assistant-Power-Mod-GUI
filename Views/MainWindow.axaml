@@ -63,7 +63,7 @@
                     <ItemsControl ItemsSource="{Binding MenuItems}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Panel>
+                                <Panel IsVisible="{Binding IsVisible}">
                                     <!-- Expanded Menu Item -->
                                     <Button Classes="nav-button"
                                             Classes.selected="{Binding IsSelected}"

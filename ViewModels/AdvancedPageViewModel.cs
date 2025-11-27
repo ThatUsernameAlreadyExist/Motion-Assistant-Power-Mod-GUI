@@ -7,7 +7,6 @@ using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Windows11Settings.Managers;
 using Windows11Settings.Resources.Localization;
-using Windows11Settings.ViewModels;
 using Windows11Settings.Models;
 
 namespace Windows11Settings.ViewModels.Pages
@@ -24,6 +23,9 @@ namespace Windows11Settings.ViewModels.Pages
         private string _maVersion = "Motion Assistant";
         private string _modVersion = "Power Mod";
         private ComboBoxItemModel _selectedLanguage;
+        
+        // Page visibility settings - dynamic collection that can work with any page names
+        private ObservableCollection<PageVisibilityModel> _pageVisibilitySettings = new ObservableCollection<PageVisibilityModel>();
 
         // Read-only state properties for controls
         private bool _isReadOnlyAddToSystemAutorun = false;
@@ -46,7 +48,56 @@ namespace Windows11Settings.ViewModels.Pages
             GlobalAppManager.Instance.RegisterPageViewModel(this);
         }
 
+        /// <summary>
+        /// Refresh page visibility settings when MainViewModel becomes available
+        /// </summary>
+        public void RefreshPageVisibilitySettings()
+        {
+            var settings = GlobalSettings.Instance;
+            var mainViewModel = GlobalAppManager.Instance.MainViewModel;
+            
+            if (mainViewModel?.MenuItems == null)
+                return;
+
+            // Dispose of existing models to avoid memory leaks
+            foreach (var existingModel in _pageVisibilitySettings.ToList())
+            {
+                existingModel.Dispose();
+            }
+                
+            _pageVisibilitySettings.Clear();
+            
+            // Get all pages from the main window menu items (excluding Advanced as it's always visible)
+            foreach (var menuItem in mainViewModel.MenuItems.Where(item => item.PageKey != "Advanced"))
+            {
+                var pageModel = new PageVisibilityModel(_localization)
+                {
+                    PageName = menuItem.PageKey,
+                    IsVisible = settings.IsPageVisible(menuItem.PageKey)
+                };
+                
+                // Subscribe to property changes
+                pageModel.PropertyChanged += (s, e) =>
+                {
+                    if (e.PropertyName == nameof(PageVisibilityModel.IsVisible))
+                    {
+                        var model = s as PageVisibilityModel;
+                        OnPageVisibilityChanged(model.PageName, model.IsVisible);
+                    }
+                };
+                
+                _pageVisibilitySettings.Add(pageModel);
+            }
+            
+            OnPropertyChanged(nameof(PageVisibilitySettings));
+        }
+
         public LocalizationManager Localization => _localization;
+
+        /// <summary>
+        /// Collection of page visibility settings for all available pages
+        /// </summary>
+        public ObservableCollection<PageVisibilityModel> PageVisibilitySettings => _pageVisibilitySettings;
 
         public ObservableCollection<ComboBoxItemModel> LanguageItems { get; } = new ObservableCollection<ComboBoxItemModel>();
 
@@ -240,6 +291,25 @@ namespace Windows11Settings.ViewModels.Pages
             }
         }
 
+        #region Page Visibility Methods
+
+        /// <summary>
+        /// Handle page visibility changes from the UI
+        /// </summary>
+        /// <param name="pageName">The name of the page that changed</param>
+        /// <param name="isVisible">New visibility state</param>
+        public void OnPageVisibilityChanged(string pageName, bool isVisible)
+        {
+            var settings = GlobalSettings.Instance;
+            settings.SetPageVisibility(pageName, isVisible);
+
+            // Trigger page visibility update across the application
+            GlobalAppManager.Instance.MainViewModel?.UpdatePageVisibility();
+        }
+
+
+        #endregion
+
         #region Read-Only Control Properties
 
         public bool IsReadOnlyAddToSystemAutorun
@@ -343,7 +413,6 @@ namespace Windows11Settings.ViewModels.Pages
                     WindowSizeSelectedItem = newWindowItem;
                 }
             }
-
         }
 
         private void CheckForUpdates()
