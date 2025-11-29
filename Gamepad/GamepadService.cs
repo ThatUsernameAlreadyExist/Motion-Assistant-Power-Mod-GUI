@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Threading;
 using SharpDX.XInput;
 
-namespace Windows11Settings.Gamepad
+namespace PmGui.Gamepad
 {
     public enum GamepadButton
     {

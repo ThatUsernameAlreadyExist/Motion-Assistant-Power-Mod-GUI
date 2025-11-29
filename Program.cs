@@ -1,7 +1,7 @@
 using Avalonia;
 using System;
 
-namespace Windows11Settings
+namespace PmGui
 {
     internal class Program
     {

@@ -8,11 +8,11 @@ using Avalonia.Threading;
 using Avalonia.VisualTree;
 using System;
 using System.Linq;
-using Windows11Settings.Models;
-using Windows11Settings.ViewModels;
-using Windows11Settings.Views;
+using PmGui.Models;
+using PmGui.ViewModels;
+using PmGui.Views;
 
-namespace Windows11Settings.Gamepad
+namespace PmGui.Gamepad
 {
     public enum NavigationContext
     {

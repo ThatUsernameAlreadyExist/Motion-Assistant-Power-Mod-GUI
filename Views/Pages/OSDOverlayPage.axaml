@@ -1,8 +1,8 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:converters="using:Windows11Settings.Converters"
-             xmlns:helpers="using:Windows11Settings.Helpers"
-             x:Class="Windows11Settings.Views.Pages.OSDOverlayPage">
+             xmlns:converters="using:PmGui.Converters"
+             xmlns:helpers="using:PmGui.Helpers"
+             x:Class="PmGui.Views.Pages.OSDOverlayPage">
 
     <UserControl.Resources>
         <converters:InvertBooleanConverter x:Key="InvertBooleanConverter"/>

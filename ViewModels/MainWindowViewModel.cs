@@ -7,12 +7,12 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
-using Windows11Settings.Managers;
-using Windows11Settings.Models;
-using Windows11Settings.Resources.Localization;
-using Windows11Settings.ViewModels.Pages;
+using PmGui.Managers;
+using PmGui.Models;
+using PmGui.Resources.Localization;
+using PmGui.ViewModels.Pages;
 
-namespace Windows11Settings.ViewModels
+namespace PmGui.ViewModels
 {
     public class MainWindowViewModel : INotifyPropertyChanged
     {

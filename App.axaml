@@ -1,7 +1,7 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:converters="using:Windows11Settings.Converters"
-             x:Class="Windows11Settings.App">
+             xmlns:converters="using:PmGui.Converters"
+             x:Class="PmGui.App">
     
     <Application.Resources>
         <converters:EqualsConverter x:Key="EqualsConverter"/>

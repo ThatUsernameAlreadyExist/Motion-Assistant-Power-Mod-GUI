@@ -3,7 +3,7 @@ using System;
 using System.Windows.Input;
 
 
-namespace Windows11Settings.ViewModels.Pages
+namespace PmGui.ViewModels.Pages
 {
     public class RelayCommand : ICommand
     {

@@ -2,7 +2,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
 
-namespace Windows11Settings.Controls
+namespace PmGui.Controls
 {
     public class DpiScaleDecorator : Decorator
     {

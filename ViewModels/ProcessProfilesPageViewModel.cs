@@ -6,11 +6,11 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Windows11Settings.Managers;
-using Windows11Settings.Resources.Localization;
-using Windows11Settings.ViewModels;
+using PmGui.Managers;
+using PmGui.Resources.Localization;
+using PmGui.ViewModels;
 
-namespace Windows11Settings.ViewModels.Pages
+namespace PmGui.ViewModels.Pages
 {
     public class ProcessProfilesPageViewModel : INotifyPropertyChanged
     {

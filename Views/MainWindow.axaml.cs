@@ -6,13 +6,13 @@ using Microsoft.Win32;
 using System;
 using System.Linq;
 using System.Threading;
-using Windows11Settings.Managers;
-using Windows11Settings.ViewModels;
-using Windows11Settings.ViewModels.Pages;
-using Windows11Settings.Gamepad;
-using Windows11Settings.Models;
+using PmGui.Managers;
+using PmGui.ViewModels;
+using PmGui.ViewModels.Pages;
+using PmGui.Gamepad;
+using PmGui.Models;
 
-namespace Windows11Settings.Views
+namespace PmGui.Views
 {
     public partial class MainWindow : Window
     {

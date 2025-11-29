@@ -3,10 +3,10 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using Windows11Settings.Managers;
-using Windows11Settings.Resources.Localization;
+using PmGui.Managers;
+using PmGui.Resources.Localization;
 
-namespace Windows11Settings.ViewModels.Pages
+namespace PmGui.ViewModels.Pages
 {
     public class GyroscopePageViewModel : INotifyPropertyChanged
     {

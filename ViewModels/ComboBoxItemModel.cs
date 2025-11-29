@@ -1,7 +1,7 @@
 // ViewModels/ComboBoxItemModel.cs
 using System;
 
-namespace Windows11Settings.ViewModels
+namespace PmGui.ViewModels
 {
     public class ComboBoxItemModel
     {

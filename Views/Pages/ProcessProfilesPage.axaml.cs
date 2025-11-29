@@ -1,11 +1,11 @@
 using Avalonia.Controls;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
-using Windows11Settings.ViewModels;
-using Windows11Settings.ViewModels.Pages;
+using PmGui.ViewModels;
+using PmGui.ViewModels.Pages;
 using System.Threading.Tasks;
 
-namespace Windows11Settings.Views.Pages
+namespace PmGui.Views.Pages
 {
     public partial class ProcessProfilesPage : UserControl
     {
@@ -34,7 +34,7 @@ namespace Windows11Settings.Views.Pages
 
         private async Task<string> ShowInputDialogAsync(Window owner)
         {
-            var localization = Windows11Settings.Resources.Localization.LocalizationManager.Instance;
+            var localization = PmGui.Resources.Localization.LocalizationManager.Instance;
             
             var dialog = new Window
             {

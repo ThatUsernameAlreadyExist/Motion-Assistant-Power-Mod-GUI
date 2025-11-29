@@ -4,16 +4,16 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.Controls.Shapes;
-using Windows11Settings.Resources.Localization;
-using Windows11Settings.ViewModels;
-using Windows11Settings.ViewModels.Pages;
-using Windows11Settings.Managers;
+using PmGui.Resources.Localization;
+using PmGui.ViewModels;
+using PmGui.ViewModels.Pages;
+using PmGui.Managers;
 using System;
 using System.Collections.Generic;
 using System.Timers;
 using System.Reflection;
 
-namespace Windows11Settings.Views.Pages
+namespace PmGui.Views.Pages
 {
     public partial class FanPage : UserControl
     {

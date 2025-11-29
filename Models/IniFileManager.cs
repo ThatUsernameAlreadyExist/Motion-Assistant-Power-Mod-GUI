@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Windows11Settings.Models
+namespace PmGui.Models
 {
     /// <summary>
     /// Simple INI file manager for reading and writing configuration files

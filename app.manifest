@@ -2,7 +2,7 @@
 <assembly manifestVersion="1.0" xmlns="urn:schemas-microsoft-com:asm.v1">
   <!-- This manifest is used on Windows only.
        Don't remove it as it contains important features for Windows -->
-  <assemblyIdentity version="1.0.0.0" name="Windows11Settings.app"/>
+  <assemblyIdentity version="1.0.0.0" name="PmGui.app"/>
 
   <compatibility xmlns="urn:schemas-microsoft-com:compatibility.v1">
     <application>

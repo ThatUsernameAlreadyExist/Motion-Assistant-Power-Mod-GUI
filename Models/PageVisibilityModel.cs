@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using Windows11Settings.Resources.Localization;
+using PmGui.Resources.Localization;
 
 /// <summary>
 /// Model for page visibility settings

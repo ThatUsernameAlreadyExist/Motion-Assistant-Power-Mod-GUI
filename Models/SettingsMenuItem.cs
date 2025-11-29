@@ -1,8 +1,8 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using Windows11Settings.Resources.Localization;
+using PmGui.Resources.Localization;
 
-namespace Windows11Settings.Models
+namespace PmGui.Models
 {
     public class SettingsMenuItem : INotifyPropertyChanged
     {

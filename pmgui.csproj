@@ -4,7 +4,7 @@
     <TargetFramework>net48</TargetFramework>
     <Nullable>disable</Nullable>
     <Platforms>AnyCPU;x64</Platforms>
-    <StartupObject>Windows11Settings.Program</StartupObject>
+    <StartupObject>PmGui.Program</StartupObject>
     <ApplicationIcon>Resources\icon.ico</ApplicationIcon>
     <Authors>https://github.com/ThatUsernameAlreadyExist/</Authors>
     <Description>PowerMod GUI for Motion Assistant</Description>

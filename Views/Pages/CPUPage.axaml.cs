@@ -2,12 +2,12 @@ using Avalonia.Controls;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Input;
-using Windows11Settings.ViewModels;
-using Windows11Settings.Managers;
+using PmGui.ViewModels;
+using PmGui.Managers;
 using System;
 using System.Reflection;
 
-namespace Windows11Settings.Views.Pages
+namespace PmGui.Views.Pages
 {
     public partial class CPUPage : UserControl
     {

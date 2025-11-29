@@ -3,10 +3,10 @@ using System;
 using System.ComponentModel;
 using System.Globalization;
 using System.Runtime.CompilerServices;
-using Windows11Settings.Managers;
-using Windows11Settings.Resources.Localization;
+using PmGui.Managers;
+using PmGui.Resources.Localization;
 
-namespace Windows11Settings.ViewModels
+namespace PmGui.ViewModels
 {
     public class MonitoringPageViewModel : INotifyPropertyChanged
     {

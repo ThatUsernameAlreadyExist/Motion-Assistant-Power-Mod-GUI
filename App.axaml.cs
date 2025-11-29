@@ -4,12 +4,12 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Avalonia.Styling;
 using System;
-using Windows11Settings.Gamepad;
-using Windows11Settings.Managers;
-using Windows11Settings.Models;
-using Windows11Settings.Views;
+using PmGui.Gamepad;
+using PmGui.Managers;
+using PmGui.Models;
+using PmGui.Views;
 
-namespace Windows11Settings
+namespace PmGui
 {
     public partial class App : Application
     {

@@ -6,11 +6,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using Windows11Settings.ViewModels;
-using Windows11Settings.ViewModels.Pages;
+using PmGui.ViewModels;
+using PmGui.ViewModels.Pages;
 using static BidirectionalPipe.ActorModel.ActorPipe;
 
-namespace Windows11Settings.Managers
+namespace PmGui.Managers
 {
     /// <summary>
     /// Global application manager that provides centralized access to window management and cross-page communication.

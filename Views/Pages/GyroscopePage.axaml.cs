@@ -1,6 +1,6 @@
 using Avalonia.Controls;
 
-namespace Windows11Settings.Views.Pages
+namespace PmGui.Views.Pages
 {
     public partial class GyroscopePage : UserControl
     {

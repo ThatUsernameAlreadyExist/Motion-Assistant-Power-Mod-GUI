@@ -4,10 +4,10 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using Windows11Settings.Managers;
-using Windows11Settings.Models;
+using PmGui.Managers;
+using PmGui.Models;
 
-namespace Windows11Settings.Resources.Localization
+namespace PmGui.Resources.Localization
 {
     public class LocalizationManager : INotifyPropertyChanged
     {

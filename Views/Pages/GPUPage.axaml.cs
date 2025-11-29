@@ -2,14 +2,14 @@ using Avalonia.Controls;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Input;
-using Windows11Settings.Resources.Localization;
-using Windows11Settings.ViewModels;
-using Windows11Settings.Managers;
+using PmGui.Resources.Localization;
+using PmGui.ViewModels;
+using PmGui.Managers;
 using System;
-using Windows11Settings.ViewModels.Pages;
+using PmGui.ViewModels.Pages;
 using System.Reflection;
 
-namespace Windows11Settings.Views.Pages
+namespace PmGui.Views.Pages
 {
     public partial class GPUPage : UserControl
     {

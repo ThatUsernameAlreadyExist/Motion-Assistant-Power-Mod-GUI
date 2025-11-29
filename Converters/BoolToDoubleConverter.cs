@@ -2,7 +2,7 @@ using Avalonia.Data.Converters;
 using System;
 using System.Globalization;
 
-namespace Windows11Settings.Converters
+namespace PmGui.Converters
 {
     public class BoolToDoubleConverter : IValueConverter
     {

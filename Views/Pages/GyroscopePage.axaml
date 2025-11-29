@@ -1,7 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:helpers="using:Windows11Settings.Helpers"
-             x:Class="Windows11Settings.Views.Pages.GyroscopePage">
+             xmlns:helpers="using:PmGui.Helpers"
+             x:Class="PmGui.Views.Pages.GyroscopePage">
     
     <StackPanel Margin="40,16">
         

@@ -1,10 +1,10 @@
 using Avalonia;
 using Avalonia.Controls;
 using System;
-using Windows11Settings.Managers;
-using Windows11Settings.ViewModels;
+using PmGui.Managers;
+using PmGui.ViewModels;
 
-namespace Windows11Settings.Views.Pages
+namespace PmGui.Views.Pages
 {
     public partial class MonitoringPage : UserControl
     {

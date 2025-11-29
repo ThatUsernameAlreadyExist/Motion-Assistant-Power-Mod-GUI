@@ -4,9 +4,9 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using Windows11Settings.Managers;
+using PmGui.Managers;
 
-namespace Windows11Settings.Models
+namespace PmGui.Models
 {
     /// <summary>
     /// Global settings manager that handles loading and saving settings from/to pmgui.ini
