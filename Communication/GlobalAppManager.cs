@@ -309,6 +309,9 @@ namespace PmGui.Managers
         public void SendCmdEnableGyroscope(bool value) => SendCommand(value);
         public void SendCmdAutoEnableGyroscopeOnStart(bool value) => SendCommand(value);
         public void SendCmdHighPrecisionGyroscope(bool value) => SendCommand(value);
+        public void SendCmdSwapXandYAxis(bool value) => SendCommand(value);
+        public void SendCmdInvertXAxis(bool value) => SendCommand(value);
+        public void SendCmdInvertYAxis(bool value) => SendCommand(value);
         public void SendCmdDisableBoschAccelerometer(bool value) => SendCommand(value);
         public void SendCmdGyroscopeActivationButton(int value) => SendCommand(value);
         public void SendCmdPowerLineTdpValue(double value) => SendCommand(value);
@@ -372,6 +375,9 @@ namespace PmGui.Managers
         private void ReceiveCmdEnableGyroscope(bool value) => ExecuteOnPageViewModel<GyroscopePageViewModel>(vm => { vm.EnableGyroscope = value; });
         private void ReceiveCmdAutoEnableGyroscopeOnStart(bool value) => ExecuteOnPageViewModel<GyroscopePageViewModel>(vm => { vm.AutoEnableGyroscopeOnStart = value; });
         private void ReceiveCmdHighPrecisionGyroscope(bool value) => ExecuteOnPageViewModel<GyroscopePageViewModel>(vm => { vm.HighPrecisionGyroscope = value; });
+        private void ReceiveCmdSwapXandYAxis(bool value) => ExecuteOnPageViewModel<GyroscopePageViewModel>(vm => { vm.SwapXandYAxis = value; });
+        private void ReceiveCmdInvertXAxis(bool value) => ExecuteOnPageViewModel<GyroscopePageViewModel>(vm => { vm.InvertXAxis = value; });
+        private void ReceiveCmdInvertYAxis(bool value) => ExecuteOnPageViewModel<GyroscopePageViewModel>(vm => { vm.InvertYAxis = value; });
         private void ReceiveCmdDisableBoschAccelerometer(bool value) => ExecuteOnPageViewModel<GyroscopePageViewModel>(vm => { vm.DisableBoschAccelerometer = value; });
         private void ReceiveCmdGyroscopeActivationButton(int value) => ExecuteOnPageViewModel<GyroscopePageViewModel>(vm => { if (vm.GyroscopeActivationButtonItems != null) { var item = vm.GyroscopeActivationButtonItems.FirstOrDefault(x => x.Value == value); vm.GyroscopeActivationButtonSelectedItem = item; } });
         private void ReceiveCmdPowerLineTdpValue(double value) => ExecuteOnPageViewModel<CPUPageViewModel>(vm => { vm.PowerLineTdpValue = value; });
@@ -556,6 +562,9 @@ namespace PmGui.Managers
             ReceiveReadOnlyEnableGyroscope(value);
             ReceiveReadOnlyAutoEnableGyroscopeOnStart(value);
             ReceiveReadOnlyHighPrecisionGyroscope(value);
+            ReceiveReadOnlySwapXandYAxis(value);
+            ReceiveReadOnlyInvertXAxis(value);
+            ReceiveReadOnlyInvertYAxis(value);
             ReceiveReadOnlyDisableBoschAccelerometer(value);
             ReceiveReadOnlyGyroscopeActivationButton(value);
 
@@ -884,6 +893,30 @@ namespace PmGui.Managers
             ExecuteOnPageViewModel<GyroscopePageViewModel>(vm =>
             {
                 vm.IsReadOnlyHighPrecisionGyroscope = state;
+            });
+        }
+
+        public void ReceiveReadOnlySwapXandYAxis(bool state)
+        {
+            ExecuteOnPageViewModel<GyroscopePageViewModel>(vm =>
+            {
+                vm.IsReadOnlySwapXandYAxis = state;
+            });
+        }
+
+        public void ReceiveReadOnlyInvertXAxis(bool state)
+        {
+            ExecuteOnPageViewModel<GyroscopePageViewModel>(vm =>
+            {
+                vm.IsReadOnlyInvertXAxis = state;
+            });
+        }
+
+        public void ReceiveReadOnlyInvertYAxis(bool state)
+        {
+            ExecuteOnPageViewModel<GyroscopePageViewModel>(vm =>
+            {
+                vm.IsReadOnlyInvertYAxis = state;
             });
         }
 

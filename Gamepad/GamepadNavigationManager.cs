@@ -37,7 +37,7 @@ namespace PmGui.Gamepad
         private bool _disposed;
 
         private const int InitialRepeatDelayMs = 600;
-        private const int RepeatIntervalMs = 80;
+        private const int RepeatIntervalMs = 100;
 
         public NavigationContext CurrentContext => _currentContext;
         public bool IsConnected => _gamepadService?.IsConnected ?? false;
@@ -69,7 +69,7 @@ namespace PmGui.Gamepad
             _gamepadService.Disconnected += (s, e) => Dispatcher.UIThread.Post(() => GamepadDisconnected?.Invoke(this, EventArgs.Empty));
             _gamepadService.Start();
 
-            Dispatcher.UIThread.Post(() =>
+            Dispatcher.UIThread?.Post(() =>
             {
                 _repeatTimer = _repeatTimer ?? new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(100) };
                 _repeatTimer.Tick += OnRepeatTick;
@@ -79,13 +79,16 @@ namespace PmGui.Gamepad
 
         public void Stop()
         {
-            Dispatcher.UIThread.Post(() => _repeatTimer?.Stop());
+            Dispatcher.UIThread?.Post(() => _repeatTimer?.Stop());
 
-            if (_gamepadService != null)
+            var localService = _gamepadService;
+
+            _gamepadService = null;
+
+            if (localService != null)
             {
-                _gamepadService.Stop();
-                _gamepadService.Dispose();
-                _gamepadService = null;
+                localService.Stop();
+                localService.Dispose();
             }
 
             _heldButton = GamepadButton.None;

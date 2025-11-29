@@ -3,14 +3,15 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Threading;
 using Microsoft.Win32;
-using System;
-using System.Linq;
-using System.Threading;
+using PmGui.Gamepad;
 using PmGui.Managers;
+using PmGui.Models;
 using PmGui.ViewModels;
 using PmGui.ViewModels.Pages;
-using PmGui.Gamepad;
-using PmGui.Models;
+using System;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Threading;
 
 namespace PmGui.Views
 {
@@ -132,11 +133,11 @@ namespace PmGui.Views
             {
                 if (value && GlobalSettings.Instance.UseGamepad)
                 {
-                    _gamepadNav.Start();
+                    _gamepadNav?.Start();
                 }
                 else
                 {
-                    _gamepadNav.Stop();
+                    _gamepadNav?.Stop();
                 }
             }
         }

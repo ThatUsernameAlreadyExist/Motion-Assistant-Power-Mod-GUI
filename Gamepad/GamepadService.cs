@@ -152,9 +152,13 @@ namespace PmGui.Gamepad
                             ProcessState(state, _previousState);
                             _previousState = state;
                         }
-                    }
 
-                    Thread.Sleep(PollIntervalMs);
+                        Thread.Sleep(PollIntervalMs);
+                    }
+                    else
+                    {
+                        Thread.Sleep(500);
+                    }
                 }
                 catch
                 {

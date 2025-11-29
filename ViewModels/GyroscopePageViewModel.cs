@@ -15,11 +15,17 @@ namespace PmGui.ViewModels.Pages
         private bool _enableGyroscope = false;
         private bool _autoEnableGyroscopeOnStart = false;
         private bool _highPrecisionGyroscope = false;
+        private bool _swapXandYAxis = false;
+        private bool _invertXAxis = false;
+        private bool _invertYAxis = false;
         private bool _disableBoschAccelerometer = false;
 
         private bool _isReadOnlyEnableGyroscope = false;
         private bool _isReadOnlyAutoEnableGyroscopeOnStart = false;
         private bool _isReadOnlyHighPrecisionGyroscope = false;
+        private bool _isReadOnlySwapXandYAxis = false;
+        private bool _isReadOnlyInvertXAxis = false;
+        private bool _isReadOnlyInvertYAxis = false;
         private bool _isReadOnlyDisableBoschAccelerometer = false;
 
         private ObservableCollection<ComboBoxItemModel> _gyroscopeActivationButtonItems;
@@ -93,6 +99,45 @@ namespace PmGui.ViewModels.Pages
             }
         }
 
+        public bool SwapXandYAxis
+        {
+            get => _swapXandYAxis;
+            set
+            {
+                if (_isReadOnlySwapXandYAxis) return;
+                if (SetProperty(ref _swapXandYAxis, value))
+                {
+                    GlobalAppManager.Instance.SendCmdSwapXandYAxis(value);
+                }
+            }
+        }
+
+        public bool InvertXAxis
+        {
+            get => _invertXAxis;
+            set
+            {
+                if (_isReadOnlyInvertXAxis) return;
+                if (SetProperty(ref _invertXAxis, value))
+                {
+                    GlobalAppManager.Instance.SendCmdInvertXAxis(value);
+                }
+            }
+        }
+
+        public bool InvertYAxis
+        {
+            get => _invertYAxis;
+            set
+            {
+                if (_isReadOnlyInvertYAxis) return;
+                if (SetProperty(ref _invertYAxis, value))
+                {
+                    GlobalAppManager.Instance.SendCmdInvertYAxis(value);
+                }
+            }
+        }
+
         public bool DisableBoschAccelerometer
         {
             get => _disableBoschAccelerometer;
@@ -146,6 +191,24 @@ namespace PmGui.ViewModels.Pages
         {
             get => _isReadOnlyHighPrecisionGyroscope;
             set => SetProperty(ref _isReadOnlyHighPrecisionGyroscope, value);
+        }
+
+        public bool IsReadOnlySwapXandYAxis
+        {
+            get => _isReadOnlySwapXandYAxis;
+            set => SetProperty(ref _isReadOnlySwapXandYAxis, value);
+        }
+
+        public bool IsReadOnlyInvertXAxis
+        {
+            get => _isReadOnlyInvertXAxis;
+            set => SetProperty(ref _isReadOnlyInvertXAxis, value);
+        }
+
+        public bool IsReadOnlyInvertYAxis
+        {
+            get => _isReadOnlyInvertYAxis;
+            set => SetProperty(ref _isReadOnlyInvertYAxis, value);
         }
 
         public bool IsReadOnlyDisableBoschAccelerometer

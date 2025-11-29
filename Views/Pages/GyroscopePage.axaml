@@ -64,7 +64,7 @@
                 
                 <!-- High Precision Gyroscope -->
                 <Grid ColumnDefinitions="*,Auto"
-                    IsVisible="{Binding GyroscopePageViewModel.IsGyroscopeActivationButtonVisible}">
+                    IsVisible="{Binding GyroscopePageViewModel.EnableGyroscope}">
                     <StackPanel Grid.Column="0" VerticalAlignment="Center">
                         <TextBlock Text="{Binding Localization[HighPrecisionGyroscope]}" 
                                    FontWeight="Medium"
@@ -80,6 +80,60 @@
                                   HorizontalAlignment="Right"
                                   OnContent=""
                                   OffContent=""/>
+                </Grid>
+                
+                <!-- Swap X and Y Axis -->
+                <Grid ColumnDefinitions="*,Auto"
+                    IsVisible="{Binding GyroscopePageViewModel.EnableGyroscope}">
+                    <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding Localization[SwapXandYAxis]}" 
+                                   FontWeight="Medium"
+                                   FontSize="14"/>
+                        <TextBlock Text="{Binding Localization[SwapXandYAxisDescription]}" 
+                                   FontSize="12"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"/>
+                    </StackPanel>
+                    <ToggleSwitch Grid.Column="1"
+                                  IsChecked="{Binding GyroscopePageViewModel.SwapXandYAxis, Mode=TwoWay}"
+                                  IsEnabled="{Binding $parent[Window].DataContext.GyroscopePageViewModel.IsReadOnlySwapXandYAxis, Converter={StaticResource InvertBooleanConverter}}"
+                                  VerticalAlignment="Center"
+                                  HorizontalAlignment="Right"/>
+                </Grid>
+                
+                <!-- Invert X Axis -->
+                <Grid ColumnDefinitions="*,Auto"
+                    IsVisible="{Binding GyroscopePageViewModel.EnableGyroscope}">
+                    <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding Localization[InvertXAxis]}" 
+                                   FontWeight="Medium"
+                                   FontSize="14"/>
+                        <TextBlock Text="{Binding Localization[InvertXAxisDescription]}" 
+                                   FontSize="12"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"/>
+                    </StackPanel>
+                    <ToggleSwitch Grid.Column="1"
+                                  IsChecked="{Binding GyroscopePageViewModel.InvertXAxis, Mode=TwoWay}"
+                                  IsEnabled="{Binding $parent[Window].DataContext.GyroscopePageViewModel.IsReadOnlyInvertXAxis, Converter={StaticResource InvertBooleanConverter}}"
+                                  VerticalAlignment="Center"
+                                  HorizontalAlignment="Right"/>
+                </Grid>
+                
+                <!-- Invert Y Axis -->
+                <Grid ColumnDefinitions="*,Auto"
+                    IsVisible="{Binding GyroscopePageViewModel.EnableGyroscope}">
+                    <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding Localization[InvertYAxis]}" 
+                                   FontWeight="Medium"
+                                   FontSize="14"/>
+                        <TextBlock Text="{Binding Localization[InvertYAxisDescription]}" 
+                                   FontSize="12"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"/>
+                    </StackPanel>
+                    <ToggleSwitch Grid.Column="1"
+                                  IsChecked="{Binding GyroscopePageViewModel.InvertYAxis, Mode=TwoWay}"
+                                  IsEnabled="{Binding $parent[Window].DataContext.GyroscopePageViewModel.IsReadOnlyInvertYAxis, Converter={StaticResource InvertBooleanConverter}}"
+                                  VerticalAlignment="Center"
+                                  HorizontalAlignment="Right"/>
                 </Grid>
                 
                 <Separator Background="{DynamicResource BorderBrush}"/>

@@ -64,10 +64,12 @@ namespace PmGui
                 // Show the window
                 if (desktop.MainWindow.WindowState != WindowState.Minimized)
                 {
+                    desktop.MainWindow.Topmost = true;
                     desktop.MainWindow.Show();
                     desktop.MainWindow.Activate();
                     desktop.MainWindow.BringIntoView();  // Ensures window is visible and in view
                     desktop.MainWindow.Focus();
+                    desktop.MainWindow.Topmost = false;
 
                     if (desktop.MainWindow is MainWindow mainWindow)
                     {
