@@ -41,9 +41,7 @@
                                   IsChecked="{Binding GPUPageViewModel.OptimizeGpuClocksEnabled}"
                                   IsEnabled="{Binding $parent[Window].DataContext.GPUPageViewModel.IsReadOnlyOptimizeGpuClocksEnabled, Converter={StaticResource InvertBooleanConverter}}"
                                   VerticalAlignment="Center"
-                                  HorizontalAlignment="Right"
-                                  OnContent=""
-                                  OffContent=""/>
+                                  HorizontalAlignment="Right"/>
                 </Grid>
                 
                 <!-- Additional controls (visible only when Optimize GPU is enabled) -->
@@ -92,9 +90,7 @@
                                       IsChecked="{Binding GPUPageViewModel.CustomGpuClocksRangeEnabled}"
                                       IsEnabled="{Binding $parent[Window].DataContext.GPUPageViewModel.IsReadOnlyCustomGpuClocksRangeEnabled, Converter={StaticResource InvertBooleanConverter}}"
                                       VerticalAlignment="Center"
-                                      HorizontalAlignment="Right"
-                                      OnContent=""
-                                      OffContent=""/>
+                                      HorizontalAlignment="Right"/>
                     </Grid>
                     
                 </StackPanel>

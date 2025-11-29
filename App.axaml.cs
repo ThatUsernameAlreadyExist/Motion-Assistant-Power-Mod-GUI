@@ -4,6 +4,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Avalonia.Styling;
 using System;
+using Windows11Settings.Gamepad;
 using Windows11Settings.Managers;
 using Windows11Settings.Models;
 using Windows11Settings.Views;
@@ -67,6 +68,12 @@ namespace Windows11Settings
                     desktop.MainWindow.Activate();
                     desktop.MainWindow.BringIntoView();  // Ensures window is visible and in view
                     desktop.MainWindow.Focus();
+
+                    if (desktop.MainWindow is MainWindow mainWindow)
+                    {
+                        // Set initial navigation context to menu
+                        mainWindow.GamepadNav.SetNavigationContext(NavigationContext.Menu);
+                    }
 
                     GlobalAppManager.Instance.SendCmdIsVisible(true);
                 }

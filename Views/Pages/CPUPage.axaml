@@ -473,8 +473,6 @@
                                   IsChecked="{Binding CPUPageViewModel.CPUBoostEnabled}"
                                   VerticalAlignment="Center"
                                   HorizontalAlignment="Right"
-                                  OnContent=""
-                                  OffContent=""
                                   IsEnabled="{Binding $parent[Window].DataContext.CPUPageViewModel.IsReadOnlyCPUBoostEnabled, Converter={StaticResource InvertBooleanConverter}}"/>
                 </Grid>
                 <Separator Background="{DynamicResource BorderBrush}"/>
@@ -493,8 +491,6 @@
                                   IsChecked="{Binding CPUPageViewModel.LoadPresetAtStartEnabled}"
                                   VerticalAlignment="Center"
                                   HorizontalAlignment="Right"
-                                  OnContent=""
-                                  OffContent=""
                                   IsEnabled="{Binding $parent[Window].DataContext.CPUPageViewModel.IsReadOnlyLoadPresetAtStartEnabled, Converter={StaticResource InvertBooleanConverter}}"/>
                 </Grid>
                 
@@ -514,8 +510,6 @@
                                   IsChecked="{Binding CPUPageViewModel.AutoOptimizeCpuFrequencyEnabled}"
                                   VerticalAlignment="Center"
                                   HorizontalAlignment="Right"
-                                  OnContent=""
-                                  OffContent=""
                                   IsEnabled="{Binding $parent[Window].DataContext.CPUPageViewModel.IsReadOnlyAutoOptimizeCpuFrequencyEnabled, Converter={StaticResource InvertBooleanConverter}}"/>
                 </Grid>
                 
@@ -535,8 +529,6 @@
                                   IsChecked="{Binding CPUPageViewModel.UniteBatteryAndPowerlineCPUPresetsEnabled}"
                                   VerticalAlignment="Center"
                                   HorizontalAlignment="Right"
-                                  OnContent=""
-                                  OffContent=""
                                   IsEnabled="{Binding $parent[Window].DataContext.CPUPageViewModel.IsReadOnlyUniteBatteryAndPowerlineCPUPresetsEnabled, Converter={StaticResource InvertBooleanConverter}}"/>
                 </Grid>
                 
@@ -556,8 +548,6 @@
                                   IsChecked="{Binding CPUPageViewModel.UniteBatteryAndPowerlineFPSLimitEnabled}"
                                   VerticalAlignment="Center"
                                   HorizontalAlignment="Right"
-                                  OnContent=""
-                                  OffContent=""
                                   IsEnabled="{Binding $parent[Window].DataContext.CPUPageViewModel.IsReadOnlyUniteBatteryAndPowerlineFPSLimitEnabled, Converter={StaticResource InvertBooleanConverter}}"/>
                 </Grid>
                 

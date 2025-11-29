@@ -21,6 +21,7 @@ namespace Windows11Settings.Models
         private bool _isMenuExpanded = true;
         private bool _isDarkTheme = false;
         private string _currentLanguage = "en";
+        private bool _useGamepad = true;
         
         // Page visibility settings - stores pages that should be hidden
         // All pages are visible by default, only hidden pages are stored in this list
@@ -62,7 +63,6 @@ namespace Windows11Settings.Models
                 {
                     SaveSettings();
                     NotifyMainWindowSettingsChanged();
-                    NotifyAdvancedPageSettingsChanged();
                 }
             }
         }
@@ -76,7 +76,18 @@ namespace Windows11Settings.Models
                 {
                     SaveSettings();
                     NotifyMainWindowSettingsChanged();
-                    NotifyAdvancedPageSettingsChanged();
+                }
+            }
+        }
+
+        public bool UseGamepad
+        {
+            get => _useGamepad;
+            set
+            {
+                if (SetProperty(ref _useGamepad, value))
+                {
+                    SaveSettings();
                 }
             }
         }
@@ -177,6 +188,7 @@ namespace Windows11Settings.Models
                 _isMenuExpanded = _iniFile.GetValue("UI", "IsMenuExpanded", true);
                 _isDarkTheme = _iniFile.GetValue("UI", "IsDarkTheme", systemIsDarkTheme);
                 _currentLanguage = _iniFile.GetValue("UI", "CurrentLanguage", systemLanguage);
+                _useGamepad = _iniFile.GetValue("UI", "UseGamepad", true);
 
                 // Load page visibility settings - stored as comma-separated list of hidden pages
                 string hiddenPagesString = _iniFile.GetValue("UI", "HiddenPages", "");
@@ -198,6 +210,7 @@ namespace Windows11Settings.Models
                 OnPropertyChanged(nameof(IsMenuExpanded));
                 OnPropertyChanged(nameof(IsDarkTheme));
                 OnPropertyChanged(nameof(CurrentLanguage));
+                OnPropertyChanged(nameof(UseGamepad));
 
                 // Apply settings to ViewModels
                 ApplySettingsToViewModels();
@@ -219,6 +232,7 @@ namespace Windows11Settings.Models
                 _iniFile.SetValue("UI", "IsMenuExpanded", _isMenuExpanded.ToString());
                 _iniFile.SetValue("UI", "IsDarkTheme", _isDarkTheme.ToString());
                 _iniFile.SetValue("UI", "CurrentLanguage", _currentLanguage);
+                _iniFile.SetValue("UI", "UseGamepad", _useGamepad.ToString());
 
                 // Save page visibility settings as comma-separated list of hidden pages
                 string hiddenPagesString = string.Join(",", _hiddenPages);
@@ -272,22 +286,6 @@ namespace Windows11Settings.Models
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"Error notifying MainWindow: {ex.Message}");
-            }
-        }
-
-        /// <summary>
-        /// Notify AdvancedPageViewModel that settings have changed
-        /// </summary>
-        private void NotifyAdvancedPageSettingsChanged()
-        {
-            try
-            {
-                // AdvancedPageViewModel will listen for these changes via the GlobalAppManager
-                GlobalAppManager.Instance?.OnSettingsChanged();
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"Error notifying AdvancedPage: {ex.Message}");
             }
         }
 

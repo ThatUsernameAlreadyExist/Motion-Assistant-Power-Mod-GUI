@@ -32,8 +32,6 @@
                                   IsEnabled="{Binding $parent[Window].DataContext.AdvancedPageViewModel.IsReadOnlyAddToSystemAutorun, Converter={StaticResource InvertBooleanConverter}}"
                                   VerticalAlignment="Center"
                                   HorizontalAlignment="Right"
-                                  Width="50"
-                                  Height="34"
                                   Classes="toggle-switch"/>
                 </Grid>
                 
@@ -78,8 +76,26 @@
                                   IsEnabled="{Binding $parent[Window].DataContext.AdvancedPageViewModel.IsReadOnlyDisableBluetoothInSleepMode, Converter={StaticResource InvertBooleanConverter}}"
                                   VerticalAlignment="Center"
                                   HorizontalAlignment="Right"
-                                  Width="50"
-                                  Height="34"
+                                  Classes="toggle-switch"/>
+                </Grid>
+
+                <Separator Background="{DynamicResource BorderBrush}"/>
+
+                <!-- Use Gamepad -->
+                <Grid ColumnDefinitions="*,Auto">
+                    <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding $parent[Window].DataContext.Localization[UseGamepad]}" 
+                                   FontWeight="Medium"
+                                   FontSize="14"/>
+                        <TextBlock Text="{Binding $parent[Window].DataContext.Localization[UseGamepadHint]}" 
+                                   FontSize="12"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"/>
+                    </StackPanel>
+                    <ToggleSwitch Grid.Column="1"
+                                  IsChecked="{Binding $parent[Window].DataContext.AdvancedPageViewModel.UseGamepad, Mode=TwoWay}"
+                                  IsEnabled="{Binding $parent[Window].DataContext.AdvancedPageViewModel.IsReadOnlyUseGamepad, Converter={StaticResource InvertBooleanConverter}}"
+                                  VerticalAlignment="Center"
+                                  HorizontalAlignment="Right"
                                   Classes="toggle-switch"/>
                 </Grid>
                 
@@ -114,8 +130,6 @@
                                       IsEnabled="{Binding $parent[Window].DataContext.AdvancedPageViewModel.IsReadOnlyUseNewInterface, Converter={StaticResource InvertBooleanConverter}}"
                                       VerticalAlignment="Center"
                                       HorizontalAlignment="Right"
-                                      Width="50"
-                                      Height="34"
                                       Classes="toggle-switch"/>
                     </Grid>
                     
@@ -133,8 +147,6 @@
                                       IsEnabled="{Binding $parent[Window].DataContext.IsReadOnlyIsDarkTheme, Converter={StaticResource InvertBooleanConverter}}"
                                       VerticalAlignment="Center"
                                       HorizontalAlignment="Right"
-                                      Width="50"
-                                      Height="34"
                                       Classes="toggle-switch"/>
                     </Grid>
                     
@@ -152,8 +164,6 @@
                                       IsEnabled="{Binding $parent[Window].DataContext.AdvancedPageViewModel.IsReadOnlyMinimizeToSystemTray, Converter={StaticResource InvertBooleanConverter}}"
                                       VerticalAlignment="Center"
                                       HorizontalAlignment="Right"
-                                      Width="50"
-                                      Height="34"
                                       Classes="toggle-switch"/>
                     </Grid>
                     
@@ -242,8 +252,6 @@
                                                               IsChecked="{Binding IsVisible, Mode=TwoWay}"
                                                               VerticalAlignment="Center"
                                                               HorizontalAlignment="Right"
-                                                              Width="50"
-                                                              Height="34"
                                                               Classes="toggle-switch"/>
                                             </Grid>
                                             <Separator Background="{DynamicResource BorderBrush}" Margin="0,8,0,8"/>

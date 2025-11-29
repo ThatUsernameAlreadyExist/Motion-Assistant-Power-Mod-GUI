@@ -27,9 +27,7 @@
                                   IsChecked="{Binding GyroscopePageViewModel.EnableGyroscope, Mode=TwoWay}"
                                   IsEnabled="{Binding $parent[Window].DataContext.GyroscopePageViewModel.IsReadOnlyEnableGyroscope, Converter={StaticResource InvertBooleanConverter}}"
                                   VerticalAlignment="Center"
-                                  HorizontalAlignment="Right"
-                                  OnContent=""
-                                  OffContent=""/>
+                                  HorizontalAlignment="Right"/>
                 </Grid>
                 
         <!-- Gyroscope Activation Button -->
@@ -100,9 +98,7 @@
                                   IsChecked="{Binding GyroscopePageViewModel.DisableBoschAccelerometer, Mode=TwoWay}"
                                   IsEnabled="{Binding $parent[Window].DataContext.GyroscopePageViewModel.IsReadOnlyDisableBoschAccelerometer, Converter={StaticResource InvertBooleanConverter}}"
                                   VerticalAlignment="Center"
-                                  HorizontalAlignment="Right"
-                                  OnContent=""
-                                  OffContent=""/>
+                                  HorizontalAlignment="Right"/>
                 </Grid>
                 
 

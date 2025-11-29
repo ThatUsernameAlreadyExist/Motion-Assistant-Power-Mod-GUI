@@ -32,9 +32,7 @@
                                   IsChecked="{Binding OSDOverlayPageViewModel.EnableOSDOverlay, Mode=TwoWay}"
                                   IsEnabled="{Binding $parent[Window].DataContext.OSDOverlayPageViewModel.IsReadOnlyEnableOSDOverlay, Converter={StaticResource InvertBooleanConverter}}"
                                   VerticalAlignment="Center"
-                                  HorizontalAlignment="Right"
-                                  OnContent=""
-                                  OffContent=""/>
+                                  HorizontalAlignment="Right"/>
                 </Grid>
                 
                 <Separator Background="{DynamicResource BorderBrush}"

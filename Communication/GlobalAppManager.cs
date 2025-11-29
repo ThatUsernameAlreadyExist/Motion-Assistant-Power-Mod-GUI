@@ -947,14 +947,18 @@ namespace Windows11Settings.Managers
 
         #region Settings Management
 
+
         /// <summary>
-        /// Called when global settings have changed
+        /// Called when gamepad setting has changed
         /// </summary>
-        public void OnSettingsChanged()
+        public void OnGamepadSettingChanged(bool enabled)
         {
-            // This method can be extended to notify specific view models about settings changes
-            // For now, it's a placeholder for future expansion
-            System.Diagnostics.Debug.WriteLine("Global settings have been changed");
+            // Update the gamepad navigation manager based on the new setting
+            var mainWindow = MainWindow as Views.MainWindow;
+            if (mainWindow != null)
+            {
+                mainWindow.GamepadEnabled = enabled;
+            }
         }
 
         #endregion

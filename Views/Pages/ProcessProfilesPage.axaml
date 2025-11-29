@@ -167,9 +167,7 @@
                               IsChecked="{Binding ProcessProfilesPageViewModel.KeepLastProcessProfile, Mode=TwoWay}"
                               IsEnabled="{Binding $parent[Window].DataContext.ProcessProfilesPageViewModel.IsReadOnlyKeepLastProcessProfile, Converter={StaticResource InvertBooleanConverter}}"
                               VerticalAlignment="Center"
-                              HorizontalAlignment="Right"
-                              OnContent=""
-                              OffContent=""/>
+                              HorizontalAlignment="Right"/>
             </Grid>
         </Border>
 

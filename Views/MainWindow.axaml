@@ -59,7 +59,7 @@
                 </StackPanel>
 
                 <!-- Navigation Menu -->
-                <ScrollViewer Grid.Row="1" Margin="8,0,8,8">
+                <ScrollViewer Grid.Row="1" Margin="8,0,8,8" x:Name="MenuScrollViewer">
                     <ItemsControl ItemsSource="{Binding MenuItems}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
@@ -136,7 +136,7 @@
         </Border>
 
         <!-- Main Content Area -->
-        <ScrollViewer Grid.Column="1">
+        <ScrollViewer Grid.Column="1" x:Name="ContentScrollViewer">
             <Panel>
                 <!-- Monitoring Page -->
                 <views:MonitoringPage IsVisible="{Binding SelectedPage, Converter={StaticResource EqualsConverter}, ConverterParameter=Monitoring}"/>

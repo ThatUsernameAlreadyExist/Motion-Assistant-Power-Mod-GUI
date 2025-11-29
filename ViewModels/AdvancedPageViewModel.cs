@@ -17,6 +17,7 @@ namespace Windows11Settings.ViewModels.Pages
         private bool _addToSystemAutorun;
         private bool _disableSystemMonitoring;
         private bool _disableBluetoothInSleepMode;
+        private bool _useGamepad = true;
         private bool _useNewInterface = true;
         private bool _minimizeToSystemTray;
         private ComboBoxItemModel _windowSizeSelectedItem;
@@ -31,6 +32,7 @@ namespace Windows11Settings.ViewModels.Pages
         private bool _isReadOnlyAddToSystemAutorun = false;
         private bool _isReadOnlyDisableSystemMonitoring = false;
         private bool _isReadOnlyDisableBluetoothInSleepMode = false;
+        private bool _isReadOnlyUseGamepad = false;
         private bool _isReadOnlyUseNewInterface = false;
         private bool _isReadOnlyMinimizeToSystemTray = false;
         private bool _isReadOnlyWindowSizeSelectedItem = false;
@@ -43,6 +45,7 @@ namespace Windows11Settings.ViewModels.Pages
 
             InitializeWindowSizeItems();
             InitializeLanguageItems();
+            _useGamepad = GlobalSettings.Instance.UseGamepad;
             CheckForUpdatesCommand = new RelayCommand(_ => CheckForUpdates());
 
             GlobalAppManager.Instance.RegisterPageViewModel(this);
@@ -188,6 +191,26 @@ namespace Windows11Settings.ViewModels.Pages
             }
         }
 
+        public bool UseGamepad
+        {
+            get => _useGamepad;
+            set
+            {
+                if (IsReadOnlyUseGamepad)
+                {
+                    // Control is read-only, don't allow changes
+                    OnPropertyChanged(nameof(UseGamepad));
+                    return;
+                }
+
+                if (SetProperty(ref _useGamepad, value))
+                {
+                    GlobalSettings.Instance.UseGamepad = value;
+                    GlobalAppManager.Instance.OnGamepadSettingChanged(value);
+                }
+            }
+        }
+
         public bool UseNewInterface
         {
             get => _useNewInterface;
@@ -328,6 +351,12 @@ namespace Windows11Settings.ViewModels.Pages
         {
             get => _isReadOnlyDisableBluetoothInSleepMode;
             set => SetProperty(ref _isReadOnlyDisableBluetoothInSleepMode, value);
+        }
+
+        public bool IsReadOnlyUseGamepad
+        {
+            get => _isReadOnlyUseGamepad;
+            set => SetProperty(ref _isReadOnlyUseGamepad, value);
         }
 
         public bool IsReadOnlyUseNewInterface

@@ -36,9 +36,7 @@
                                   IsChecked="{Binding FanPageViewModel.EnableFanSpeedControlEnabled}"
                                   IsEnabled="{Binding $parent[Window].DataContext.FanPageViewModel.IsReadOnlyEnableFanSpeedControlEnabled, Converter={StaticResource InvertBooleanConverter}}"
                                   VerticalAlignment="Center"
-                                  HorizontalAlignment="Right"
-                                  OnContent=""
-                                  OffContent=""/>
+                                  HorizontalAlignment="Right"/>
                 </Grid>
                 
             </StackPanel>

@@ -205,7 +205,7 @@ namespace Windows11Settings.ViewModels
         public ICommand SelectPageCommand { get; }
         public ICommand ToggleMenuCommand { get; }
 
-        private void SelectPage(object parameter)
+        public void SelectPage(object parameter)
         {
             if (parameter is string pageKey)
             {
@@ -224,7 +224,7 @@ namespace Windows11Settings.ViewModels
             }
         }
 
-        private void ToggleMenu()
+        public void ToggleMenu()
         {
             IsMenuExpanded = !IsMenuExpanded;
             // Save settings change

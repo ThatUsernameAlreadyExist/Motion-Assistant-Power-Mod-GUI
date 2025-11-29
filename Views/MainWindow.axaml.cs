@@ -9,6 +9,8 @@ using System.Threading;
 using Windows11Settings.Managers;
 using Windows11Settings.ViewModels;
 using Windows11Settings.ViewModels.Pages;
+using Windows11Settings.Gamepad;
+using Windows11Settings.Models;
 
 namespace Windows11Settings.Views
 {
@@ -16,12 +18,19 @@ namespace Windows11Settings.Views
     {
         private bool _isFirstShow = true;
 
+        private GamepadNavigationManager _gamepadNav;
+
         public MainWindow()
         {
             InitializeComponent();
             ApplyWindowsScrollBarSetting();
 
             DataContext = new MainWindowViewModel();
+
+            var viewModel = DataContext as MainWindowViewModel;
+
+            // Pass ViewModel to gamepad navigator and don't auto-start
+            _gamepadNav = new GamepadNavigationManager(this, viewModel, false);
 
             // Register this MainWindow and its ViewModel with GlobalAppManager
             GlobalAppManager.Instance.RegisterPageViewModel(this.DataContext as MainWindowViewModel);
@@ -114,6 +123,25 @@ namespace Windows11Settings.Views
             // Handle window state changes (minimize button) - override OnPropertyChanged for WindowState
         }
 
+        public GamepadNavigationManager  GamepadNav => _gamepadNav;
+
+        public bool GamepadEnabled
+        { 
+            get => _gamepadNav.IsRunning; 
+            set
+            {
+                if (value && GlobalSettings.Instance.UseGamepad)
+                {
+                    _gamepadNav.Start();
+                }
+                else
+                {
+                    _gamepadNav.Stop();
+                }
+            }
+        }
+
+
         private void ApplyHighDpiUiScale(double scaling)
         {
             if (UiScaleRoot == null)
@@ -188,6 +216,8 @@ namespace Windows11Settings.Views
         /// </summary>
         private void OnWindowClosing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            GamepadEnabled = false;
+
             if (GlobalAppManager.Instance.IsDebugMode)
             {
                 Environment.Exit(0);
@@ -219,6 +249,7 @@ namespace Windows11Settings.Views
             {
                 if (newState == WindowState.Minimized)
                 {
+                    GamepadEnabled = false;
                     // Check if minimize to system tray is enabled
                     var advancedPageViewModel = GlobalAppManager.Instance.GetPageViewModel<AdvancedPageViewModel>();
                     if (advancedPageViewModel?.MinimizeToSystemTray == true)
@@ -234,6 +265,11 @@ namespace Windows11Settings.Views
                 {
                     GlobalAppManager.Instance.SendCmdIsVisible(newState != WindowState.Minimized);
                 }
+            }
+
+            if (e.Property == Window.IsActiveProperty && e.NewValue is bool isActive)
+            {
+                GamepadEnabled = isActive;
             }
         }
     }
