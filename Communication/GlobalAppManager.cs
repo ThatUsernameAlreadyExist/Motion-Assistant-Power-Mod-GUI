@@ -9,6 +9,7 @@ using System.Runtime.CompilerServices;
 using PmGui.ViewModels;
 using PmGui.ViewModels.Pages;
 using static BidirectionalPipe.ActorModel.ActorPipe;
+using PmGui.Models;
 
 namespace PmGui.Managers
 {
@@ -448,6 +449,11 @@ namespace PmGui.Managers
         private void ReceiveCmdCommandsSendingEnabled(bool value)
         {
             _isCmdSendingEnabled = value;
+
+            if (_isCmdSendingEnabled && !GlobalSettings.Instance.IsPageVisible("Monitoring"))
+            {
+                SendCmdIsMonitoringVisible(false);
+            }
         }
 
         private void ReceiveCmdSetProfiles(List<string> value) => ExecuteOnPageViewModel<ProcessProfilesPageViewModel>(vm => { vm.SetProfiles(value); });

@@ -204,7 +204,6 @@
                         <ComboBox Grid.Column="1"
                                   ItemsSource="{Binding $parent[Window].DataContext.AdvancedPageViewModel.LanguageItems}"
                                   SelectedItem="{Binding $parent[Window].DataContext.AdvancedPageViewModel.SelectedLanguage, Mode=TwoWay}"
-                                  IsEnabled="{Binding $parent[Window].DataContext.IsReadOnlyLanguage, Converter={StaticResource InvertBooleanConverter}}"
                                   HorizontalAlignment="Right"
                                   Width="220"
                                   VerticalAlignment="Center"

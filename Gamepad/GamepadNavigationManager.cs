@@ -40,7 +40,6 @@ namespace PmGui.Gamepad
         private const int RepeatIntervalMs = 100;
 
         public NavigationContext CurrentContext => _currentContext;
-        public bool IsConnected => _gamepadService?.IsConnected ?? false;
         public bool IsRunning => _gamepadService?.IsRunning ?? false;
 
         public event EventHandler GamepadConnected;
@@ -526,9 +525,19 @@ namespace PmGui.Gamepad
 
         private void ExitSliderEditMode(bool needFocus = false)
         {
-            if (needFocus && _activeSlider != null)
+            if (_activeSlider != null)
             {
-                _activeSlider.Focus(NavigationMethod.Tab, KeyModifiers.None);
+                var args = new PointerCaptureLostEventArgs(_activeSlider, null)
+                {
+                    RoutedEvent = InputElement.PointerCaptureLostEvent
+                };
+
+                _activeSlider.RaiseEvent(args);
+
+                if (needFocus)
+                {
+                    _activeSlider.Focus(NavigationMethod.Tab, KeyModifiers.None);
+                }
             }
             _isSliderEditMode = false;
             _activeSlider = null;
@@ -538,16 +547,42 @@ namespace PmGui.Gamepad
         {
             if (_activeSlider == null) return;
 
-            var now = DateTime.Now;
-            var afterPress = (now - _buttonPressTime).TotalMilliseconds;
+            double baseStep = _activeSlider.TickFrequency > 0
+                ? _activeSlider.TickFrequency
+                : (_activeSlider.SmallChange > 0 ? _activeSlider.SmallChange : 1.0);
 
-            double step = _activeSlider.SmallChange > 0 && afterPress < 1000
-                ? _activeSlider.SmallChange
-                : (_activeSlider.Maximum - _activeSlider.Minimum) / Math.Max(15.0, 50 - afterPress / 1000);
+            var elapsedMs = (DateTime.Now - _buttonPressTime).TotalMilliseconds;
+            double multiplier = 1.0;
 
-            double newValue = _activeSlider.Value + (step * direction);
+            // Acceleration Logic:
+            // 0ms   - 500ms:  Precision mode (1x) - moving 1 item at a time
+            // 500ms - 1.5s:   Fast mode (5x)      - skipping values
+            // 1.5s+       :   Turbo mode (10x+)   - scanning through range quickly
+            if (elapsedMs > 1500)
+            {
+                double range = _activeSlider.Maximum - _activeSlider.Minimum;
+                multiplier = Math.Min(range / 10.0, 10.0 + (elapsedMs - 1500) / 100.0);
+            }
+            else if (elapsedMs > 500)
+            {
+                multiplier = 5.0;
+            }
+
+            double change = baseStep * multiplier * direction;
+            double newValue = _activeSlider.Value + change;
+
+            if (_activeSlider.IsSnapToTickEnabled || _activeSlider.TickFrequency > 0)
+            {
+                double snapSize = _activeSlider.TickFrequency > 0 ? _activeSlider.TickFrequency : 1.0;
+                newValue = Math.Round(newValue / snapSize) * snapSize;
+            }
+
             newValue = Math.Max(_activeSlider.Minimum, Math.Min(_activeSlider.Maximum, newValue));
-            _activeSlider.Value = newValue;
+
+            if (Math.Abs(_activeSlider.Value - newValue) > double.Epsilon)
+            {
+                _activeSlider.Value = newValue;
+            }
         }
 
         public void Dispose()

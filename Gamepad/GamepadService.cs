@@ -46,16 +46,6 @@ namespace PmGui.Gamepad
         public event EventHandler<GamepadButtonEventArgs> ButtonReleased;
         public event EventHandler Connected;
         public event EventHandler Disconnected;
-
-        public bool IsConnected
-        {
-            get
-            {
-                try { return _controller != null && _controller.IsConnected; }
-                catch { return false; }
-            }
-        }
-
         public bool IsRunning { get { return _isRunning; } }
 
         public GamepadService(bool autoStart = true)
@@ -121,31 +111,43 @@ namespace PmGui.Gamepad
 
         private void PollLoop()
         {
+            bool currentConnected = false;
+            int currentConnectedCheckCount = 0;
+
             while (_isRunning && !_disposed)
             {
                 try
-                {
-                    bool isConnected = false;
-                    try { isConnected = _controller.IsConnected; }
-                    catch { isConnected = false; }
+                { 
+                    if (!currentConnected || currentConnectedCheckCount++ > 50)
+                    {
+                        currentConnectedCheckCount = 0;
 
-                    if (isConnected && !_previousConnected)
+                        try { currentConnected = _controller.IsConnected; }
+                        catch { currentConnected = false; }
+                    }
+
+                    if (currentConnected && !_previousConnected)
                     {
                         Connected?.Invoke(this, EventArgs.Empty);
                         _previousState = new State();
                     }
-                    else if (!isConnected && _previousConnected)
+                    else if (!currentConnected && _previousConnected)
                     {
                         Disconnected?.Invoke(this, EventArgs.Empty);
                     }
 
-                    _previousConnected = isConnected;
+                    _previousConnected = currentConnected;
 
-                    if (isConnected)
+                    if (currentConnected)
                     {
                         State state;
                         try { state = _controller.GetState(); }
-                        catch { Thread.Sleep(PollIntervalMs); continue; }
+                        catch 
+                        {
+                            currentConnected = false;
+                            Thread.Sleep(PollIntervalMs); 
+                            continue; 
+                         }
 
                         if (state.PacketNumber != _previousState.PacketNumber)
                         {
@@ -162,6 +164,7 @@ namespace PmGui.Gamepad
                 }
                 catch
                 {
+                    currentConnected = false;
                     Thread.Sleep(500);
                 }
             }
