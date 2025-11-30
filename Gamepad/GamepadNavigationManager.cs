@@ -237,29 +237,43 @@ namespace PmGui.Gamepad
             _viewModel.ToggleMenu();
         }
 
+        private DispatcherTimer _scrollTimer;
+        private double _scrollTarget;
+        private double _scrollCurrent;
+
         private void ScrollViewport(int direction)
         {
-            var contentScrollViewer = _topLevel.FindControl<ScrollViewer>("ContentScrollViewer");
+            var sv = _topLevel.FindControl<ScrollViewer>("ContentScrollViewer");
+            if (sv == null) return;
 
-            if (contentScrollViewer != null)
+            double scrollAmount = sv.Viewport.Height * 0.45;
+            double maxOffset = Math.Max(0, sv.Extent.Height - sv.Viewport.Height);
+
+            if (_scrollTimer == null)
             {
-                Dispatcher.UIThread.Post(() =>
+                _scrollTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(30) };
+                _scrollTimer.Tick += (s, e) =>
                 {
-                    try
-                    {
-                        var viewport = contentScrollViewer.Viewport;
-                        var currentOffset = contentScrollViewer.Offset;
+                    _scrollCurrent += (_scrollTarget - _scrollCurrent) * 0.25;
+                    sv.Offset = new Vector(sv.Offset.X, _scrollCurrent);
 
-                        double scrollAmount = viewport.Height * 0.3;
-
-                        var newOffset = new Vector(currentOffset.X, currentOffset.Y + direction * scrollAmount);
-                        contentScrollViewer.Offset = newOffset;
-                    }
-                    catch
+                    // Reached target
+                    if (Math.Abs(_scrollTarget - _scrollCurrent) < 0.5)
                     {
+                        sv.Offset = new Vector(sv.Offset.X, _scrollTarget);
+                        _scrollTimer.Stop();
                     }
-                }, DispatcherPriority.Background);
+                };
             }
+
+            if (!_scrollTimer.IsEnabled)
+            {
+                _scrollCurrent = sv.Offset.Y;
+                _scrollTarget = sv.Offset.Y;
+                _scrollTimer.Start();
+            }
+
+            _scrollTarget = Math.Max(0, Math.Min(maxOffset, _scrollTarget + direction * scrollAmount));
         }
 
         private void ProcessMenuNavigation(GamepadButton button)
