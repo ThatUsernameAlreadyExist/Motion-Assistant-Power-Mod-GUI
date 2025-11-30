@@ -388,6 +388,10 @@ namespace PmGui.Managers
         private void ReceiveCmdTdpMaxValue(double value)
         {
             ExecuteOnPageViewModel<CPUPageViewModel>(vm => { vm.TdpMaxValue = value; });
+        }
+
+        private void ReceiveCmdTdpGaugeMaxValue(double value)
+        {
             ExecuteOnPageViewModel<MonitoringPageViewModel>(vm => { vm.PackagePowerMax = value; });
         }
         private void ReceiveCmdCPUBoostEnabled(bool value)
