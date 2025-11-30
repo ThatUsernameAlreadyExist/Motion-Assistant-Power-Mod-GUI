@@ -69,7 +69,9 @@ namespace PmGui
                 {
 
                     // Show the window first (Avalonia)
+
                     mainWindow.Show();
+                    mainWindow.BringIntoView();
 
                     // Get native handle and force foreground
                     IntPtr handle = WindowFocusHelper.GetHandle(mainWindow);
@@ -90,10 +92,12 @@ namespace PmGui
                     mainWindow.Activate();
                     mainWindow.Focus();
 
+
                     // Set navigation context if MainWindow
                     if (mainWindow is MainWindow mw)
                     {
                         mw.GamepadNav.SetNavigationContext(NavigationContext.Menu);
+                        mw.GamepadEnabled = true;
                     }
 
                     GlobalAppManager.Instance.SendCmdIsVisible(true);
