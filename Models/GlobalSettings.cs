@@ -4,12 +4,16 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Security.AccessControl;
 using PmGui.Managers;
 
 namespace PmGui.Models
 {
     /// <summary>
     /// Global settings manager that handles loading and saving settings from/to pmgui.ini
+    /// Automatically selects the appropriate settings file location based on write access permissions:
+    /// - Uses pmgui.ini near executable if write access is available
+    /// - Falls back to %LocalAppData%\pmgui\pmgui.ini if no write access to executable directory
     /// </summary>
     public class GlobalSettings : INotifyPropertyChanged
     {
@@ -31,12 +35,153 @@ namespace PmGui.Models
 
         private GlobalSettings()
         {
-            // Get the path to the executable directory
-            var executablePath = AppDomain.CurrentDomain.BaseDirectory;
-            _settingsFilePath = Path.Combine(executablePath, "pmgui.ini");
+            // Determine the appropriate settings file path based on write access
+            _settingsFilePath = DetermineSettingsFilePath();
             _iniFile = new IniFileManager(_settingsFilePath);
             
             LoadSettings();
+        }
+
+        /// <summary>
+        /// Determines the appropriate settings file path based on write access permissions
+        /// </summary>
+        /// <returns>Path to the settings file</returns>
+        private string DetermineSettingsFilePath()
+        {
+            try
+            {
+                // Get the path near the executable
+                var executablePath = AppDomain.CurrentDomain.BaseDirectory;
+                var iniFileNearExecutable = Path.Combine(executablePath, "pmgui.ini");
+
+                // Check if we have write access to the executable directory
+                if (HasWriteAccessToDirectory(executablePath))
+                {
+                    return iniFileNearExecutable;
+                }
+            }
+            catch
+            {
+            }
+
+            // Fallback to local app data
+            var localAppDataPath = GetLocalAppDataSettingsPath();
+            return localAppDataPath;
+        }
+
+        /// <summary>
+        /// Checks if the current process has write access to the specified directory
+        /// </summary>
+        /// <param name="directoryPath">Directory path to check</param>
+        /// <returns>True if write access is available, false otherwise</returns>
+        private bool HasWriteAccessToDirectory(string directoryPath)
+        {
+            try
+            {
+                // Check if directory exists
+                if (!Directory.Exists(directoryPath))
+                {
+                    return false;
+                }
+
+                // Try to get directory security to check permissions
+                var directoryInfo = new DirectoryInfo(directoryPath);
+                var directorySecurity = directoryInfo.GetAccessControl();
+
+                // Get current user identity
+                var currentUser = System.Security.Principal.WindowsIdentity.GetCurrent();
+                var currentUserSid = currentUser.User;
+
+                // Check if current user has write permission
+                var rules = directorySecurity.GetAccessRules(true, true, typeof(System.Security.Principal.SecurityIdentifier));
+                
+                foreach (FileSystemAccessRule rule in rules)
+                {
+                    if (rule.IdentityReference.Equals(currentUserSid) || 
+                        currentUser.Groups.Contains(rule.IdentityReference))
+                    {
+                        if ((rule.FileSystemRights & FileSystemRights.WriteData) == FileSystemRights.WriteData ||
+                            (rule.FileSystemRights & FileSystemRights.Modify) == FileSystemRights.Modify ||
+                            (rule.FileSystemRights & FileSystemRights.FullControl) == FileSystemRights.FullControl)
+                        {
+                            if (rule.AccessControlType == AccessControlType.Allow)
+                            {
+                                return true;
+                            }
+                        }
+                    }
+                }
+
+                // If we can't determine permissions through security rules, try a safer approach
+                // Try to create a temporary file to test write access
+                return TestWriteAccess(directoryPath);
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Tests write access by attempting to create a temporary file
+        /// </summary>
+        /// <param name="directoryPath">Directory path to test</param>
+        /// <returns>True if write access is available, false otherwise</returns>
+        private bool TestWriteAccess(string directoryPath)
+        {
+            try
+            {
+                var testFileName = $"pmgui_folder_rights_tst_{Guid.NewGuid().ToString("N").Substring(0, 8)}.tmp";
+                var testFilePath = Path.Combine(directoryPath, testFileName);
+                
+                // Try to create and write to a test file
+                using (var fs = File.Create(testFilePath, 1, FileOptions.DeleteOnClose))
+                {
+                    var testBytes = new byte[] { 0 };
+                    fs.Write(testBytes, 0, 1);
+                }
+                
+                // If we get here, we have write access
+                return true;
+            }
+            catch (UnauthorizedAccessException)
+            {
+                // No write access
+                return false;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Gets the settings file path in local application data
+        /// </summary>
+        /// <returns>Path to settings file in local app data</returns>
+        private string GetLocalAppDataSettingsPath()
+        {
+            try
+            {
+                // Get the local application data folder
+                var localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+                
+                // Create the pmgui subfolder if it doesn't exist
+                var pmguiFolder = Path.Combine(localAppData, "pmgui");
+                
+                if (!Directory.Exists(pmguiFolder))
+                {
+                    Directory.CreateDirectory(pmguiFolder);
+                }
+
+                return Path.Combine(pmguiFolder, "pmgui.ini");
+            }
+            catch
+            {
+                // Final fallback - try to use current directory
+                var fallbackPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "pmgui.ini");
+                return fallbackPath;
+            }
         }
 
         #region Settings Properties
