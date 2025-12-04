@@ -64,44 +64,37 @@ namespace PmGui
 
                 var mainWindow = desktop.MainWindow;
 
-                // Restore if minimized using Avalonia API
-                if (mainWindow.WindowState != WindowState.Minimized)
+                mainWindow.Show();
+                mainWindow.BringIntoView();
+
+                // Get native handle and force foreground
+                IntPtr handle = WindowFocusHelper.GetHandle(mainWindow);
+
+                if (handle != IntPtr.Zero)
                 {
+                    // Use Windows API to force foreground
+                    bool success = WindowFocusHelper.ForceForeground(handle);
 
-                    // Show the window first (Avalonia)
-
-                    mainWindow.Show();
-                    mainWindow.BringIntoView();
-
-                    // Get native handle and force foreground
-                    IntPtr handle = WindowFocusHelper.GetHandle(mainWindow);
-
-                    if (handle != IntPtr.Zero)
+                    if (!success)
                     {
-                        // Use Windows API to force foreground
-                        bool success = WindowFocusHelper.ForceForeground(handle);
-
-                        if (!success)
-                        {
-                            // Fallback: flash the window to get user attention
-                            WindowFocusHelper.FlashWindow(handle);
-                        }
+                        // Fallback: flash the window to get user attention
+                        WindowFocusHelper.FlashWindow(handle);
                     }
-
-                    // Avalonia focus operations
-                    mainWindow.Activate();
-                    mainWindow.Focus();
-
-
-                    // Set navigation context if MainWindow
-                    if (mainWindow is MainWindow mw)
-                    {
-                        mw.GamepadNav.SetNavigationContext(NavigationContext.Menu);
-                        mw.GamepadEnabled = true;
-                    }
-
-                    GlobalAppManager.Instance.SendCmdIsVisible(true);
                 }
+
+                // Avalonia focus operations
+                mainWindow.Activate();
+                mainWindow.Focus();
+
+
+                // Set navigation context if MainWindow
+                if (mainWindow is MainWindow mw)
+                {
+                    mw.GamepadNav.SetNavigationContext(NavigationContext.Menu);
+                    mw.GamepadEnabled = true;
+                }
+
+                GlobalAppManager.Instance.SendCmdIsVisible(true);
             }
         }
 
