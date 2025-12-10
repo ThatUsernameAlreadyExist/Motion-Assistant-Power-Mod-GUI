@@ -315,6 +315,7 @@ namespace PmGui.Managers
         public void SendCmdInvertYAxis(bool value) => SendCommand(value);
         public void SendCmdDisableBoschAccelerometer(bool value) => SendCommand(value);
         public void SendCmdGyroscopeActivationButton(int value) => SendCommand(value);
+        public void SendCmdGyroscopeSensitivity(double value) => SendCommand(value);
         public void SendCmdPowerLineTdpValue(double value) => SendCommand(value);
         public void SendCmdBatteryTdpValue(double value) => SendCommand(value);
         public void SendCmdCPUBoostEnabled(bool value)
@@ -381,6 +382,7 @@ namespace PmGui.Managers
         private void ReceiveCmdInvertYAxis(bool value) => ExecuteOnPageViewModel<GyroscopePageViewModel>(vm => { vm.InvertYAxis = value; });
         private void ReceiveCmdDisableBoschAccelerometer(bool value) => ExecuteOnPageViewModel<GyroscopePageViewModel>(vm => { vm.DisableBoschAccelerometer = value; });
         private void ReceiveCmdGyroscopeActivationButton(int value) => ExecuteOnPageViewModel<GyroscopePageViewModel>(vm => { if (vm.GyroscopeActivationButtonItems != null) { var item = vm.GyroscopeActivationButtonItems.FirstOrDefault(x => x.Value == value); vm.GyroscopeActivationButtonSelectedItem = item; } });
+        private void ReceiveCmdGyroscopeSensitivity(double value) => ExecuteOnPageViewModel<GyroscopePageViewModel>(vm => { vm.GyroscopeSensitivity = value; });
         private void ReceiveCmdPowerLineTdpValue(double value) => ExecuteOnPageViewModel<CPUPageViewModel>(vm => { vm.PowerLineTdpValue = value; });
         private void ReceiveCmdBatteryTdpValue(double value) => ExecuteOnPageViewModel<CPUPageViewModel>(vm => { vm.BatteryTdpValue = value; });
         private void ReceiveCmdIsPowerLineActive(bool value) => ExecuteOnPageViewModel<CPUPageViewModel>(vm => { vm.IsPowerLineActive = value; });
@@ -577,6 +579,7 @@ namespace PmGui.Managers
             ReceiveReadOnlyInvertYAxis(value);
             ReceiveReadOnlyDisableBoschAccelerometer(value);
             ReceiveReadOnlyGyroscopeActivationButton(value);
+            ReceiveReadOnlyGyroscopeSensitivity(value);
 
             // OSD Overlay Page Read-Only Methods
             ReceiveReadOnlyEnableOSDOverlay(value);
@@ -943,6 +946,14 @@ namespace PmGui.Managers
             ExecuteOnPageViewModel<GyroscopePageViewModel>(vm =>
             {
                 vm.IsReadOnlyGyroscopeActivationButton = state;
+            });
+        }
+
+        public void ReceiveReadOnlyGyroscopeSensitivity(bool state)
+        {
+            ExecuteOnPageViewModel<GyroscopePageViewModel>(vm =>
+            {
+                vm.IsReadOnlyGyroscopeSensitivity = state;
             });
         }
 

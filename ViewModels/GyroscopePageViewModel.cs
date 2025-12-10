@@ -19,6 +19,7 @@ namespace PmGui.ViewModels.Pages
         private bool _invertXAxis = false;
         private bool _invertYAxis = false;
         private bool _disableBoschAccelerometer = false;
+        private double _gyroscopeSensitivity = 0.5;
 
         private bool _isReadOnlyEnableGyroscope = false;
         private bool _isReadOnlyAutoEnableGyroscopeOnStart = false;
@@ -27,6 +28,7 @@ namespace PmGui.ViewModels.Pages
         private bool _isReadOnlyInvertXAxis = false;
         private bool _isReadOnlyInvertYAxis = false;
         private bool _isReadOnlyDisableBoschAccelerometer = false;
+        private bool _isReadOnlyGyroscopeSensitivity = false;
 
         private ObservableCollection<ComboBoxItemModel> _gyroscopeActivationButtonItems;
         private ComboBoxItemModel _gyroscopeActivationButtonSelectedItem;
@@ -151,6 +153,19 @@ namespace PmGui.ViewModels.Pages
             }
         }
 
+        public double GyroscopeSensitivity
+        {
+            get => _gyroscopeSensitivity;
+            set
+            {
+                if (_isReadOnlyGyroscopeSensitivity) return;
+                SetProperty(ref _gyroscopeSensitivity, value);
+            }
+        }
+
+        public double GyroscopeSensitivityMin => 0.5;
+        public double GyroscopeSensitivityMax => 10.0;
+
         public ObservableCollection<ComboBoxItemModel> GyroscopeActivationButtonItems
         {
             get => _gyroscopeActivationButtonItems;
@@ -215,6 +230,12 @@ namespace PmGui.ViewModels.Pages
         {
             get => _isReadOnlyDisableBoschAccelerometer;
             set => SetProperty(ref _isReadOnlyDisableBoschAccelerometer, value);
+        }
+
+        public bool IsReadOnlyGyroscopeSensitivity
+        {
+            get => _isReadOnlyGyroscopeSensitivity;
+            set => SetProperty(ref _isReadOnlyGyroscopeSensitivity, value);
         }
 
         public bool IsReadOnlyGyroscopeActivationButton

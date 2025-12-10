@@ -59,8 +59,36 @@
                     </ComboBox>
                 </Grid>
 
+                <!-- Gyroscope Sensitivity Slider -->
                 <Separator Background="{DynamicResource BorderBrush}"
-                    IsVisible="{Binding GyroscopePageViewModel.IsGyroscopeActivationButtonVisible}"/>
+                    IsVisible="{Binding GyroscopePageViewModel.EnableGyroscope}"/>
+                
+                <StackPanel Spacing="8"
+                    IsVisible="{Binding GyroscopePageViewModel.EnableGyroscope}">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding Localization[GyroscopeSensitivity]}" 
+                                       FontWeight="Medium"
+                                       FontSize="14"/>
+                            <TextBlock Text="{Binding Localization[GyroscopeSensitivityDescription]}" 
+                                       FontSize="12"
+                                       Foreground="{DynamicResource SecondaryTextBrush}"/>
+                        </StackPanel>
+                        <TextBlock Grid.Column="1" 
+                                   Text="{Binding GyroscopePageViewModel.GyroscopeSensitivity, StringFormat='{}{0:0.0}'}" 
+                                   FontSize="14" 
+                                   FontWeight="SemiBold"
+                                   VerticalAlignment="Center"/>
+                    </Grid>
+                    
+                    <Slider Minimum="{Binding GyroscopePageViewModel.GyroscopeSensitivityMin}"
+                            Maximum="{Binding GyroscopePageViewModel.GyroscopeSensitivityMax}"
+                            Value="{Binding GyroscopePageViewModel.GyroscopeSensitivity, Mode=TwoWay}"
+                            TickFrequency="0.5"
+                            IsSnapToTickEnabled="True"
+                            PointerCaptureLost="OnGyroscopeSensitivityDragCompleted"
+                            IsEnabled="{Binding $parent[Window].DataContext.GyroscopePageViewModel.IsReadOnlyGyroscopeSensitivity, Converter={StaticResource InvertBooleanConverter}}"/>
+                </StackPanel>
                 
                 <!-- High Precision Gyroscope -->
                 <Grid ColumnDefinitions="*,Auto"
