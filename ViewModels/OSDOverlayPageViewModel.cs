@@ -7,7 +7,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using PmGui.Managers;
 using PmGui.Resources.Localization;
-using PmGui.ViewModels;
+
 
 namespace PmGui.ViewModels.Pages
 {
@@ -141,7 +141,6 @@ namespace PmGui.ViewModels.Pages
             }
             catch (Exception ex)
             {
-                // Handle exception if needed
                 System.Diagnostics.Debug.WriteLine($"Failed to open RTSS download page: {ex.Message}");
             }
         }

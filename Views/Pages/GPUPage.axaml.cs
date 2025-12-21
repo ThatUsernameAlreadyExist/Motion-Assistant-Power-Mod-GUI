@@ -55,10 +55,8 @@ namespace PmGui.Views.Pages
 
         private void MinGpuClockSlider_DragCompleted(object sender, Avalonia.Input.PointerCaptureLostEventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine($"Event fired: {MethodBase.GetCurrentMethod()?.Name}");
             if (sender is Slider slider)
             {
-                // Get the main window view model using Application.Current pattern like FanPage
                 if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
                 {
                     var mainWindow = desktop.MainWindow;
@@ -77,10 +75,8 @@ namespace PmGui.Views.Pages
 
         private void MaxGpuClockSlider_DragCompleted(object sender, Avalonia.Input.PointerCaptureLostEventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine($"Event fired: {MethodBase.GetCurrentMethod()?.Name}");
             if (sender is Slider slider)
             {
-                // Get the main window view model using Application.Current pattern like FanPage
                 if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
                 {
                     var mainWindow = desktop.MainWindow;

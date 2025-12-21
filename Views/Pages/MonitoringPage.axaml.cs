@@ -50,8 +50,6 @@ namespace PmGui.Views.Pages
                 ViewModel.GpuUsage = random.Next(20, 90);
                 ViewModel.FanSpeed = random.Next(1000, 2800);
                 ViewModel.BatteryPower = random.Next(20, 100);
-                
-                System.Diagnostics.Debug.WriteLine($"Updated: CPU={ViewModel.CpuUsage}%, Temp={ViewModel.CpuTemperature}°C");
             }
         }
     }

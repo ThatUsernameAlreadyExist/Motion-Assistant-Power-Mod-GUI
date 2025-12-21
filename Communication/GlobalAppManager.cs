@@ -369,7 +369,6 @@ namespace PmGui.Managers
 
         // Receiving commands
         private void ReceiveCmdAddToSystemAutorun(bool value) => ExecuteOnPageViewModel<AdvancedPageViewModel>(vm => { vm.AddToSystemAutorun = value; });
-        private void ReceiveCmdDisableSystemMonitoring(bool value) => ExecuteOnPageViewModel<AdvancedPageViewModel>(vm => { vm.DisableSystemMonitoring = value; });
         private void ReceiveCmdDisableBluetoothInSleepMode(bool value) => ExecuteOnPageViewModel<AdvancedPageViewModel>(vm => { vm.DisableBluetoothInSleepMode = value; });
         private void ReceiveCmdUseNewInterface(bool value) => ExecuteOnPageViewModel<AdvancedPageViewModel>(vm => { vm.UseNewInterface = value; });
         private void ReceiveCmdMinimizeToSystemTray(bool value) => ExecuteOnPageViewModel<AdvancedPageViewModel>(vm => { vm.MinimizeToSystemTray = value; });
@@ -524,72 +523,6 @@ namespace PmGui.Managers
 
         #endregion
 
-        public void SetAllControlsReadOnlyState(bool value)
-        {
-            // Advanced Page Read-Only Methods
-            ReceiveReadOnlyMinimizeToSystemTray(value);
-            ReceiveReadOnlyAddToSystemAutorun(value);
-            ReceiveReadOnlyDisableSystemMonitoring(value);
-            ReceiveReadOnlyDisableBluetoothInSleepMode(value);
-            ReceiveReadOnlyUseNewInterface(value);
-            ReceiveReadOnlyWindowSizeSelectedItem(value);
-
-            // CPU Page Read-Only Methods
-            ReceiveReadOnlyPowerLineTdpValue(value);
-            ReceiveReadOnlyBatteryTdpValue(value);
-            ReceiveReadOnlyIsPowerLineActive(value);
-            ReceiveReadOnlyCPUBoostEnabled(value);
-            ReceiveReadOnlyAutoOptimizeCpuFrequencyEnabled(value);
-            ReceiveReadOnlyUniteBatteryAndPowerlineCPUPresetsEnabled(value);
-            ReceiveReadOnlyUniteBatteryAndPowerlineFPSLimitEnabled(value);
-            ReceiveReadOnlyLoadPresetAtStartEnabled(value);
-            ReceiveReadOnlyPowerLineFrequencySelectedItem(value);
-            ReceiveReadOnlyPowerLineFpsSelectedItem(value);
-            ReceiveReadOnlyPowerLineCpuCoresSelectedItem(value);
-            ReceiveReadOnlyBatteryFrequencySelectedItem(value);
-            ReceiveReadOnlyBatteryFpsSelectedItem(value);
-            ReceiveReadOnlyBatteryCpuCoresSelectedItem(value);
-
-            // GPU Page Read-Only Methods
-            ReceiveReadOnlyMinGpuClockValue(value);
-            ReceiveReadOnlyMaxGpuClockValue(value);
-            ReceiveReadOnlyCustomGpuClocksRangeEnabled(value);
-            ReceiveReadOnlyOptimizationModeSelectedItem(value);
-            ReceiveReadOnlyOptimizeGpuClocksEnabled(value);
-
-            // Fan Page Read-Only Methods
-            ReceiveReadOnlyEnableFanSpeedControlEnabled(value);
-            ReceiveReadOnlyFanSpeedPresetSelectedItem(value);
-            ReceiveReadOnlyFanSpeedControlTypeSelectedItem(value);
-            ReceiveReadOnlyIsFixedSpeedMode(value);
-            ReceiveReadOnlyIsSpeedCurveMode(value);
-            ReceiveReadOnlyFanSpeedValue(value);
-            ReceiveReadOnlyTemperature45Speed(value);
-            ReceiveReadOnlyTemperature60Speed(value);
-            ReceiveReadOnlyTemperature70Speed(value);
-            ReceiveReadOnlyTemperature80Speed(value);
-            ReceiveReadOnlyDelayTimeoutValue(value);
-
-            // Gyroscope Page Read-Only Methods
-            ReceiveReadOnlyEnableGyroscope(value);
-            ReceiveReadOnlyAutoEnableGyroscopeOnStart(value);
-            ReceiveReadOnlyHighPrecisionGyroscope(value);
-            ReceiveReadOnlySwapXandYAxis(value);
-            ReceiveReadOnlyInvertXAxis(value);
-            ReceiveReadOnlyInvertYAxis(value);
-            ReceiveReadOnlyDisableBoschAccelerometer(value);
-            ReceiveReadOnlyGyroscopeActivationButton(value);
-            ReceiveReadOnlyGyroscopeSensitivity(value);
-
-            // OSD Overlay Page Read-Only Methods
-            ReceiveReadOnlyEnableOSDOverlay(value);
-            ReceiveReadOnlyOSDTypeSelectedItem(value);
-
-            // Process Profiles Page Read-Only Methods
-            ReceiveReadOnlyKeepLastProcessProfile(value);
-            ReceiveReadOnlyProfilesListSelectedItem(value);
-            ReceiveReadOnlyProcessListSelectedItem(value);
-        }
 
         // Advanced Page Read-Only Methods
         public void ReceiveReadOnlyMinimizeToSystemTray(bool state)
@@ -1026,12 +959,6 @@ namespace PmGui.Managers
         {
             return DesktopLifetime?.MainWindow;
         }
-
-        /// <summary>
-        /// Checks if the application is in hidden mode
-        /// </summary>
-        public bool IsHiddenMode => 
-            Environment.GetEnvironmentVariable("MAPM_031125_HIDDEN_MODE") == "true";
 
         /// <summary>
         /// Gets the current application arguments

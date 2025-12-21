@@ -1,4 +1,3 @@
-// ViewModels/GPUPageViewModel.cs
 using System;
 using System.Windows.Input;
 

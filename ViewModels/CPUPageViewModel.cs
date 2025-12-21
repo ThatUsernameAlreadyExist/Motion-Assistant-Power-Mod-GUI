@@ -1,4 +1,3 @@
-// ViewModels/CPUPageViewModel.cs
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -273,7 +272,6 @@ namespace PmGui.ViewModels.Pages
             {
                 if (IsReadOnlyCPUBoostEnabled)
                 {
-                    // Control is read-only, don't allow changes
                     OnPropertyChanged(nameof(CPUBoostEnabled));
                     return;
                 }
@@ -292,7 +290,6 @@ namespace PmGui.ViewModels.Pages
             {
                 if (IsReadOnlyAutoOptimizeCpuFrequencyEnabled)
                 {
-                    // Control is read-only, don't allow changes
                     OnPropertyChanged(nameof(AutoOptimizeCpuFrequencyEnabled));
                     return;
                 }
@@ -311,7 +308,6 @@ namespace PmGui.ViewModels.Pages
             {
                 if (IsReadOnlyUniteBatteryAndPowerlineCPUPresetsEnabled)
                 {
-                    // Control is read-only, don't allow changes
                     OnPropertyChanged(nameof(UniteBatteryAndPowerlineCPUPresetsEnabled));
                     return;
                 }
@@ -332,7 +328,6 @@ namespace PmGui.ViewModels.Pages
             {
                 if (IsReadOnlyUniteBatteryAndPowerlineFPSLimitEnabled)
                 {
-                    // Control is read-only, don't allow changes
                     OnPropertyChanged(nameof(UniteBatteryAndPowerlineFPSLimitEnabled));
                     return;
                 }
@@ -351,7 +346,6 @@ namespace PmGui.ViewModels.Pages
             {
                 if (IsReadOnlyLoadPresetAtStartEnabled)
                 {
-                    // Control is read-only, don't allow changes
                     OnPropertyChanged(nameof(LoadPresetAtStartEnabled));
                     return;
                 }
@@ -390,7 +384,6 @@ namespace PmGui.ViewModels.Pages
             {
                 if (IsReadOnlyPowerLineFrequencySelectedItem)
                 {
-                    // Control is read-only, don't allow changes
                     OnPropertyChanged(nameof(PowerLineFrequencySelectedItem));
                     return;
                 }
@@ -409,7 +402,6 @@ namespace PmGui.ViewModels.Pages
             {
                 if (IsReadOnlyPowerLineFpsSelectedItem)
                 {
-                    // Control is read-only, don't allow changes
                     OnPropertyChanged(nameof(PowerLineFpsSelectedItem));
                     return;
                 }
@@ -428,7 +420,6 @@ namespace PmGui.ViewModels.Pages
             {
                 if (IsReadOnlyPowerLineCpuCoresSelectedItem)
                 {
-                    // Control is read-only, don't allow changes
                     OnPropertyChanged(nameof(PowerLineCpuCoresSelectedItem));
                     return;
                 }
@@ -447,7 +438,6 @@ namespace PmGui.ViewModels.Pages
             {
                 if (IsReadOnlyBatteryFrequencySelectedItem)
                 {
-                    // Control is read-only, don't allow changes
                     OnPropertyChanged(nameof(BatteryFrequencySelectedItem));
                     return;
                 }
@@ -466,7 +456,6 @@ namespace PmGui.ViewModels.Pages
             {
                 if (IsReadOnlyBatteryFpsSelectedItem)
                 {
-                    // Control is read-only, don't allow changes
                     OnPropertyChanged(nameof(BatteryFpsSelectedItem));
                     return;
                 }
@@ -485,7 +474,6 @@ namespace PmGui.ViewModels.Pages
             {
                 if (IsReadOnlyBatteryCpuCoresSelectedItem)
                 {
-                    // Control is read-only, don't allow changes
                     OnPropertyChanged(nameof(BatteryCpuCoresSelectedItem));
                     return;
                 }

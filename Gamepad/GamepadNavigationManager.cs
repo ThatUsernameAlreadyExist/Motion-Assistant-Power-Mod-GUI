@@ -455,7 +455,6 @@ namespace PmGui.Gamepad
             // Create and raise KeyDown event
             var keyEventArgs = new KeyEventArgs();
 
-            // Use reflection to set init-only properties (C# 7.3 compatibility)
             var keyProperty = typeof(KeyEventArgs).GetProperty("Key");
             keyProperty?.SetValue(keyEventArgs, key);
 

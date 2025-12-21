@@ -1,12 +1,9 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Windows.Input;
 using PmGui.Managers;
 using PmGui.Resources.Localization;
-using PmGui.ViewModels;
 
 namespace PmGui.ViewModels.Pages
 {
@@ -232,7 +229,6 @@ namespace PmGui.ViewModels.Pages
                 if (SetProperty(ref _fanSpeedValue, value))
                 {
                     var oldValue = _fanSpeedValue;
-                    // Cascade logic preserved - no GlobalAppManager call
                 }
             }
         }
@@ -263,7 +259,6 @@ namespace PmGui.ViewModels.Pages
                     {
                         Temperature60Speed = value;
                     }
-                    // Cascade logic preserved - no GlobalAppManager call
                 }
             }
         }
@@ -288,7 +283,6 @@ namespace PmGui.ViewModels.Pages
                     {
                         Temperature70Speed = value;
                     }
-                    // Cascade logic preserved - no GlobalAppManager call
                 }
             }
         }
@@ -312,7 +306,6 @@ namespace PmGui.ViewModels.Pages
                     {
                         Temperature80Speed = value;
                     }
-                    // Cascade logic preserved - no GlobalAppManager call
                 }
             }
         }
@@ -331,7 +324,6 @@ namespace PmGui.ViewModels.Pages
                     {
                         Temperature70Speed = value;
                     }
-                    // Cascade logic preserved - no GlobalAppManager call
                 }
             }
         }
@@ -345,7 +337,6 @@ namespace PmGui.ViewModels.Pages
                 if (SetProperty(ref _delayTimeoutValue, value))
                 {
                     var oldValue = _delayTimeoutValue;
-                    // Validation and property logic preserved - no GlobalAppManager call
                 }
             }
         }

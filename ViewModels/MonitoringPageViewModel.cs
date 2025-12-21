@@ -21,7 +21,7 @@ namespace PmGui.ViewModels
         private double _fanSpeedMax = 6000;
         private double _batteryPowerMax = 95;
         private double _batteryPower = 0;
-         private string _tdpLimit = "0";
+        private string _tdpLimit = "0";
         private uint _gpuLockClock = 0;
         private string _cpuBoost = "??";
         private Color _cpuBoostColor = Colors.Green;
@@ -115,7 +115,6 @@ namespace PmGui.ViewModels
             get => _localization[_cpuBoost == "On" || _cpuBoost == "1" ? "On" : "Off"] ?? _cpuBoost;
         }
 
-        // Package Power
         public double PackagePower
         {
             get => _packagePower;
@@ -155,7 +154,6 @@ namespace PmGui.ViewModels
         public double PackagePowerPercentage => (PackagePower / PackagePowerMax) * 100;
         public string PackagePowerArc => CalculateArcPath(PackagePowerPercentage);
 
-        // CPU Temperature
         public double CpuTemperature
         {
             get => _cpuTemperature;
@@ -191,7 +189,6 @@ namespace PmGui.ViewModels
         public double CpuTemperaturePercentage => (CpuTemperature / CpuTemperatureMax) * 100;
         public string CpuTemperatureArc => CalculateArcPath(CpuTemperaturePercentage);
 
-        // CPU Usage
         public double CpuUsage
         {
             get => _cpuUsage;
@@ -209,7 +206,6 @@ namespace PmGui.ViewModels
 
         public string CpuUsageArc => CalculateArcPath(CpuUsage);
 
-        // GPU Usage
         public double GpuUsage
         {
             get => _gpuUsage;
@@ -227,7 +223,6 @@ namespace PmGui.ViewModels
 
         public string GpuUsageArc => CalculateArcPath(GpuUsage);
 
-        // Fan Speed
 
         public double FanSpeedDivided
         {
@@ -270,7 +265,6 @@ namespace PmGui.ViewModels
         public double FanSpeedPercentage => (FanSpeed / FanSpeedMax) * 100;
         public string FanSpeedArc => CalculateArcPath(FanSpeedPercentage);
 
-        // Battery Charge
         public double BatteryPower
         {
             get => _batteryPower;

@@ -16,8 +16,6 @@ namespace PmGui.Views.Pages
 
         private void OnGyroscopeSensitivityDragCompleted(object sender, Avalonia.Input.PointerCaptureLostEventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine($"Event fired: {MethodBase.GetCurrentMethod()?.Name}");
-
             if (sender is Slider slider)
             {
                 if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)

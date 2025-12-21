@@ -2,13 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using PmGui.Managers;
 using PmGui.Resources.Localization;
-using PmGui.ViewModels;
+
 
 namespace PmGui.ViewModels.Pages
 {
@@ -342,7 +341,6 @@ namespace PmGui.ViewModels.Pages
 
         private void AddProcessByName(string name)
         {
-            // In a real implementation, this would show a file browser or process selector
             var processName = name;
             var newProcess = new ComboBoxItemModel
             {

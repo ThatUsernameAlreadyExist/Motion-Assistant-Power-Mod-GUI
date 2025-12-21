@@ -22,7 +22,6 @@ namespace PmGui.Views.Pages
 
             if (sender is Slider slider)
             {
-                // Get the main window view model using Application.Current pattern like FanPage
                 if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
                 {
                     var mainWindow = desktop.MainWindow;
@@ -44,7 +43,6 @@ namespace PmGui.Views.Pages
             
             if (sender is Slider slider)
             {
-                // Get the main window view model using Application.Current pattern like FanPage
                 if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
                 {
                     var mainWindow = desktop.MainWindow;

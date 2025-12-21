@@ -37,30 +37,6 @@
                 
                 <Separator Background="{DynamicResource BorderBrush}"/>
                 
-                <!-- Disable system monitoring 
-                <Grid ColumnDefinitions="*,Auto">
-                    <StackPanel Grid.Column="0" VerticalAlignment="Center">
-                        <TextBlock Text="{Binding $parent[Window].DataContext.Localization[DisableSystemMonitoring]}" 
-                                   FontWeight="Medium"
-                                   FontSize="14"/>
-                    <TextBlock Text="{Binding $parent[Window].DataContext.Localization[DisableSystemMonitoringHint]}" 
-                        FontSize="12"
-                        Foreground="{DynamicResource SecondaryTextBrush}"/>
-                    </StackPanel>
-                    <ToggleSwitch Grid.Column="1"
-                                  IsChecked="{Binding $parent[Window].DataContext.AdvancedPageViewModel.DisableSystemMonitoring, Mode=TwoWay}"
-                                  IsEnabled="{Binding $parent[Window].DataContext.AdvancedPageViewModel.IsReadOnlyDisableSystemMonitoring, Converter={StaticResource InvertBooleanConverter}}"
-                                  VerticalAlignment="Center"
-                                  HorizontalAlignment="Right"
-                                  Width="50"
-                                  Height="34"
-                                  Classes="toggle-switch"/>
-                </Grid>
-
-                
-                <Separator Background="{DynamicResource BorderBrush}"/>
-                                -->
-                
                 <!-- Disable Bluetooth in sleep mode -->
                 <Grid ColumnDefinitions="*,Auto">
                     <StackPanel Grid.Column="0" VerticalAlignment="Center">

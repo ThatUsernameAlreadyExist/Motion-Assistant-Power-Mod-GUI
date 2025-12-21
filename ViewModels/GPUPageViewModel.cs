@@ -1,4 +1,3 @@
-// ViewModels/GPUPageViewModel.cs
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,7 +7,6 @@ using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using PmGui.Managers;
 using PmGui.Resources.Localization;
-using PmGui.ViewModels;
 
 namespace PmGui.ViewModels.Pages
 {
@@ -177,7 +175,6 @@ namespace PmGui.ViewModels.Pages
                     {
                         MaxGpuClockValue = value;
                     }
-                    // GlobalAppManager command call removed - optimization
                 }
             }
         }
@@ -202,9 +199,6 @@ namespace PmGui.ViewModels.Pages
                     {
                         MinGpuClockValue = value;
                     }
-
-                        
-                    // GlobalAppManager command call removed - optimization
                 }
             }
         }
@@ -326,16 +320,6 @@ namespace PmGui.ViewModels.Pages
             {
                 OptimizationModeSelectedItem = OptimizationModeItems?[0]; // Default to first item
             }
-        }
-
-        public void UpdateGpuClockRange(int minClock, int maxClock)
-        {
-            GpuClockMinValue = minClock;
-            GpuClockMaxValue = maxClock;
-            
-            // Adjust current values if they're out of new range
-            if (MinGpuClockValue < minClock) MinGpuClockValue = minClock;
-            if (MaxGpuClockValue > maxClock) MaxGpuClockValue = maxClock;
         }
 
         #endregion

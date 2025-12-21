@@ -15,7 +15,6 @@ namespace PmGui.ViewModels.Pages
     {
         private readonly LocalizationManager _localization;
         private bool _addToSystemAutorun;
-        private bool _disableSystemMonitoring;
         private bool _disableBluetoothInSleepMode;
         private bool _useGamepad = true;
         private bool _useNewInterface = true;
@@ -142,29 +141,6 @@ namespace PmGui.ViewModels.Pages
                 if (oldValue != value)
                 {
                     GlobalAppManager.Instance.SendCmdAddToSystemAutorun(value);
-                }
-            }
-        }
-
-        public bool DisableSystemMonitoring
-        {
-            get => _disableSystemMonitoring;
-            set
-            {
-                if (IsReadOnlyDisableSystemMonitoring)
-                {
-                    // Control is read-only, don't allow changes
-                    OnPropertyChanged(nameof(DisableSystemMonitoring));
-                    return;
-                }
-
-                var oldValue = _disableSystemMonitoring;
-                SetProperty(ref _disableSystemMonitoring, value);
-
-                if (oldValue != value)
-                {
-                    // Not used now.
-                    //GlobalAppManager.Instance.SendCmdDisableSystemMonitoring(value);
                 }
             }
         }

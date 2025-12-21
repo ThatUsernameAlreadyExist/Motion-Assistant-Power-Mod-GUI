@@ -1,6 +1,3 @@
-// ViewModels/ComboBoxItemModel.cs
-using System;
-
 namespace PmGui.ViewModels
 {
     public class ComboBoxItemModel
