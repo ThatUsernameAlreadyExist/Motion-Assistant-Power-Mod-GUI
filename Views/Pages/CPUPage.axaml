@@ -90,6 +90,7 @@
                                 TickFrequency="1"
                                 IsSnapToTickEnabled="True"
                                 PointerCaptureLost="OnPowerlineTdpDragCompleted"
+                                ValueChanged="OnPowerlineTdpDragCompleted"
                                 IsEnabled="{Binding $parent[Window].DataContext.CPUPageViewModel.IsReadOnlyPowerLineTdpValue, Converter={StaticResource InvertBooleanConverter}}"/>
                         
                         <!-- Preset buttons -->
@@ -305,6 +306,7 @@
                                 TickFrequency="1"
                                 IsSnapToTickEnabled="True"
                                 PointerCaptureLost="OnBatteryTdpDragCompleted"
+                                ValueChanged="OnBatteryTdpDragCompleted"
                                 IsEnabled="{Binding $parent[Window].DataContext.CPUPageViewModel.IsReadOnlyBatteryTdpValue, Converter={StaticResource InvertBooleanConverter}}"/>
                         
                         <!-- Preset buttons -->
@@ -515,7 +517,7 @@
                 
                 <Separator Background="{DynamicResource BorderBrush}"/>
                 
-                <!-- Unite Battery and Powerline CPU Presets -->
+                <!-- Unite Battery and Powerline CPU Presets 
                 <Grid ColumnDefinitions="*,Auto">
                     <StackPanel Grid.Column="0" VerticalAlignment="Center">
                         <TextBlock Text="{Binding Localization[UniteBatteryAndPowerlineCPUPresets]}" 
@@ -530,11 +532,11 @@
                                   VerticalAlignment="Center"
                                   HorizontalAlignment="Right"
                                   IsEnabled="{Binding $parent[Window].DataContext.CPUPageViewModel.IsReadOnlyUniteBatteryAndPowerlineCPUPresetsEnabled, Converter={StaticResource InvertBooleanConverter}}"/>
-                </Grid>
+                </Grid> -->
+
+                <!-- <Separator Background="{DynamicResource BorderBrush}"/> -->
                 
-                <Separator Background="{DynamicResource BorderBrush}"/>
-                
-                <!-- Unite Battery and Powerline FPS Limit -->
+                <!-- Unite Battery and Powerline FPS Limit 
                 <Grid ColumnDefinitions="*,Auto">
                     <StackPanel Grid.Column="0" VerticalAlignment="Center">
                         <TextBlock Text="{Binding Localization[UniteBatteryAndPowerlineFPSLimit]}" 
@@ -550,6 +552,7 @@
                                   HorizontalAlignment="Right"
                                   IsEnabled="{Binding $parent[Window].DataContext.CPUPageViewModel.IsReadOnlyUniteBatteryAndPowerlineFPSLimitEnabled, Converter={StaticResource InvertBooleanConverter}}"/>
                 </Grid>
+                -->
                 
             </StackPanel>
         </Border>

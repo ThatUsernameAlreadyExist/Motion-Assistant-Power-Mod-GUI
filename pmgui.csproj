@@ -17,13 +17,13 @@
   <!-- Extract to temp folder at runtime (required for native libs) -->
   <CosturaCreateTemporaryAssemblies>true</CosturaCreateTemporaryAssemblies>
   
-  <Version>2.2.0</Version>
+  <Version>2.2.1</Version>
   <PackageId></PackageId>
   <Title></Title>
   <Product>PowerMod GUI</Product>
   <Copyright>https://github.com/ThatUsernameAlreadyExist/</Copyright>
-  <AssemblyVersion>2.2.0</AssemblyVersion>
-  <FileVersion>2.2.0</FileVersion>
+  <AssemblyVersion>2.2.1</AssemblyVersion>
+  <FileVersion>2.2.1</FileVersion>
 </PropertyGroup>
 
   <ItemGroup>
