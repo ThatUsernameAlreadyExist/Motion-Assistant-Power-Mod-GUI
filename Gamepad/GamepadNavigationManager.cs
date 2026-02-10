@@ -540,12 +540,13 @@ namespace PmGui.Gamepad
         {
             if (_activeSlider != null)
             {
-                var args = new PointerCaptureLostEventArgs(_activeSlider, null)
-                {
-                    RoutedEvent = InputElement.PointerCaptureLostEvent
-                };
-
-                _activeSlider.RaiseEvent(args);
+                // Don't need because we change values in slider handler: SliderKeyboardBehavior
+                //var args = new PointerCaptureLostEventArgs(_activeSlider, null)
+                //{
+                //    RoutedEvent = InputElement.PointerCaptureLostEvent
+                //};
+                //
+                //_activeSlider.RaiseEvent(args);
 
                 if (needFocus)
                 {

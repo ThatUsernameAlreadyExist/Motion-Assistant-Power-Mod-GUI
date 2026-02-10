@@ -2,6 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:converters="using:PmGui.Converters"
              xmlns:helpers="using:PmGui.Helpers"
+             xmlns:models="using:PmGui.Models"
              x:Class="PmGui.Views.Pages.CPUPage">
 
     <UserControl.Resources>
@@ -89,8 +90,7 @@
                                 Value="{Binding CPUPageViewModel.PowerLineTdpValue, Mode=TwoWay}"
                                 TickFrequency="1"
                                 IsSnapToTickEnabled="True"
-                                PointerCaptureLost="OnPowerlineTdpDragCompleted"
-                                ValueChanged="OnPowerlineTdpDragCompleted"
+                                models:SliderKeyboardBehavior.DebouncedCommand="{Binding CPUPageViewModel.SendPowerLineTdpCommand}"
                                 IsEnabled="{Binding $parent[Window].DataContext.CPUPageViewModel.IsReadOnlyPowerLineTdpValue, Converter={StaticResource InvertBooleanConverter}}"/>
                         
                         <!-- Preset buttons -->
@@ -305,8 +305,7 @@
                                 Value="{Binding CPUPageViewModel.BatteryTdpValue, Mode=TwoWay}"
                                 TickFrequency="1"
                                 IsSnapToTickEnabled="True"
-                                PointerCaptureLost="OnBatteryTdpDragCompleted"
-                                ValueChanged="OnBatteryTdpDragCompleted"
+                                models:SliderKeyboardBehavior.DebouncedCommand="{Binding CPUPageViewModel.SendBatteryTdpCommand}"
                                 IsEnabled="{Binding $parent[Window].DataContext.CPUPageViewModel.IsReadOnlyBatteryTdpValue, Converter={StaticResource InvertBooleanConverter}}"/>
                         
                         <!-- Preset buttons -->

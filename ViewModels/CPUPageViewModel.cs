@@ -69,6 +69,24 @@ namespace PmGui.ViewModels.Pages
             SetPowerLineTdpPresetCommand = new RelayCommand(SetPowerLineTdpPreset);
             SetBatteryTdpPresetCommand = new RelayCommand(SetBatteryTdpPreset);
 
+            SendPowerLineTdpCommand = new RelayCommand(param =>
+            {
+                if (param is int value)
+                {
+                    System.Diagnostics.Debug.WriteLine($"SendPowerLineTdp: {value}");
+                    GlobalAppManager.Instance.SendCmdPowerLineTdpValue(value);
+                }
+            });
+
+            SendBatteryTdpCommand = new RelayCommand(param =>
+            {
+                if (param is int value)
+                {
+                    System.Diagnostics.Debug.WriteLine($"SendBatteryTdp: {value}");
+                    GlobalAppManager.Instance.SendCmdBatteryTdpValue(value);
+                }
+            });
+
             GlobalAppManager.Instance.RegisterPageViewModel(this);
         }
 
@@ -592,6 +610,9 @@ namespace PmGui.ViewModels.Pages
         public ICommand SetPowerLineTdpPresetCommand { get; }
         public ICommand SetBatteryTdpPresetCommand { get; }
 
+        public ICommand SendPowerLineTdpCommand { get; }
+        public ICommand SendBatteryTdpCommand { get; }
+
         private void SetPowerLineTdpPreset(object parameter)
         {
             if (parameter == null) return;
@@ -617,7 +638,8 @@ namespace PmGui.ViewModels.Pages
             
             PowerLineTdpValue = value;
 
-            GlobalAppManager.Instance.SendCmdPowerLineTdpValue(PowerLineTdpValue);
+            // No need to call: GlobalAppManager.Instance.SendCmdPowerLineTdpValue(PowerLineTdpValue);
+            // Will be automatically fired by slider handler SliderKeyboardBehavior because we change 'PowerLineTdpValue'
         }
 
         private void SetBatteryTdpPreset(object parameter)
@@ -645,7 +667,8 @@ namespace PmGui.ViewModels.Pages
             
             BatteryTdpValue = value;
 
-            GlobalAppManager.Instance.SendCmdBatteryTdpValue(BatteryTdpValue);
+            // No need to call: GlobalAppManager.Instance.SendCmdBatteryTdpValue(BatteryTdpValue);
+            // Will be automatically fired by slider handler SliderKeyboardBehavior because we change 'PowerLineTdpValue'
         }
 
         #endregion
