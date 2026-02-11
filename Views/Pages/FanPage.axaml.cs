@@ -146,7 +146,6 @@ namespace PmGui.Views.Pages
 
         // Debounce timer for slider value changes
         private System.Timers.Timer _debounceTimer;
-        private readonly Dictionary<string, Action> _pendingActions = new Dictionary<string, Action>();
 
         private void InitializeDebounceTimer()
         {
@@ -159,87 +158,8 @@ namespace PmGui.Views.Pages
         {
             Avalonia.Threading.Dispatcher.UIThread.Invoke(() =>
             {
-                foreach (var action in _pendingActions.Values)
-                {
-                    action?.Invoke();
-                }
-                _pendingActions.Clear();
+                // Debounce timer no longer needed - commands execute immediately on drag completion
             });
-        }
-
-        private void QueueAction(string key, Action action)
-        {
-            _pendingActions[key] = action;
-            _debounceTimer?.Stop();
-            _debounceTimer?.Start();
-        }
-
-        private void OnFanSpeedDragCompleted(object sender, Avalonia.Input.PointerCaptureLostEventArgs e)
-        {
-            System.Diagnostics.Debug.WriteLine($"Event fired: {MethodBase.GetCurrentMethod()?.Name}");
-            if (sender is Slider slider && slider.DataContext is MainWindowViewModel mainWindowVm)
-            {
-                var fanVm = mainWindowVm.FanPageViewModel;
-                QueueAction("FanSpeed", () => GlobalAppManager.Instance.SendCmdFanSpeedValue(fanVm.FanSpeedValue));
-            }
-        }
-
-        private void SendFanCurveValues(FanPageViewModel fanVm)
-        {
-            QueueAction("Temperature45", () => GlobalAppManager.Instance.SendCmdTemperature45Speed(fanVm.Temperature45Speed));
-            QueueAction("Temperature60", () => GlobalAppManager.Instance.SendCmdTemperature60Speed(fanVm.Temperature60Speed));
-            QueueAction("Temperature70", () => GlobalAppManager.Instance.SendCmdTemperature70Speed(fanVm.Temperature70Speed));
-            QueueAction("Temperature80", () => GlobalAppManager.Instance.SendCmdTemperature80Speed(fanVm.Temperature80Speed));
-        }
-
-        private void OnTemperature45DragCompleted(object sender, Avalonia.Input.PointerCaptureLostEventArgs e)
-        {
-            System.Diagnostics.Debug.WriteLine($"Event fired: {MethodBase.GetCurrentMethod()?.Name}");
-            if (sender is Slider slider && slider.DataContext is MainWindowViewModel mainWindowVm)
-            {
-                var fanVm = mainWindowVm.FanPageViewModel;
-                SendFanCurveValues(fanVm);
-            }
-        }
-
-        private void OnTemperature60DragCompleted(object sender, Avalonia.Input.PointerCaptureLostEventArgs e)
-        {
-            System.Diagnostics.Debug.WriteLine($"Event fired: {MethodBase.GetCurrentMethod()?.Name}");
-            if (sender is Slider slider && slider.DataContext is MainWindowViewModel mainWindowVm)
-            {
-                var fanVm = mainWindowVm.FanPageViewModel;
-                SendFanCurveValues(fanVm);
-            }
-        }
-
-        private void OnTemperature70DragCompleted(object sender, Avalonia.Input.PointerCaptureLostEventArgs e)
-        {
-            System.Diagnostics.Debug.WriteLine($"Event fired: {MethodBase.GetCurrentMethod()?.Name}");
-            if (sender is Slider slider && slider.DataContext is MainWindowViewModel mainWindowVm)
-            {
-                var fanVm = mainWindowVm.FanPageViewModel;
-                SendFanCurveValues(fanVm);
-            }
-        }
-
-        private void OnTemperature80DragCompleted(object sender, Avalonia.Input.PointerCaptureLostEventArgs e)
-        {
-            System.Diagnostics.Debug.WriteLine($"Event fired: {MethodBase.GetCurrentMethod()?.Name}");
-            if (sender is Slider slider && slider.DataContext is MainWindowViewModel mainWindowVm)
-            {
-                var fanVm = mainWindowVm.FanPageViewModel;
-                SendFanCurveValues(fanVm);
-            }
-        }
-
-        private void OnDelayTimeoutDragCompleted(object sender, Avalonia.Input.PointerCaptureLostEventArgs e)
-        {
-            System.Diagnostics.Debug.WriteLine($"Event fired: {MethodBase.GetCurrentMethod()?.Name}");
-            if (sender is Slider slider && slider.DataContext is MainWindowViewModel mainWindowVm)
-            {
-                var fanVm = mainWindowVm.FanPageViewModel;
-                QueueAction("DelayTimeout", () => GlobalAppManager.Instance.SendCmdDelayTimeoutValue(fanVm.DelayTimeoutValue));
-            }
         }
     }
 }

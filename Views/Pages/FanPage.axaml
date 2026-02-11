@@ -2,6 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:converters="using:PmGui.Converters"
              xmlns:helpers="using:PmGui.Helpers"
+             xmlns:models="using:PmGui.Models"
              x:Class="PmGui.Views.Pages.FanPage"
              x:Name="FanPageControl">
 
@@ -138,7 +139,7 @@
                             IsEnabled="{Binding $parent[Window].DataContext.FanPageViewModel.IsReadOnlyFanSpeedValue, Converter={StaticResource InvertBooleanConverter}}"
                             TickFrequency="1" 
                             IsSnapToTickEnabled="True"
-                            PointerCaptureLost="OnFanSpeedDragCompleted"/>
+                            models:SliderKeyboardBehavior.DebouncedCommand="{Binding FanPageViewModel.SendFanSpeedValueCommand}"/>
                 </StackPanel>
                 
             </StackPanel>
@@ -182,8 +183,10 @@
                                         VerticalAlignment="Stretch"
                                         HorizontalAlignment="Center"
                                         Foreground="#0078D4"
+                                        TickFrequency="1" 
+                                        IsSnapToTickEnabled="True"
                                         PropertyChanged="OnSliderValueChanged"
-                                        PointerCaptureLost="OnTemperature45DragCompleted"/>
+                                        models:SliderKeyboardBehavior.DebouncedCommand="{Binding FanPageViewModel.SendTemperature45SpeedCommand}"/>
                                 
                                 <!-- Slider for 60°C -->
                                 <Slider Grid.Column="1"
@@ -194,8 +197,10 @@
                                         VerticalAlignment="Stretch"
                                         HorizontalAlignment="Center"
                                         Foreground="#0078D4"
+                                        TickFrequency="1" 
+                                        IsSnapToTickEnabled="True"
                                         PropertyChanged="OnSliderValueChanged"
-                                        PointerCaptureLost="OnTemperature60DragCompleted"/>
+                                        models:SliderKeyboardBehavior.DebouncedCommand="{Binding FanPageViewModel.SendTemperature60SpeedCommand}"/>
                                 
                                 <!-- Slider for 70°C -->
                                 <Slider Grid.Column="2"
@@ -206,8 +211,10 @@
                                         VerticalAlignment="Stretch"
                                         HorizontalAlignment="Center"
                                         Foreground="#0078D4"
+                                        TickFrequency="1" 
+                                        IsSnapToTickEnabled="True"
                                         PropertyChanged="OnSliderValueChanged"
-                                        PointerCaptureLost="OnTemperature70DragCompleted"/>
+                                        models:SliderKeyboardBehavior.DebouncedCommand="{Binding FanPageViewModel.SendTemperature70SpeedCommand}"/>
                                 
                                 <!-- Slider for 80°C -->
                                 <Slider Grid.Column="3"
@@ -218,8 +225,10 @@
                                         VerticalAlignment="Stretch"
                                         HorizontalAlignment="Center"
                                         Foreground="#0078D4"
+                                        TickFrequency="1" 
+                                        IsSnapToTickEnabled="True"
                                         PropertyChanged="OnSliderValueChanged"
-                                        PointerCaptureLost="OnTemperature80DragCompleted"/>
+                                        models:SliderKeyboardBehavior.DebouncedCommand="{Binding FanPageViewModel.SendTemperature80SpeedCommand}"/>
                                 
                             </Grid>
                         </Grid>
@@ -309,7 +318,7 @@
                             IsEnabled="{Binding $parent[Window].DataContext.FanPageViewModel.IsReadOnlyDelayTimeoutValue, Converter={StaticResource InvertBooleanConverter}}"
                             TickFrequency="1" 
                             IsSnapToTickEnabled="True"
-                            PointerCaptureLost="OnDelayTimeoutDragCompleted"/>
+                            models:SliderKeyboardBehavior.DebouncedCommand="{Binding FanPageViewModel.SendDelayTimeoutValueCommand}"/>
                 </StackPanel>
                 
                 <Separator Background="{DynamicResource BorderBrush}"/>                

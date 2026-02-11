@@ -1,7 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows.Input;
 using PmGui.Managers;
 using PmGui.Resources.Localization;
 
@@ -50,6 +53,61 @@ namespace PmGui.ViewModels.Pages
             
             InitializeFanSpeedPresetItems();
             InitializeFanSpeedControlTypeItems();
+
+            // Commands for slider debouncing
+            SendFanSpeedValueCommand = new RelayCommand(param =>
+            {
+                if (param is double value)
+                {
+                    System.Diagnostics.Debug.WriteLine($"SendFanSpeedValue: {value}");
+                    GlobalAppManager.Instance.SendCmdFanSpeedValue(value);
+                }
+            });
+
+            SendTemperature45SpeedCommand = new RelayCommand(param =>
+            {
+                if (param is double value)
+                {
+                    System.Diagnostics.Debug.WriteLine($"SendTemperature45Speed: {value}");
+                    GlobalAppManager.Instance.SendCmdTemperature45Speed(value);
+                }
+            });
+
+            SendTemperature60SpeedCommand = new RelayCommand(param =>
+            {
+                if (param is double value)
+                {
+                    System.Diagnostics.Debug.WriteLine($"SendTemperature60Speed: {value}");
+                    GlobalAppManager.Instance.SendCmdTemperature60Speed(value);
+                }
+            });
+
+            SendTemperature70SpeedCommand = new RelayCommand(param =>
+            {
+                if (param is double value)
+                {
+                    System.Diagnostics.Debug.WriteLine($"SendTemperature70Speed: {value}");
+                    GlobalAppManager.Instance.SendCmdTemperature70Speed(value);
+                }
+            });
+
+            SendTemperature80SpeedCommand = new RelayCommand(param =>
+            {
+                if (param is double value)
+                {
+                    System.Diagnostics.Debug.WriteLine($"SendTemperature80Speed: {value}");
+                    GlobalAppManager.Instance.SendCmdTemperature80Speed(value);
+                }
+            });
+
+            SendDelayTimeoutValueCommand = new RelayCommand(param =>
+            {
+                if (param is double value)
+                {
+                    System.Diagnostics.Debug.WriteLine($"SendDelayTimeoutValue: {value}");
+                    GlobalAppManager.Instance.SendCmdDelayTimeoutValue(value);
+                }
+            });
 
             GlobalAppManager.Instance.RegisterPageViewModel(this);
         }
@@ -343,6 +401,21 @@ namespace PmGui.ViewModels.Pages
 
         #endregion
 
+        #region Commands
+
+        public ICommand SendFanSpeedValueCommand { get; }
+
+        public ICommand SendTemperature45SpeedCommand { get; }
+
+        public ICommand SendTemperature60SpeedCommand { get; }
+
+        public ICommand SendTemperature70SpeedCommand { get; }
+
+        public ICommand SendTemperature80SpeedCommand { get; }
+
+        public ICommand SendDelayTimeoutValueCommand { get; }
+
+        #endregion
 
         #region Methods
 

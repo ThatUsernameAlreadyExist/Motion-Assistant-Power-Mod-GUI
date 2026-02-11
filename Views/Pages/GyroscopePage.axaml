@@ -1,6 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:helpers="using:PmGui.Helpers"
+             xmlns:models="using:PmGui.Models"
              x:Class="PmGui.Views.Pages.GyroscopePage">
     
     <StackPanel Margin="40,16">
@@ -86,7 +87,7 @@
                             Value="{Binding GyroscopePageViewModel.GyroscopeSensitivity, Mode=TwoWay}"
                             TickFrequency="0.5"
                             IsSnapToTickEnabled="True"
-                            PointerCaptureLost="OnGyroscopeSensitivityDragCompleted"
+                            models:SliderKeyboardBehavior.DebouncedCommand="{Binding GyroscopePageViewModel.SendCmdGyroscopeSensitivityCommand}"
                             IsEnabled="{Binding $parent[Window].DataContext.GyroscopePageViewModel.IsReadOnlyGyroscopeSensitivity, Converter={StaticResource InvertBooleanConverter}}"/>
                 </StackPanel>
                 

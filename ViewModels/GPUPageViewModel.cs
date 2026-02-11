@@ -52,6 +52,29 @@ namespace PmGui.ViewModels.Pages
             
             InitializeOptimizationModeItems();
 
+            // Commands for slider debouncing
+            SendCmdMinGpuClockValueCommand = new RelayCommand(param =>
+            {
+                if (param is double value)
+                {
+                    System.Diagnostics.Debug.WriteLine($"SendCmdMinGpuClockValue: {value}");
+                    GlobalAppManager.Instance.SendCmdMinGpuClockValue(value);
+                    // Also send max value to ensure consistency
+                    GlobalAppManager.Instance.SendCmdMaxGpuClockValue((int)MaxGpuClockValue);
+                }
+            });
+
+            SendCmdMaxGpuClockValueCommand = new RelayCommand(param =>
+            {
+                if (param is double value)
+                {
+                    System.Diagnostics.Debug.WriteLine($"SendCmdMaxGpuClockValue: {value}");
+                    GlobalAppManager.Instance.SendCmdMaxGpuClockValue(value);
+                    // Also send min value to ensure consistency
+                    GlobalAppManager.Instance.SendCmdMinGpuClockValue((int)MinGpuClockValue);
+                }
+            });
+
             GlobalAppManager.Instance.RegisterPageViewModel(this);
         }
 
@@ -290,6 +313,10 @@ namespace PmGui.ViewModels.Pages
         {
             get => _resetGpuCommand ?? (_resetGpuCommand = new RelayCommand(ResetGpu));
         }
+
+        public ICommand SendCmdMinGpuClockValueCommand { get; }
+
+        public ICommand SendCmdMaxGpuClockValueCommand { get; }
 
         private void ApplyGpuRange(object parameter)
         {

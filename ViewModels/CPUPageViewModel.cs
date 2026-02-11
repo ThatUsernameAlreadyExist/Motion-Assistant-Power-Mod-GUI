@@ -71,7 +71,7 @@ namespace PmGui.ViewModels.Pages
 
             SendPowerLineTdpCommand = new RelayCommand(param =>
             {
-                if (param is int value)
+                if (param is double value)
                 {
                     System.Diagnostics.Debug.WriteLine($"SendPowerLineTdp: {value}");
                     GlobalAppManager.Instance.SendCmdPowerLineTdpValue(value);
@@ -80,7 +80,7 @@ namespace PmGui.ViewModels.Pages
 
             SendBatteryTdpCommand = new RelayCommand(param =>
             {
-                if (param is int value)
+                if (param is double value)
                 {
                     System.Diagnostics.Debug.WriteLine($"SendBatteryTdp: {value}");
                     GlobalAppManager.Instance.SendCmdBatteryTdpValue(value);

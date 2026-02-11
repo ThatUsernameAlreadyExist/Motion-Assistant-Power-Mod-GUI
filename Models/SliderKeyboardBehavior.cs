@@ -104,12 +104,11 @@ namespace PmGui.Models
 
         private static void ExecuteCommand(Slider slider)
         {
-            int value = (int)slider.Value;
             var command = GetDebouncedCommand(slider);
 
-            if (command != null && command.CanExecute(value))
+            if (command != null && command.CanExecute(slider.Value))
             {
-                command.Execute(value);
+                command.Execute(slider.Value);
             }
         }
 

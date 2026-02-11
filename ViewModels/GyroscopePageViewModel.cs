@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows.Input;
 using PmGui.Managers;
 using PmGui.Resources.Localization;
 
@@ -34,12 +36,23 @@ namespace PmGui.ViewModels.Pages
         private ComboBoxItemModel _gyroscopeActivationButtonSelectedItem;
         private bool _isReadOnlyGyroscopeActivationButton = false;
 
+
         public GyroscopePageViewModel()
         {
             // Subscribe to language changes to refresh ComboBox items
             _localization.PropertyChanged += (s, e) => RefreshTranslations();
             
             InitializeGyroscopeActivationButtonItems();
+
+            // Command for slider debouncing
+            SendCmdGyroscopeSensitivityCommand = new RelayCommand(param =>
+            {
+                if (param is double value)
+                {
+                    System.Diagnostics.Debug.WriteLine($"SendCmdGyroscopeSensitivity: {value}");
+                    GlobalAppManager.Instance.SendCmdGyroscopeSensitivity(value);
+                }
+            });
 
             GlobalAppManager.Instance.RegisterPageViewModel(this);
         }
@@ -237,6 +250,8 @@ namespace PmGui.ViewModels.Pages
             get => _isReadOnlyGyroscopeSensitivity;
             set => SetProperty(ref _isReadOnlyGyroscopeSensitivity, value);
         }
+
+        public ICommand SendCmdGyroscopeSensitivityCommand { get; }
 
         public bool IsReadOnlyGyroscopeActivationButton
         {

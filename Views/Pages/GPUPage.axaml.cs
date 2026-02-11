@@ -52,45 +52,5 @@ namespace PmGui.Views.Pages
             // Unsubscribe from localization changes
             LocalizationManager.Instance.PropertyChanged -= OnLocalizationChanged;
         }
-
-        private void MinGpuClockSlider_DragCompleted(object sender, Avalonia.Input.PointerCaptureLostEventArgs e)
-        {
-            if (sender is Slider slider)
-            {
-                if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-                {
-                    var mainWindow = desktop.MainWindow;
-                    if (mainWindow?.DataContext is MainWindowViewModel mainWindowVm)
-                    {
-                        var gpuVm = mainWindowVm.GPUPageViewModel;
-                        if (gpuVm != null)
-                        {
-                            GlobalAppManager.Instance.SendCmdMinGpuClockValue((int)slider.Value);
-                            GlobalAppManager.Instance.SendCmdMaxGpuClockValue((int)gpuVm.MaxGpuClockValue);
-                        }
-                    }
-                }
-            }
-        }
-
-        private void MaxGpuClockSlider_DragCompleted(object sender, Avalonia.Input.PointerCaptureLostEventArgs e)
-        {
-            if (sender is Slider slider)
-            {
-                if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-                {
-                    var mainWindow = desktop.MainWindow;
-                    if (mainWindow?.DataContext is MainWindowViewModel mainWindowVm)
-                    {
-                        var gpuVm = mainWindowVm.GPUPageViewModel;
-                        if (gpuVm != null)
-                        {
-                            GlobalAppManager.Instance.SendCmdMaxGpuClockValue((int)slider.Value);
-                            GlobalAppManager.Instance.SendCmdMinGpuClockValue((int)gpuVm.MinGpuClockValue);
-                        }
-                    }
-                }
-            }
-        }
     }
 }
