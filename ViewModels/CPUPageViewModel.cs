@@ -23,7 +23,7 @@ namespace PmGui.ViewModels.Pages
         private double _powerLineTdpValue = 0;
         private double _batteryTdpValue = 0;
         private double _tdpMinValue = 4;
-        private double _tdpMaxValue = 30;
+        private double _tdpMaxValue = 95;
         
         // TDP Preset values
         private List<int> _tdpPresetValues = new List<int> { 5, 8, 10, 12, 15, 18 };
@@ -211,11 +211,11 @@ namespace PmGui.ViewModels.Pages
                 {
                     if (_isPowerLineActive)
                     {
-                        SliderKeyboardBehavior.SetSilently(() => PowerLineTdpValue = Clamp(value, TdpMinValue, TdpMaxValue));
+                        PowerLineTdpValue = Clamp(value, TdpMinValue, TdpMaxValue);
                     }
                     else
                     {
-                        SliderKeyboardBehavior.SetSilently(() => BatteryTdpValue = Clamp(value, TdpMinValue, TdpMaxValue));
+                        BatteryTdpValue = Clamp(value, TdpMinValue, TdpMaxValue);
                     }
                 }
             }

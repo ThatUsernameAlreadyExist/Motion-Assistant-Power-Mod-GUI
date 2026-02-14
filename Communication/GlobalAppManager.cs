@@ -448,7 +448,7 @@ namespace PmGui.Managers
         private void ReceiveCmdTDPLimit(double value)
         {
             ExecuteOnPageViewModel<MonitoringPageViewModel>(vm => { vm.TDPLimit = value.ToString(); });
-            ExecuteOnPageViewModel<CPUPageViewModel>(vm => { vm.ActualTdpValue = value; });
+            ExecuteOnPageViewModel<CPUPageViewModel>(vm => { SliderKeyboardBehavior.SetSilently(() => vm.ActualTdpValue = value); });
         }
 
         private void ReceiveCmdCommandsSendingEnabled(bool value)
