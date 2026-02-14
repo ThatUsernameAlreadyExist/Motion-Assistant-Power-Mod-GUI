@@ -1,3 +1,6 @@
+using PmGui.Managers;
+using PmGui.Models;
+using PmGui.Resources.Localization;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -5,8 +8,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
-using PmGui.Managers;
-using PmGui.Resources.Localization;
 
 namespace PmGui.ViewModels.Pages
 {
@@ -210,11 +211,11 @@ namespace PmGui.ViewModels.Pages
                 {
                     if (_isPowerLineActive)
                     {
-                        PowerLineTdpValue = Clamp(value, TdpMinValue, TdpMaxValue);
+                        SliderKeyboardBehavior.SetSilently(() => PowerLineTdpValue = Clamp(value, TdpMinValue, TdpMaxValue));
                     }
                     else
                     {
-                        BatteryTdpValue = Clamp(value, TdpMinValue, TdpMaxValue);
+                        SliderKeyboardBehavior.SetSilently(() => BatteryTdpValue = Clamp(value, TdpMinValue, TdpMaxValue));
                     }
                 }
             }

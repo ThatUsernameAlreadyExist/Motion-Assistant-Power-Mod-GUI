@@ -59,8 +59,6 @@ namespace PmGui.ViewModels.Pages
                 {
                     System.Diagnostics.Debug.WriteLine($"SendCmdMinGpuClockValue: {value}");
                     GlobalAppManager.Instance.SendCmdMinGpuClockValue(value);
-                    // Also send max value to ensure consistency
-                    GlobalAppManager.Instance.SendCmdMaxGpuClockValue((int)MaxGpuClockValue);
                 }
             });
 
@@ -70,8 +68,6 @@ namespace PmGui.ViewModels.Pages
                 {
                     System.Diagnostics.Debug.WriteLine($"SendCmdMaxGpuClockValue: {value}");
                     GlobalAppManager.Instance.SendCmdMaxGpuClockValue(value);
-                    // Also send min value to ensure consistency
-                    GlobalAppManager.Instance.SendCmdMinGpuClockValue((int)MinGpuClockValue);
                 }
             });
 
@@ -196,6 +192,8 @@ namespace PmGui.ViewModels.Pages
                     // Ensure min value is always less than max value
                     if (value > _maxGpuClockValue)
                     {
+                        // No need to call: GlobalAppManager.Instance.SendCmdMaxGpuClockValue(MaxGpuClockValue);
+                        // Will be automatically fired by slider handler SliderKeyboardBehavior because we change 'MaxGpuClockValue'
                         MaxGpuClockValue = value;
                     }
                 }
@@ -220,6 +218,8 @@ namespace PmGui.ViewModels.Pages
                     // Ensure max value is always greater than min value
                     if (value < _minGpuClockValue)
                     {
+                        // No need to call: GlobalAppManager.Instance.SendCmdMinGpuClockValue(MinGpuClockValue);
+                        // Will be automatically fired by slider handler SliderKeyboardBehavior because we change 'MinGpuClockValue'
                         MinGpuClockValue = value;
                     }
                 }

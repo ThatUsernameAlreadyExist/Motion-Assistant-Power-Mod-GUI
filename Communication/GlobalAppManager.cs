@@ -381,9 +381,9 @@ namespace PmGui.Managers
         private void ReceiveCmdInvertYAxis(bool value) => ExecuteOnPageViewModel<GyroscopePageViewModel>(vm => { vm.InvertYAxis = value; });
         private void ReceiveCmdDisableBoschAccelerometer(bool value) => ExecuteOnPageViewModel<GyroscopePageViewModel>(vm => { vm.DisableBoschAccelerometer = value; });
         private void ReceiveCmdGyroscopeActivationButton(int value) => ExecuteOnPageViewModel<GyroscopePageViewModel>(vm => { if (vm.GyroscopeActivationButtonItems != null) { var item = vm.GyroscopeActivationButtonItems.FirstOrDefault(x => x.Value == value); vm.GyroscopeActivationButtonSelectedItem = item; } });
-        private void ReceiveCmdGyroscopeSensitivity(double value) => ExecuteOnPageViewModel<GyroscopePageViewModel>(vm => { vm.GyroscopeSensitivity = value; });
-        private void ReceiveCmdPowerLineTdpValue(double value) => ExecuteOnPageViewModel<CPUPageViewModel>(vm => { vm.PowerLineTdpValue = value; });
-        private void ReceiveCmdBatteryTdpValue(double value) => ExecuteOnPageViewModel<CPUPageViewModel>(vm => { vm.BatteryTdpValue = value; });
+        private void ReceiveCmdGyroscopeSensitivity(double value) => ExecuteOnPageViewModel<GyroscopePageViewModel>(vm => { SliderKeyboardBehavior.SetSilently(() => vm.GyroscopeSensitivity = value); });
+        private void ReceiveCmdPowerLineTdpValue(double value) => ExecuteOnPageViewModel<CPUPageViewModel>(vm => { SliderKeyboardBehavior.SetSilently(() => vm.PowerLineTdpValue = value); });
+        private void ReceiveCmdBatteryTdpValue(double value) => ExecuteOnPageViewModel<CPUPageViewModel>(vm => { SliderKeyboardBehavior.SetSilently(() => vm.BatteryTdpValue = value);});
         private void ReceiveCmdIsPowerLineActive(bool value) => ExecuteOnPageViewModel<CPUPageViewModel>(vm => { vm.IsPowerLineActive = value; });
         private void ReceiveCmdIsBatteryActive(bool value) => ExecuteOnPageViewModel<CPUPageViewModel>(vm => { vm.IsBatteryActive = value; });
         private void ReceiveCmdTdpMaxValue(double value)
@@ -410,9 +410,9 @@ namespace PmGui.Managers
         private void ReceiveCmdBatteryFrequencySelectedItem(string value) => ExecuteOnPageViewModel<CPUPageViewModel>(vm => { if (vm.BatteryFrequencyItems != null) { var item = vm.BatteryFrequencyItems.FirstOrDefault(x => x.Id == value); vm.BatteryFrequencySelectedItem = item; } });
         private void ReceiveCmdBatteryFpsSelectedItem(string value) => ExecuteOnPageViewModel<CPUPageViewModel>(vm => { if (vm.BatteryFpsItems != null) { var item = vm.BatteryFpsItems.FirstOrDefault(x => x.Id == value); vm.BatteryFpsSelectedItem = item; } });
         private void ReceiveCmdBatteryCpuCoresSelectedItem(string value) => ExecuteOnPageViewModel<CPUPageViewModel>(vm => { if (vm.BatteryCpuCoresItems != null) { var item = vm.BatteryCpuCoresItems.FirstOrDefault(x => x.Id == value); vm.BatteryCpuCoresSelectedItem = item; } });
-        private void ReceiveCmdMinGpuClockValue(double value) => ExecuteOnPageViewModel<GPUPageViewModel>(vm => { vm.MinGpuClockValue = value; });
+        private void ReceiveCmdMinGpuClockValue(double value) => ExecuteOnPageViewModel<GPUPageViewModel>(vm => { SliderKeyboardBehavior.SetSilently(() => vm.MinGpuClockValue = value); });
         private void ReceiveCmdGpuModelName(string value) => ExecuteOnPageViewModel<GPUPageViewModel>(vm => { vm.GPUModel = value; });
-        private void ReceiveCmdMaxGpuClockValue(double value) => ExecuteOnPageViewModel<GPUPageViewModel>(vm => { vm.MaxGpuClockValue = value; });
+        private void ReceiveCmdMaxGpuClockValue(double value) => ExecuteOnPageViewModel<GPUPageViewModel>(vm => { SliderKeyboardBehavior.SetSilently(() => vm.MaxGpuClockValue = value); });
         private void ReceiveCmdCustomGpuClocksRangeEnabled(bool value) => ExecuteOnPageViewModel<GPUPageViewModel>(vm => { vm.CustomGpuClocksRangeEnabled = value; });
         private void ReceiveCmdOptimizationModeSelectedItem(string value) => ExecuteOnPageViewModel<GPUPageViewModel>(vm => { if (vm.OptimizationModeItems != null) { var item = vm.OptimizationModeItems.FirstOrDefault(x => x.Id == value); vm.OptimizationModeSelectedItem = item; } });
         private void ReceiveCmdOptimizeGpuClocksEnabled(bool value) => ExecuteOnPageViewModel<GPUPageViewModel>(vm => { vm.OptimizeGpuClocksEnabled = value; });
@@ -421,12 +421,12 @@ namespace PmGui.Managers
         private void ReceiveCmdFanSpeedControlTypeSelectedItem(string value) => ExecuteOnPageViewModel<FanPageViewModel>(vm => { if (vm.FanSpeedControlTypeItems != null) { var item = vm.FanSpeedControlTypeItems.FirstOrDefault(x => x.Id == value); vm.FanSpeedControlTypeSelectedItem = item; } });
         private void ReceiveCmdIsFixedSpeedMode(bool value) => ExecuteOnPageViewModel<FanPageViewModel>(vm => { vm.IsFixedSpeedMode = value; });
         private void ReceiveCmdIsSpeedCurveMode(bool value) => ExecuteOnPageViewModel<FanPageViewModel>(vm => { vm.IsSpeedCurveMode = value; });
-        private void ReceiveCmdFanSpeedValue(double value) => ExecuteOnPageViewModel<FanPageViewModel>(vm => { vm.FanSpeedValue = value; });
-        private void ReceiveCmdTemperature45Speed(double value) => ExecuteOnPageViewModel<FanPageViewModel>(vm => { vm.Temperature45Speed = value; });
-        private void ReceiveCmdTemperature60Speed(double value) => ExecuteOnPageViewModel<FanPageViewModel>(vm => { vm.Temperature60Speed = value; });
-        private void ReceiveCmdTemperature70Speed(double value) => ExecuteOnPageViewModel<FanPageViewModel>(vm => { vm.Temperature70Speed = value; });
-        private void ReceiveCmdTemperature80Speed(double value) => ExecuteOnPageViewModel<FanPageViewModel>(vm => { vm.Temperature80Speed = value; });
-        private void ReceiveCmdDelayTimeoutValue(double value) => ExecuteOnPageViewModel<FanPageViewModel>(vm => { vm.DelayTimeoutValue = value; });
+        private void ReceiveCmdFanSpeedValue(double value) => ExecuteOnPageViewModel<FanPageViewModel>(vm => { SliderKeyboardBehavior.SetSilently(() => vm.FanSpeedValue = value); });
+        private void ReceiveCmdTemperature45Speed(double value) => ExecuteOnPageViewModel<FanPageViewModel>(vm => { SliderKeyboardBehavior.SetSilently(() => vm.Temperature45Speed = value); });
+        private void ReceiveCmdTemperature60Speed(double value) => ExecuteOnPageViewModel<FanPageViewModel>(vm => { SliderKeyboardBehavior.SetSilently(() => vm.Temperature60Speed = value); });
+        private void ReceiveCmdTemperature70Speed(double value) => ExecuteOnPageViewModel<FanPageViewModel>(vm => { SliderKeyboardBehavior.SetSilently(() => vm.Temperature70Speed = value); });
+        private void ReceiveCmdTemperature80Speed(double value) => ExecuteOnPageViewModel<FanPageViewModel>(vm => { SliderKeyboardBehavior.SetSilently(() => vm.Temperature80Speed = value); });
+        private void ReceiveCmdDelayTimeoutValue(double value) => ExecuteOnPageViewModel<FanPageViewModel>(vm => { SliderKeyboardBehavior.SetSilently(() => vm.DelayTimeoutValue = value); });
         private void ReceiveCmdEnableOSDOverlay(bool value) => ExecuteOnPageViewModel<OSDOverlayPageViewModel>(vm => { vm.EnableOSDOverlay = value; });
         private void ReceiveCmdOSDTypeSelectedItem(string value) => ExecuteOnPageViewModel<OSDOverlayPageViewModel>(vm => { if (vm.OSDTypeItems != null) { var item = vm.OSDTypeItems.FirstOrDefault(x => x.Id == value); vm.OSDTypeSelectedItem = item; } });
         private void ReceiveCmdKeepLastProcessProfile(bool value) => ExecuteOnPageViewModel<ProcessProfilesPageViewModel>(vm => { vm.KeepLastProcessProfile = value; });

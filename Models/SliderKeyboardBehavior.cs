@@ -15,6 +15,7 @@ namespace PmGui.Models
         private static readonly Dictionary<Slider, IDisposable> _debounceTimers = new Dictionary<Slider, IDisposable>();
         private static readonly Dictionary<Slider, bool> _isDragging = new Dictionary<Slider, bool>();
         private static readonly Dictionary<Slider, double> _initialValue = new Dictionary<Slider, double>();
+        private static bool _suppressEvents = false;
 
         private static readonly TimeSpan DefaultDebounceDelay = TimeSpan.FromSeconds(1);
 
@@ -24,6 +25,19 @@ namespace PmGui.Models
 
         public static ICommand GetDebouncedCommand(Slider slider) => slider.GetValue(DebouncedCommandProperty);
         public static void SetDebouncedCommand(Slider slider, ICommand value) => slider.SetValue(DebouncedCommandProperty, value);
+
+        public static void SetSilently(Action action)
+        {
+            _suppressEvents = true;
+            try
+            {
+                action();
+            }
+            finally
+            {
+                _suppressEvents = false;
+            }
+        }
 
         static SliderKeyboardBehavior()
         {
@@ -43,7 +57,6 @@ namespace PmGui.Models
                 _initialValue.Remove(slider);
             }
 
-            // Subscribe to new
             if (e.NewValue != null)
             {
                 slider.AddHandler(InputElement.PointerPressedEvent, (EventHandler<PointerPressedEventArgs>)OnPointerPressed,
@@ -58,6 +71,8 @@ namespace PmGui.Models
 
         private static void OnPointerPressed(object sender, PointerPressedEventArgs e)
         {
+            if (_suppressEvents) return;
+
             if (sender is Slider slider)
             {
                 _isDragging[slider] = true;
@@ -68,6 +83,8 @@ namespace PmGui.Models
 
         private static void OnPointerCaptureLost(object sender, PointerCaptureLostEventArgs e)
         {
+            if (_suppressEvents) return;
+
             if (sender is Slider slider)
             {
                 _isDragging[slider] = false;
@@ -87,6 +104,8 @@ namespace PmGui.Models
 
         private static void OnValueChanged(object sender, RangeBaseValueChangedEventArgs e)
         {
+            if (_suppressEvents) return;
+
             if (Math.Abs(e.OldValue - e.NewValue) < 0.01)
                 return;
 
@@ -105,8 +124,6 @@ namespace PmGui.Models
 
         private static void ScheduleDebounce(Slider slider)
         {
-            int currentValue = (int)slider.Value;
-
             CleanupTimer(slider);
 
             _debounceTimers[slider] = DispatcherTimer.RunOnce(() =>
@@ -118,8 +135,9 @@ namespace PmGui.Models
 
         private static void ExecuteCommand(Slider slider)
         {
-            var command = GetDebouncedCommand(slider);
+            if (_suppressEvents) return;
 
+            var command = GetDebouncedCommand(slider);
             if (command != null && command.CanExecute(slider.Value))
             {
                 command.Execute(slider.Value);
