@@ -513,10 +513,11 @@
                                   HorizontalAlignment="Right"
                                   IsEnabled="{Binding $parent[Window].DataContext.CPUPageViewModel.IsReadOnlyAutoOptimizeCpuFrequencyEnabled, Converter={StaticResource InvertBooleanConverter}}"/>
                 </Grid>
-                
+
+                <!--
                 <Separator Background="{DynamicResource BorderBrush}"/>
                 
-                <!-- Unite Battery and Powerline CPU Presets 
+                 Unite Battery and Powerline CPU Presets 
                 <Grid ColumnDefinitions="*,Auto">
                     <StackPanel Grid.Column="0" VerticalAlignment="Center">
                         <TextBlock Text="{Binding Localization[UniteBatteryAndPowerlineCPUPresets]}" 

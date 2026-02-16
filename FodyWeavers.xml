@@ -3,6 +3,7 @@
     <Unmanaged64Assemblies>
       libSkiaSharp
       libHarfBuzzSharp
+      av_libglesv2
     </Unmanaged64Assemblies>
   </Costura>
 </Weavers>
