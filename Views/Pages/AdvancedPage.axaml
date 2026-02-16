@@ -275,7 +275,7 @@
                 <TextBlock Text="{Binding $parent[Window].DataContext.AdvancedPageViewModel.ModVersion}"
                            FontSize="12"
                            Foreground="{DynamicResource SecondaryTextBrush}"/>
-                <TextBlock Text="2025" 
+                <TextBlock Text="2026" 
                            FontSize="12"
                            Foreground="{DynamicResource SecondaryTextBrush}"/>
             </StackPanel>
