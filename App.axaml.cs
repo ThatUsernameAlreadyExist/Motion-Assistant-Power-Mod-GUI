@@ -95,6 +95,8 @@ namespace PmGui
                 }
 
                 GlobalAppManager.Instance.SendCmdIsVisible(true);
+
+                PowerEfficiency.SetEcoQoS(false);
             }
         }
 

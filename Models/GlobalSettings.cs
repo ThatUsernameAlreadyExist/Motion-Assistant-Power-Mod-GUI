@@ -26,6 +26,7 @@ namespace PmGui.Models
         private bool _isDarkTheme = false;
         private string _currentLanguage = "en";
         private bool _useGamepad = true;
+        private bool _useHwRendering = true;
         
         // Page visibility settings - stores pages that should be hidden
         // All pages are visible by default, only hidden pages are stored in this list
@@ -237,6 +238,18 @@ namespace PmGui.Models
             }
         }
 
+        public bool UseHwRendering
+        {
+            get => _useHwRendering;
+            set
+            {
+                if (SetProperty(ref _useHwRendering, value))
+                {
+                    SaveSettings();
+                }
+            }
+        }
+
         #region Page Visibility Methods
 
         /// <summary>
@@ -334,6 +347,7 @@ namespace PmGui.Models
                 _isDarkTheme = _iniFile.GetValue("UI", "IsDarkTheme", systemIsDarkTheme);
                 _currentLanguage = _iniFile.GetValue("UI", "CurrentLanguage", systemLanguage);
                 _useGamepad = _iniFile.GetValue("UI", "UseGamepad", true);
+                _useHwRendering = _iniFile.GetValue("UI", "UseHwRendering", true);
 
                 // Load page visibility settings - stored as comma-separated list of hidden pages
                 string hiddenPagesString = _iniFile.GetValue("UI", "HiddenPages", "");
@@ -378,6 +392,7 @@ namespace PmGui.Models
                 _iniFile.SetValue("UI", "IsDarkTheme", _isDarkTheme.ToString());
                 _iniFile.SetValue("UI", "CurrentLanguage", _currentLanguage);
                 _iniFile.SetValue("UI", "UseGamepad", _useGamepad.ToString());
+                _iniFile.SetValue("UI", "UseHwRendering", _useHwRendering.ToString());
 
                 // Save page visibility settings as comma-separated list of hidden pages
                 string hiddenPagesString = string.Join(",", _hiddenPages);

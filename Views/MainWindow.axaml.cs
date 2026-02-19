@@ -9,6 +9,7 @@ using PmGui.Models;
 using PmGui.ViewModels;
 using PmGui.ViewModels.Pages;
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -231,6 +232,8 @@ namespace PmGui.Views
                 e.Cancel = true;
                 this.IsVisible = false;
                 GlobalAppManager.Instance.SendCmdIsVisible(false);
+
+                PowerEfficiency.SetEcoQoS(true);
             }
             else
             {
@@ -259,6 +262,12 @@ namespace PmGui.Views
                         // This allows it to be shown again later without the "Cannot re-show a closed window" error
                         this.IsVisible = false;
                     }
+
+                    PowerEfficiency.SetEcoQoS(true);
+                }
+                else
+                {
+                    PowerEfficiency.SetEcoQoS(false);
                 }
 
                 if (e.OldValue is WindowState oldState &&

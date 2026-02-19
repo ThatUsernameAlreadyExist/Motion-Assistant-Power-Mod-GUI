@@ -1,5 +1,8 @@
 using Avalonia;
+using PmGui.Models;
 using System;
+using System.Collections.Generic;
+
 
 namespace PmGui
 {
@@ -35,9 +38,23 @@ namespace PmGui
         }
 
         public static AppBuilder BuildAvaloniaApp()
-            => AppBuilder.Configure<App>()
+        {
+            var options = new Win32PlatformOptions
+            {
+                CompositionMode = new List<Win32CompositionMode> { Win32CompositionMode.DirectComposition },
+            };
+
+            // Force software rendering if HW is disabled
+            if (!GlobalSettings.Instance.UseHwRendering)
+            {
+                options.RenderingMode = new List<Win32RenderingMode> { Win32RenderingMode.Software };
+            }
+
+            return AppBuilder.Configure<App>()
                 .UsePlatformDetect()
+                .With(options)
                 .LogToTrace()
                 .WithInterFont();
+        }
     }
 }
