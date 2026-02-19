@@ -23,6 +23,7 @@ namespace PmGui.ViewModels.Pages
         private string _maVersion = "Motion Assistant";
         private string _modVersion = "Power Mod";
         private ComboBoxItemModel _selectedLanguage;
+        private bool _useHwRendering;
         
         // Page visibility settings - dynamic collection that can work with any page names
         private ObservableCollection<PageVisibilityModel> _pageVisibilitySettings = new ObservableCollection<PageVisibilityModel>();
@@ -35,6 +36,7 @@ namespace PmGui.ViewModels.Pages
         private bool _isReadOnlyUseNewInterface = false;
         private bool _isReadOnlyMinimizeToSystemTray = false;
         private bool _isReadOnlyWindowSizeSelectedItem = false;
+        private bool _isReadOnlyUseHwRendering = false;
         private bool _isReadOnlyCheckForUpdatesCommand = false;
 
         public AdvancedPageViewModel()
@@ -45,6 +47,7 @@ namespace PmGui.ViewModels.Pages
             InitializeWindowSizeItems();
             InitializeLanguageItems();
             _useGamepad = GlobalSettings.Instance.UseGamepad;
+            _useHwRendering = GlobalSettings.Instance.UseHwRendering;
             CheckForUpdatesCommand = new RelayCommand(_ => CheckForUpdates());
 
             GlobalAppManager.Instance.RegisterPageViewModel(this);
@@ -231,6 +234,25 @@ namespace PmGui.ViewModels.Pages
             }
         }
 
+        public bool UseHwRendering
+        {
+            get => _useHwRendering;
+            set
+            {
+                if (IsReadOnlyUseHwRendering)
+                {
+                    // Control is read-only, don't allow changes
+                    OnPropertyChanged(nameof(UseHwRendering));
+                    return;
+                }
+
+                if (SetProperty(ref _useHwRendering, value))
+                {
+                    GlobalSettings.Instance.UseHwRendering = value;
+                }
+            }
+        }
+
         public void SetAppVersions(string input)
         {
             if (string.IsNullOrEmpty(input))
@@ -345,6 +367,12 @@ namespace PmGui.ViewModels.Pages
         {
             get => _isReadOnlyMinimizeToSystemTray;
             set => SetProperty(ref _isReadOnlyMinimizeToSystemTray, value);
+        }
+
+        public bool IsReadOnlyUseHwRendering
+        {
+            get => _isReadOnlyUseHwRendering;
+            set => SetProperty(ref _isReadOnlyUseHwRendering, value);
         }
 
         public bool IsReadOnlyWindowSizeSelectedItem

@@ -128,6 +128,28 @@
                     
                     <Separator Background="{DynamicResource BorderBrush}"/>
                     
+                    <!-- Use hardware accelerated rendering -->
+                    <Grid ColumnDefinitions="*,Auto">
+                        <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding $parent[Window].DataContext.Localization[UseHardwareRendering]}" 
+                                       FontWeight="Medium"
+                                       FontSize="14"/>
+                            <TextBlock Text="{Binding $parent[Window].DataContext.Localization[UseHardwareRenderingHint]}" 
+                                       FontSize="12"
+                                       TextWrapping="Wrap"
+                                       VerticalAlignment="Center"
+                                       Foreground="{DynamicResource SecondaryTextBrush}"/>
+                        </StackPanel>
+                        <ToggleSwitch Grid.Column="1"
+                                      IsChecked="{Binding $parent[Window].DataContext.AdvancedPageViewModel.UseHwRendering, Mode=TwoWay}"
+                                      IsEnabled="{Binding $parent[Window].DataContext.AdvancedPageViewModel.IsReadOnlyUseHwRendering, Converter={StaticResource InvertBooleanConverter}}"
+                                      VerticalAlignment="Center"
+                                      HorizontalAlignment="Right"
+                                      Classes="toggle-switch"/>
+                    </Grid>
+                    
+                    <Separator Background="{DynamicResource BorderBrush}"/>
+                    
                     <!-- Minimize to system tray -->
                     <Grid ColumnDefinitions="*,Auto">
                         <StackPanel Grid.Column="0" VerticalAlignment="Center">

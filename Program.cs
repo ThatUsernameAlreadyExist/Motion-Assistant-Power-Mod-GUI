@@ -41,7 +41,7 @@ namespace PmGui
         {
             var options = new Win32PlatformOptions
             {
-                CompositionMode = new List<Win32CompositionMode> { Win32CompositionMode.DirectComposition },
+                //CompositionMode = new List<Win32CompositionMode> { Win32CompositionMode.DirectComposition },
             };
 
             // Force software rendering if HW is disabled

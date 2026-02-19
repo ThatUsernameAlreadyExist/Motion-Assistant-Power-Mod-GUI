@@ -43,6 +43,8 @@
                                    FontSize="14"/>
                         <TextBlock Text="{Binding Localization[GyroscopeActivationButtonTip]}" 
                                    FontSize="12"
+                                   TextWrapping="Wrap"
+                                   VerticalAlignment="Center"
                                    Foreground="{DynamicResource SecondaryTextBrush}"/>
                     </StackPanel>
                     <ComboBox Grid.Column="1"
