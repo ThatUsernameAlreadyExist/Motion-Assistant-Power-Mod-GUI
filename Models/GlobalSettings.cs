@@ -32,15 +32,15 @@ namespace PmGui.Models
         // All pages are visible by default, only hidden pages are stored in this list
         private HashSet<string> _hiddenPages = new HashSet<string>();
 
-        public static GlobalSettings Instance => _instance ?? (_instance = new GlobalSettings());
+        public static GlobalSettings Instance => _instance ?? (_instance = new GlobalSettings(true));
 
-        private GlobalSettings()
+        public GlobalSettings(bool withApply)
         {
             // Determine the appropriate settings file path based on write access
             _settingsFilePath = DetermineSettingsFilePath();
             _iniFile = new IniFileManager(_settingsFilePath);
             
-            LoadSettings();
+            LoadSettings(withApply);
         }
 
         /// <summary>
@@ -299,7 +299,7 @@ namespace PmGui.Models
         /// <summary>
         /// Load settings from pmgui.ini file
         /// </summary>
-        public void LoadSettings()
+        public void LoadSettings(bool withApply)
         {
             try
             {
@@ -366,13 +366,16 @@ namespace PmGui.Models
                     }
                 }
 
-                OnPropertyChanged(nameof(IsMenuExpanded));
-                OnPropertyChanged(nameof(IsDarkTheme));
-                OnPropertyChanged(nameof(CurrentLanguage));
-                OnPropertyChanged(nameof(UseGamepad));
+                if (withApply)
+                {
+                    OnPropertyChanged(nameof(IsMenuExpanded));
+                    OnPropertyChanged(nameof(IsDarkTheme));
+                    OnPropertyChanged(nameof(CurrentLanguage));
+                    OnPropertyChanged(nameof(UseGamepad));
 
-                // Apply settings to ViewModels
-                ApplySettingsToViewModels();
+                    // Apply settings to ViewModels
+                    ApplySettingsToViewModels();
+                }
             }
             catch (Exception ex)
             {
