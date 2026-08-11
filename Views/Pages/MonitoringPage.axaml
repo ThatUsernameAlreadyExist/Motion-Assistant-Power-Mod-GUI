@@ -35,7 +35,8 @@
                                 <TextBlock Text="{Binding #MonitoringPageRoot.ViewModel.PackagePowerFormatted}"
                                            FontSize="26"
                                            FontWeight="Bold"
-                                           HorizontalAlignment="Center"/>
+                                           HorizontalAlignment="Center"
+                                           FontFamily="Consolas"/>
                                 <TextBlock Text="{Binding $parent[Window].DataContext.Localization[Watt]}"
                                            FontSize="14"
                                            Foreground="{DynamicResource SecondaryTextBrush}"
@@ -81,10 +82,11 @@
                         
                         <Grid Width="140" Height="140">
                             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                                <TextBlock Text="{Binding #MonitoringPageRoot.ViewModel.CpuTemperature, StringFormat={}{0:F0}}"
+                                <TextBlock Text="{Binding #MonitoringPageRoot.ViewModel.CpuTemperatureFormatted}"
                                            FontSize="26"
                                            FontWeight="Bold"
-                                           HorizontalAlignment="Center"/>
+                                           HorizontalAlignment="Center"
+                                           FontFamily="Consolas"/>
                                 <TextBlock Text="°C"
                                            FontSize="14"
                                            Foreground="{DynamicResource SecondaryTextBrush}"
@@ -128,10 +130,11 @@
                         
                         <Grid Width="140" Height="140">
                             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                                <TextBlock Text="{Binding #MonitoringPageRoot.ViewModel.CpuUsage, StringFormat={}{0:F0}}"
+                                <TextBlock Text="{Binding #MonitoringPageRoot.ViewModel.CpuUsageFormatted}"
                                            FontSize="26"
                                            FontWeight="Bold"
-                                           HorizontalAlignment="Center"/>
+                                           HorizontalAlignment="Center"
+                                           FontFamily="Consolas"/>
                                 <TextBlock Text="%"
                                            FontSize="14"
                                            Foreground="{DynamicResource SecondaryTextBrush}"
@@ -175,10 +178,11 @@
                         
                         <Grid Width="140" Height="140">
                             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                                <TextBlock Text="{Binding #MonitoringPageRoot.ViewModel.GpuUsage, StringFormat={}{0:F0}}"
+                                <TextBlock Text="{Binding #MonitoringPageRoot.ViewModel.GpuUsageFormatted}"
                                            FontSize="26"
                                            FontWeight="Bold"
-                                           HorizontalAlignment="Center"/>
+                                           HorizontalAlignment="Center"
+                                           FontFamily="Consolas"/>
                                 <TextBlock Text="%"
                                            FontSize="14"
                                            Foreground="{DynamicResource SecondaryTextBrush}"
@@ -222,10 +226,11 @@
                         
                         <Grid Width="140" Height="140">
                             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                                <TextBlock Text="{Binding #MonitoringPageRoot.ViewModel.FanSpeed, StringFormat={}{0:F0}}"
+                                <TextBlock Text="{Binding #MonitoringPageRoot.ViewModel.FanSpeedFormatted}"
                                            FontSize="26"
                                            FontWeight="Bold"
-                                           HorizontalAlignment="Center"/>
+                                           HorizontalAlignment="Center"
+                                           FontFamily="Consolas"/>
                                 <TextBlock Text="RPM"
                                            FontSize="12"
                                            Foreground="{DynamicResource SecondaryTextBrush}"
@@ -272,7 +277,8 @@
                                 <TextBlock Text="{Binding #MonitoringPageRoot.ViewModel.BatteryPowerFormatted}"
                                            FontSize="26"
                                            FontWeight="Bold"
-                                           HorizontalAlignment="Center"/>
+                                           HorizontalAlignment="Center"
+                                           FontFamily="Consolas"/>
                                 <TextBlock Text="{Binding $parent[Window].DataContext.Localization[Watt]}"
                                            FontSize="14"
                                            Foreground="{DynamicResource SecondaryTextBrush}"

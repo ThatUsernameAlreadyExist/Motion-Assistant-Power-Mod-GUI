@@ -43,7 +43,7 @@ namespace PmGui.Views.Pages
             while (true)
             {
                 await System.Threading.Tasks.Task.Delay(2000);
-                
+
                 ViewModel.PackagePower = random.Next(20, 60);
                 ViewModel.CpuTemperature = random.Next(40, 85);
                 ViewModel.CpuUsage = random.Next(10, 95);

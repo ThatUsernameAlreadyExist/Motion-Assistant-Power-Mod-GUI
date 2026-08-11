@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net48</TargetFramework>
@@ -22,8 +22,8 @@
   <Title></Title>
   <Product>PowerMod GUI</Product>
   <Copyright>https://github.com/ThatUsernameAlreadyExist/</Copyright>
-  <AssemblyVersion>2.2.2</AssemblyVersion>
-  <FileVersion>2.2.2</FileVersion>
+  <AssemblyVersion>2.2.3</AssemblyVersion>
+  <FileVersion>2.2.3</FileVersion>
 </PropertyGroup>
 
   <ItemGroup>
