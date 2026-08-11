@@ -22,7 +22,7 @@ namespace PmGui.ViewModels
             get => _value;
             private set
             {
-                if (Math.Abs(_value - value) > 0.0001)
+                if (Math.Abs(_value - value) > 0.5)
                 {
                     _value = value;
                     OnPropertyChanged();
@@ -34,7 +34,7 @@ namespace PmGui.ViewModels
         {
             set
             {
-                if (Math.Abs(_target - value) > 0.0001)
+                if (Math.Abs(_target - value) > 0.05)
                 {
                     _target = value;
                     StartAnimation();
@@ -64,7 +64,7 @@ namespace PmGui.ViewModels
         {
             double diff = _target - _value;
 
-            if (Math.Abs(diff) < 0.01)
+            if (Math.Abs(diff) < 0.1)
             {
                 // Close enough — snap to target and stop
                 _value = _target;

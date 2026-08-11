@@ -17,7 +17,7 @@
   <!-- Extract to temp folder at runtime (required for native libs) -->
   <CosturaCreateTemporaryAssemblies>true</CosturaCreateTemporaryAssemblies>
   
-  <Version>2.2.2</Version>
+  <Version>2.2.3</Version>
   <PackageId></PackageId>
   <Title></Title>
   <Product>PowerMod GUI</Product>
