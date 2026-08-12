@@ -54,7 +54,7 @@ namespace PmGui.ViewModels
             _timer?.Stop();
             _timer = new DispatcherTimer
             {
-                Interval = TimeSpan.FromMilliseconds(16) // ~60 fps
+                Interval = TimeSpan.FromMilliseconds(33) // ~30 fps
             };
             _timer.Tick += OnTick;
             _timer.Start();
@@ -73,9 +73,9 @@ namespace PmGui.ViewModels
                 return;
             }
 
-            // Linear interpolation: move ~1/60th of the way per frame
-            // Over 60 frames (1 second) this gives smooth easing
-            _value += diff * 0.06;
+            // Linear interpolation: move ~1/30th of the way per frame
+            // Over 30 frames (1 second) this gives smooth easing
+            _value += diff * (1.0 / 30.0);
             OnPropertyChanged();
         }
 

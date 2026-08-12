@@ -66,41 +66,53 @@ namespace PmGui.ViewModels
 
         private void OnAnimatedValueChanged(object sender, PropertyChangedEventArgs e)
         {
-            // When any animated value changes, re-raise all dependent properties
-            // so the UI binding system picks up the update
-            OnPropertyChanged(nameof(PackagePower));
-            OnPropertyChanged(nameof(PackagePowerPercentage));
-            OnPropertyChanged(nameof(PackagePowerArc));
-            OnPropertyChanged(nameof(PackagePowerColor));
-            OnPropertyChanged(nameof(PackagePowerFormatted));
-
-            OnPropertyChanged(nameof(CpuTemperature));
-            OnPropertyChanged(nameof(CpuTemperaturePercentage));
-            OnPropertyChanged(nameof(CpuTemperatureArc));
-            OnPropertyChanged(nameof(CpuTemperatureColor));
-            OnPropertyChanged(nameof(CpuTemperatureFormatted));
-
-            OnPropertyChanged(nameof(CpuUsage));
-            OnPropertyChanged(nameof(CpuUsageArc));
-            OnPropertyChanged(nameof(CpuUsageColor));
-            OnPropertyChanged(nameof(CpuUsageFormatted));
-
-            OnPropertyChanged(nameof(GpuUsage));
-            OnPropertyChanged(nameof(GpuUsageArc));
-            OnPropertyChanged(nameof(GpuUsageColor));
-            OnPropertyChanged(nameof(GpuUsageFormatted));
-
-            OnPropertyChanged(nameof(FanSpeed));
-            OnPropertyChanged(nameof(FanSpeedPercentage));
-            OnPropertyChanged(nameof(FanSpeedArc));
-            OnPropertyChanged(nameof(FanSpeedColor));
-            OnPropertyChanged(nameof(FanSpeedFormatted));
-
-            OnPropertyChanged(nameof(BatteryPower));
-            OnPropertyChanged(nameof(BatteryPowerPercentage));
-            OnPropertyChanged(nameof(BatteryPowerArc));
-            OnPropertyChanged(nameof(BatteryPowerColor));
-            OnPropertyChanged(nameof(BatteryPowerFormatted));
+            // Only re-raise properties for the gauge that actually changed
+            if (sender == _packagePowerAnimated)
+            {
+                OnPropertyChanged(nameof(PackagePower));
+                OnPropertyChanged(nameof(PackagePowerPercentage));
+                OnPropertyChanged(nameof(PackagePowerArc));
+                OnPropertyChanged(nameof(PackagePowerColor));
+                OnPropertyChanged(nameof(PackagePowerFormatted));
+            }
+            else if (sender == _cpuTemperatureAnimated)
+            {
+                OnPropertyChanged(nameof(CpuTemperature));
+                OnPropertyChanged(nameof(CpuTemperaturePercentage));
+                OnPropertyChanged(nameof(CpuTemperatureArc));
+                OnPropertyChanged(nameof(CpuTemperatureColor));
+                OnPropertyChanged(nameof(CpuTemperatureFormatted));
+            }
+            else if (sender == _cpuUsageAnimated)
+            {
+                OnPropertyChanged(nameof(CpuUsage));
+                OnPropertyChanged(nameof(CpuUsageArc));
+                OnPropertyChanged(nameof(CpuUsageColor));
+                OnPropertyChanged(nameof(CpuUsageFormatted));
+            }
+            else if (sender == _gpuUsageAnimated)
+            {
+                OnPropertyChanged(nameof(GpuUsage));
+                OnPropertyChanged(nameof(GpuUsageArc));
+                OnPropertyChanged(nameof(GpuUsageColor));
+                OnPropertyChanged(nameof(GpuUsageFormatted));
+            }
+            else if (sender == _fanSpeedAnimated)
+            {
+                OnPropertyChanged(nameof(FanSpeed));
+                OnPropertyChanged(nameof(FanSpeedPercentage));
+                OnPropertyChanged(nameof(FanSpeedArc));
+                OnPropertyChanged(nameof(FanSpeedColor));
+                OnPropertyChanged(nameof(FanSpeedFormatted));
+            }
+            else if (sender == _batteryPowerAnimated)
+            {
+                OnPropertyChanged(nameof(BatteryPower));
+                OnPropertyChanged(nameof(BatteryPowerPercentage));
+                OnPropertyChanged(nameof(BatteryPowerArc));
+                OnPropertyChanged(nameof(BatteryPowerColor));
+                OnPropertyChanged(nameof(BatteryPowerFormatted));
+            }
         }
 
         private void RefreshTranslations()
@@ -184,7 +196,7 @@ namespace PmGui.ViewModels
             set => _packagePowerAnimated.Target = value;
         }
 
-        public string PackagePowerFormatted => PackagePower > 0 && PackagePower < 10 ? PackagePower.ToString("F1", CultureInfo.InvariantCulture) : PackagePower.ToString("F0", CultureInfo.InvariantCulture);
+        public string PackagePowerFormatted => PackagePower > 0 && Math.Floor(PackagePower) < 10 ? PackagePower.ToString("F1", CultureInfo.InvariantCulture) : PackagePower.ToString("F0", CultureInfo.InvariantCulture);
 
         public double PackagePowerMax
         {
@@ -288,7 +300,7 @@ namespace PmGui.ViewModels
             set => _batteryPowerAnimated.Target = value;
         }
 
-        public string BatteryPowerFormatted => BatteryPower > 0 && BatteryPower < 10 ? BatteryPower.ToString("F1", CultureInfo.InvariantCulture) : BatteryPower.ToString("F0", CultureInfo.InvariantCulture);
+        public string BatteryPowerFormatted => BatteryPower > 0 && Math.Floor(BatteryPower) < 10 ? BatteryPower.ToString("F1", CultureInfo.InvariantCulture) : BatteryPower.ToString("F0", CultureInfo.InvariantCulture);
 
         public double BatteryPowerMax
         {
