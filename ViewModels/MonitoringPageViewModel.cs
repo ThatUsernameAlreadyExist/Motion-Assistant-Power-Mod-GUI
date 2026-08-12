@@ -43,22 +43,22 @@ namespace PmGui.ViewModels
             _localization = LocalizationManager.Instance;
             _localization.PropertyChanged += (s, e) => RefreshTranslations();
 
-            _packagePowerAnimated = new AnimatedDouble(0, 1.0);
+            _packagePowerAnimated = new AnimatedDouble(0, 0.5);
             _packagePowerAnimated.PropertyChanged += OnAnimatedValueChanged;
 
-            _cpuTemperatureAnimated = new AnimatedDouble(0, 1.0);
+            _cpuTemperatureAnimated = new AnimatedDouble(0, 0.5);
             _cpuTemperatureAnimated.PropertyChanged += OnAnimatedValueChanged;
 
-            _cpuUsageAnimated = new AnimatedDouble(0, 1.0);
+            _cpuUsageAnimated = new AnimatedDouble(0, 0.5);
             _cpuUsageAnimated.PropertyChanged += OnAnimatedValueChanged;
 
-            _gpuUsageAnimated = new AnimatedDouble(0, 1.0);
+            _gpuUsageAnimated = new AnimatedDouble(0, 0.5);
             _gpuUsageAnimated.PropertyChanged += OnAnimatedValueChanged;
 
-            _fanSpeedAnimated = new AnimatedDouble(0, 1.0);
+            _fanSpeedAnimated = new AnimatedDouble(0, 0.5);
             _fanSpeedAnimated.PropertyChanged += OnAnimatedValueChanged;
 
-            _batteryPowerAnimated = new AnimatedDouble(0, 1.0);
+            _batteryPowerAnimated = new AnimatedDouble(0, 0.5);
             _batteryPowerAnimated.PropertyChanged += OnAnimatedValueChanged;
 
             GlobalAppManager.Instance.RegisterPageViewModel(this);

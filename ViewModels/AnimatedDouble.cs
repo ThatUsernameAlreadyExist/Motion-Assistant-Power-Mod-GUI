@@ -1,7 +1,6 @@
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using Avalonia;
 using Avalonia.Threading;
 
 namespace PmGui.ViewModels
@@ -14,8 +13,16 @@ namespace PmGui.ViewModels
     {
         private double _value;
         private double _target;
-        private DispatcherTimer _timer;
-        private readonly TimeSpan _animationDuration;
+        private bool _isAnimating;
+        private readonly double _interpolationFactor;
+
+        // Fixed registry — one per app lifetime, drives all AnimatedDouble instances.
+        // Size is large enough for all gauges plus headroom.
+        private static readonly AnimatedDouble[] _registry = new AnimatedDouble[32];
+        private static int _registryCount;
+
+        // Single shared timer
+        private static DispatcherTimer _sharedTimer;
 
         public double Value
         {
@@ -37,45 +44,88 @@ namespace PmGui.ViewModels
                 if (Math.Abs(_target - value) > 0.05)
                 {
                     _target = value;
-                    StartAnimation();
+                    if (!_isAnimating)
+                    {
+                        _isAnimating = true;
+                        EnsureTimerStarted();
+                    }
                 }
             }
         }
 
-        public AnimatedDouble(double initialValue = 0, double animationDurationSeconds = 1.0)
+        public AnimatedDouble(double initialValue = 0, double animationDurationSeconds = 0.5)
         {
             _value = initialValue;
             _target = initialValue;
-            _animationDuration = TimeSpan.FromSeconds(animationDurationSeconds);
+            // 30 fps - frame time ≈ 1/30 s. Factor = frameTime / duration
+            _interpolationFactor = 1.0 / (30.0 * animationDurationSeconds);
+            Register();
         }
 
-        private void StartAnimation()
+        private void Register()
         {
-            _timer?.Stop();
-            _timer = new DispatcherTimer
+            for (int i = 0; i < _registry.Length; i++)
             {
-                Interval = TimeSpan.FromMilliseconds(33) // ~30 fps
-            };
-            _timer.Tick += OnTick;
-            _timer.Start();
+                if (_registry[i] == null)
+                {
+                    _registry[i] = this;
+                    _registryCount++;
+                    return;
+                }
+            }
         }
 
-        private void OnTick(object sender, EventArgs e)
+        private static void EnsureTimerStarted()
+        {
+            if (_sharedTimer == null)
+            {
+                _sharedTimer = new DispatcherTimer
+                {
+                    Interval = TimeSpan.FromMilliseconds(33) // ~30 fps
+                };
+                _sharedTimer.Tick += OnSharedTick;
+            }
+            _sharedTimer.Start();
+        }
+
+        private static void OnSharedTick(object sender, EventArgs e)
+        {
+            for (int i = 0; i < _registryCount; i++)
+            {
+                var anim = _registry[i];
+                if (anim != null && anim._isAnimating)
+                    anim.Tick();
+            }
+
+            // Stop timer when nothing is animating
+            // If any slot is animating, keep going
+            bool anyAnimating = false;
+            for (int i = 0; i < _registryCount; i++)
+            {
+                if (_registry[i]?._isAnimating == true)
+                {
+                    anyAnimating = true;
+                    break;
+                }
+            }
+            if (!anyAnimating)
+                _sharedTimer?.Stop();
+        }
+
+        private void Tick()
         {
             double diff = _target - _value;
 
             if (Math.Abs(diff) < 0.1)
             {
-                // Close enough — snap to target and stop
                 _value = _target;
-                _timer?.Stop();
+                _isAnimating = false;
                 OnPropertyChanged();
                 return;
             }
 
-            // Linear interpolation: move ~1/30th of the way per frame
-            // Over 30 frames (1 second) this gives smooth easing
-            _value += diff * (1.0 / 30.0);
+            // Linear interpolation: move _interpolationFactor per frame
+            _value += diff * _interpolationFactor;
             OnPropertyChanged();
         }
 
