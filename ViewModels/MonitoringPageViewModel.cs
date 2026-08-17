@@ -12,7 +12,7 @@ namespace PmGui.ViewModels
     {
         private readonly LocalizationManager _localization;
 
-        // Animated gauge values — UI binds to .Value which interpolates smoothly
+        // Animated gauge values
         private readonly AnimatedDouble _packagePowerAnimated;
         private readonly AnimatedDouble _cpuTemperatureAnimated;
         private readonly AnimatedDouble _cpuUsageAnimated;
@@ -31,6 +31,32 @@ namespace PmGui.ViewModels
         private string _cpuBoost = "?";
         private Color _cpuBoostColor = Colors.Green;
 
+        private string _lastPackagePowerArc;
+        private Color _lastPackagePowerColor;
+        private string _lastPackagePowerFormatted;
+
+        private string _lastCpuTemperatureArc;
+        private Color _lastCpuTemperatureColor;
+        private string _lastCpuTemperatureFormatted;
+
+        private string _lastCpuUsageArc;
+        private Color _lastCpuUsageColor;
+        private string _lastCpuUsageFormatted;
+
+        private string _lastGpuUsageArc;
+        private Color _lastGpuUsageColor;
+        private string _lastGpuUsageFormatted;
+
+        private string _lastFanSpeedArc;
+        private Color _lastFanSpeedColor;
+        private string _lastFanSpeedFormatted;
+
+        private string _lastBatteryPowerArc;
+        private Color _lastBatteryPowerColor;
+        private string _lastBatteryPowerFormatted;
+
+        // ── Gauge color getters (computed on demand; raised only when changed) ──
+
         public Color PackagePowerColor => GetGradientColor(PackagePowerPercentage, 80.0, Colors.White, Colors.DarkOrange);
         public Color CpuTemperatureColor => GetGradientColor(CpuTemperaturePercentage, 100.0, Colors.White, Colors.Red);
         public Color CpuUsageColor => GetGradientColor(CpuUsage, 80.0, Colors.White, Colors.RoyalBlue);
@@ -43,75 +69,111 @@ namespace PmGui.ViewModels
             _localization = LocalizationManager.Instance;
             _localization.PropertyChanged += (s, e) => RefreshTranslations();
 
-            _packagePowerAnimated = new AnimatedDouble(0, 0.5);
+            // displayStep: 0.1 for watt gauges (show 1 decimal below 10), 1.0 for integer displays
+            _packagePowerAnimated = new AnimatedDouble(0, 0.5, 0.1);
             _packagePowerAnimated.PropertyChanged += OnAnimatedValueChanged;
 
-            _cpuTemperatureAnimated = new AnimatedDouble(0, 0.5);
+            _cpuTemperatureAnimated = new AnimatedDouble(0, 0.5, 1.0);
             _cpuTemperatureAnimated.PropertyChanged += OnAnimatedValueChanged;
 
-            _cpuUsageAnimated = new AnimatedDouble(0, 0.5);
+            _cpuUsageAnimated = new AnimatedDouble(0, 0.5, 1.0);
             _cpuUsageAnimated.PropertyChanged += OnAnimatedValueChanged;
 
-            _gpuUsageAnimated = new AnimatedDouble(0, 0.5);
+            _gpuUsageAnimated = new AnimatedDouble(0, 0.5, 1.0);
             _gpuUsageAnimated.PropertyChanged += OnAnimatedValueChanged;
 
-            _fanSpeedAnimated = new AnimatedDouble(0, 0.5);
+            _fanSpeedAnimated = new AnimatedDouble(0, 0.5, 1.0);
             _fanSpeedAnimated.PropertyChanged += OnAnimatedValueChanged;
 
-            _batteryPowerAnimated = new AnimatedDouble(0, 0.5);
+            _batteryPowerAnimated = new AnimatedDouble(0, 0.5, 0.1);
             _batteryPowerAnimated.PropertyChanged += OnAnimatedValueChanged;
 
             GlobalAppManager.Instance.RegisterPageViewModel(this);
         }
 
+        // ── Core: re-raise only the derived properties that actually changed ──
+
         private void OnAnimatedValueChanged(object sender, PropertyChangedEventArgs e)
         {
-            // Only re-raise properties for the gauge that actually changed
             if (sender == _packagePowerAnimated)
             {
-                OnPropertyChanged(nameof(PackagePower));
-                OnPropertyChanged(nameof(PackagePowerPercentage));
-                OnPropertyChanged(nameof(PackagePowerArc));
-                OnPropertyChanged(nameof(PackagePowerColor));
-                OnPropertyChanged(nameof(PackagePowerFormatted));
+                RaiseStringIfChanged(nameof(PackagePowerArc),
+                    CalculateArcPath(PackagePowerPercentage), ref _lastPackagePowerArc);
+                RaiseColorIfChanged(nameof(PackagePowerColor),
+                    GetGradientColor(PackagePowerPercentage, 80.0, Colors.White, Colors.DarkOrange),
+                    ref _lastPackagePowerColor);
+                RaiseStringIfChanged(nameof(PackagePowerFormatted),
+                    PackagePowerFormatted, ref _lastPackagePowerFormatted);
             }
             else if (sender == _cpuTemperatureAnimated)
             {
-                OnPropertyChanged(nameof(CpuTemperature));
-                OnPropertyChanged(nameof(CpuTemperaturePercentage));
-                OnPropertyChanged(nameof(CpuTemperatureArc));
-                OnPropertyChanged(nameof(CpuTemperatureColor));
-                OnPropertyChanged(nameof(CpuTemperatureFormatted));
+                RaiseStringIfChanged(nameof(CpuTemperatureArc),
+                    CalculateArcPath(CpuTemperaturePercentage), ref _lastCpuTemperatureArc);
+                RaiseColorIfChanged(nameof(CpuTemperatureColor),
+                    GetGradientColor(CpuTemperaturePercentage, 100.0, Colors.White, Colors.Red),
+                    ref _lastCpuTemperatureColor);
+                RaiseStringIfChanged(nameof(CpuTemperatureFormatted),
+                    CpuTemperatureFormatted, ref _lastCpuTemperatureFormatted);
             }
             else if (sender == _cpuUsageAnimated)
             {
-                OnPropertyChanged(nameof(CpuUsage));
-                OnPropertyChanged(nameof(CpuUsageArc));
-                OnPropertyChanged(nameof(CpuUsageColor));
-                OnPropertyChanged(nameof(CpuUsageFormatted));
+                RaiseStringIfChanged(nameof(CpuUsageArc),
+                    CalculateArcPath(CpuUsage), ref _lastCpuUsageArc);
+                RaiseColorIfChanged(nameof(CpuUsageColor),
+                    GetGradientColor(CpuUsage, 80.0, Colors.White, Colors.RoyalBlue),
+                    ref _lastCpuUsageColor);
+                RaiseStringIfChanged(nameof(CpuUsageFormatted),
+                    CpuUsageFormatted, ref _lastCpuUsageFormatted);
             }
             else if (sender == _gpuUsageAnimated)
             {
-                OnPropertyChanged(nameof(GpuUsage));
-                OnPropertyChanged(nameof(GpuUsageArc));
-                OnPropertyChanged(nameof(GpuUsageColor));
-                OnPropertyChanged(nameof(GpuUsageFormatted));
+                RaiseStringIfChanged(nameof(GpuUsageArc),
+                    CalculateArcPath(GpuUsage), ref _lastGpuUsageArc);
+                RaiseColorIfChanged(nameof(GpuUsageColor),
+                    GetGradientColor(GpuUsage, 70.0, Colors.White, Colors.DarkOrchid),
+                    ref _lastGpuUsageColor);
+                RaiseStringIfChanged(nameof(GpuUsageFormatted),
+                    GpuUsageFormatted, ref _lastGpuUsageFormatted);
             }
             else if (sender == _fanSpeedAnimated)
             {
-                OnPropertyChanged(nameof(FanSpeed));
-                OnPropertyChanged(nameof(FanSpeedPercentage));
-                OnPropertyChanged(nameof(FanSpeedArc));
-                OnPropertyChanged(nameof(FanSpeedColor));
-                OnPropertyChanged(nameof(FanSpeedFormatted));
+                RaiseStringIfChanged(nameof(FanSpeedArc),
+                    CalculateArcPath(FanSpeedPercentage), ref _lastFanSpeedArc);
+                RaiseColorIfChanged(nameof(FanSpeedColor),
+                    GetGradientColor(FanSpeedPercentage, 100.0, Colors.White, Colors.DeepSkyBlue),
+                    ref _lastFanSpeedColor);
+                RaiseStringIfChanged(nameof(FanSpeedFormatted),
+                    FanSpeedFormatted, ref _lastFanSpeedFormatted);
             }
             else if (sender == _batteryPowerAnimated)
             {
-                OnPropertyChanged(nameof(BatteryPower));
-                OnPropertyChanged(nameof(BatteryPowerPercentage));
-                OnPropertyChanged(nameof(BatteryPowerArc));
-                OnPropertyChanged(nameof(BatteryPowerColor));
-                OnPropertyChanged(nameof(BatteryPowerFormatted));
+                RaiseStringIfChanged(nameof(BatteryPowerArc),
+                    CalculateArcPath(BatteryPowerPercentage), ref _lastBatteryPowerArc);
+                RaiseColorIfChanged(nameof(BatteryPowerColor),
+                    GetGradientColor(BatteryPowerPercentage, 80.0, Colors.White, Colors.Green),
+                    ref _lastBatteryPowerColor);
+                RaiseStringIfChanged(nameof(BatteryPowerFormatted),
+                    BatteryPowerFormatted, ref _lastBatteryPowerFormatted);
+            }
+        }
+
+        // ── Helpers: raise PropertyChanged only when value actually changed ──
+
+        private void RaiseStringIfChanged(string propertyName, string newValue, ref string cache)
+        {
+            if (newValue != cache)
+            {
+                cache = newValue;
+                OnPropertyChanged(propertyName);
+            }
+        }
+
+        private void RaiseColorIfChanged(string propertyName, Color newValue, ref Color cache)
+        {
+            if (newValue != cache)
+            {
+                cache = newValue;
+                OnPropertyChanged(propertyName);
             }
         }
 
@@ -190,13 +252,17 @@ namespace PmGui.ViewModels
             get => _localization[_cpuBoost == "On" || _cpuBoost == "1" ? "On" : "Off"] ?? _cpuBoost;
         }
 
+        // ── Package Power (W) ──
+
         public double PackagePower
         {
             get => _packagePowerAnimated.Value;
             set => _packagePowerAnimated.Target = value;
         }
 
-        public string PackagePowerFormatted => PackagePower > 0 && Math.Floor(PackagePower) < 10 ? PackagePower.ToString("F1", CultureInfo.InvariantCulture) : PackagePower.ToString("F0", CultureInfo.InvariantCulture);
+        public string PackagePowerFormatted => PackagePower > 0 && Math.Floor(PackagePower) < 10
+            ? PackagePower.ToString("F1", CultureInfo.InvariantCulture)
+            : PackagePower.ToString("F0", CultureInfo.InvariantCulture);
 
         public double PackagePowerMax
         {
@@ -207,6 +273,9 @@ namespace PmGui.ViewModels
                 {
                     _packagePowerMax = value;
                     OnPropertyChanged();
+                    // Sync caches so the next animation tick doesn't double-raise
+                    _lastPackagePowerArc = CalculateArcPath(PackagePowerPercentage);
+                    _lastPackagePowerColor = GetGradientColor(PackagePowerPercentage, 80.0, Colors.White, Colors.DarkOrange);
                     OnPropertyChanged(nameof(PackagePowerPercentage));
                     OnPropertyChanged(nameof(PackagePowerArc));
                     OnPropertyChanged(nameof(PackagePowerColor));
@@ -216,6 +285,8 @@ namespace PmGui.ViewModels
 
         public double PackagePowerPercentage => (PackagePower / PackagePowerMax) * 100;
         public string PackagePowerArc => CalculateArcPath(PackagePowerPercentage);
+
+        // ── CPU Temperature (°C) ──
 
         public double CpuTemperature
         {
@@ -232,6 +303,8 @@ namespace PmGui.ViewModels
                 {
                     _cpuTemperatureMax = value;
                     OnPropertyChanged();
+                    _lastCpuTemperatureArc = CalculateArcPath(CpuTemperaturePercentage);
+                    _lastCpuTemperatureColor = GetGradientColor(CpuTemperaturePercentage, 100.0, Colors.White, Colors.Red);
                     OnPropertyChanged(nameof(CpuTemperaturePercentage));
                     OnPropertyChanged(nameof(CpuTemperatureArc));
                     OnPropertyChanged(nameof(CpuTemperatureColor));
@@ -243,6 +316,8 @@ namespace PmGui.ViewModels
         public string CpuTemperatureFormatted => CpuTemperature.ToString("F0", CultureInfo.InvariantCulture);
         public string CpuTemperatureArc => CalculateArcPath(CpuTemperaturePercentage);
 
+        // ── CPU Usage (%) ──
+
         public double CpuUsage
         {
             get => _cpuUsageAnimated.Value;
@@ -251,6 +326,8 @@ namespace PmGui.ViewModels
 
         public string CpuUsageFormatted => CpuUsage.ToString("F0", CultureInfo.InvariantCulture);
         public string CpuUsageArc => CalculateArcPath(CpuUsage);
+
+        // ── GPU Usage (%) ──
 
         public double GpuUsage
         {
@@ -261,6 +338,7 @@ namespace PmGui.ViewModels
         public string GpuUsageFormatted => GpuUsage.ToString("F0", CultureInfo.InvariantCulture);
         public string GpuUsageArc => CalculateArcPath(GpuUsage);
 
+        // ── Fan Speed (RPM) ──
 
         public double FanSpeedDivided
         {
@@ -283,6 +361,8 @@ namespace PmGui.ViewModels
                 {
                     _fanSpeedMax = value;
                     OnPropertyChanged();
+                    _lastFanSpeedArc = CalculateArcPath(FanSpeedPercentage);
+                    _lastFanSpeedColor = GetGradientColor(FanSpeedPercentage, 100.0, Colors.White, Colors.DeepSkyBlue);
                     OnPropertyChanged(nameof(FanSpeedPercentage));
                     OnPropertyChanged(nameof(FanSpeedArc));
                     OnPropertyChanged(nameof(FanSpeedColor));
@@ -294,13 +374,17 @@ namespace PmGui.ViewModels
         public string FanSpeedFormatted => FanSpeed.ToString("F0", CultureInfo.InvariantCulture);
         public string FanSpeedArc => CalculateArcPath(FanSpeedPercentage);
 
+        // ── Battery Power (W) ──
+
         public double BatteryPower
         {
             get => _batteryPowerAnimated.Value;
             set => _batteryPowerAnimated.Target = value;
         }
 
-        public string BatteryPowerFormatted => BatteryPower > 0 && Math.Floor(BatteryPower) < 10 ? BatteryPower.ToString("F1", CultureInfo.InvariantCulture) : BatteryPower.ToString("F0", CultureInfo.InvariantCulture);
+        public string BatteryPowerFormatted => BatteryPower > 0 && Math.Floor(BatteryPower) < 10
+            ? BatteryPower.ToString("F1", CultureInfo.InvariantCulture)
+            : BatteryPower.ToString("F0", CultureInfo.InvariantCulture);
 
         public double BatteryPowerMax
         {
@@ -311,6 +395,8 @@ namespace PmGui.ViewModels
                 {
                     _batteryPowerMax = value;
                     OnPropertyChanged();
+                    _lastBatteryPowerArc = CalculateArcPath(BatteryPowerPercentage);
+                    _lastBatteryPowerColor = GetGradientColor(BatteryPowerPercentage, 80.0, Colors.White, Colors.Green);
                     OnPropertyChanged(nameof(BatteryPowerPercentage));
                     OnPropertyChanged(nameof(BatteryPowerArc));
                     OnPropertyChanged(nameof(BatteryPowerColor));

@@ -16,7 +16,6 @@ namespace PmGui.Views.Pages
             InitializeComponent();
 
             // Start live simulation to see values change
-
             if (GlobalAppManager.Instance.IsDebugMode)
             {
                 StartSimulation();
@@ -28,6 +27,9 @@ namespace PmGui.Views.Pages
         private void OnIsVisibleChanged(bool obj)
         {
             GlobalAppManager.Instance.SendCmdIsMonitoringVisible(obj);
+            // Pause / resume animations when the page is shown / hidden (Fix 5).
+            // While paused the shared DispatcherTimer is stopped → zero CPU.
+            AnimatedDouble.SetPaused(!obj);
         }
 
         private async void StartSimulation()
